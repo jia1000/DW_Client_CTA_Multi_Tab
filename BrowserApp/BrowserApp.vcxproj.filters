@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="main">
+      <UniqueIdentifier>{8f8c6130-af2f-40d4-8c69-cd8c6be96920}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{a8be5b3e-1817-4fec-89fe-46535d5a77ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\images">
+      <UniqueIdentifier>{de8ea815-c6de-4b77-aeee-af05cd932d27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\html">
+      <UniqueIdentifier>{dee73be8-37e5-4921-9116-2b7fa158928c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\Skin">
+      <UniqueIdentifier>{f366f94f-f06c-4013-86f6-6d5add6aa363}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="menu_tray">
+      <UniqueIdentifier>{a3c0bfc2-bd34-4d12-b688-42ecf00933b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="screen">
+      <UniqueIdentifier>{aa1d377a-1211-4744-894e-c125586066e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extended_control">
+      <UniqueIdentifier>{c5ae12b6-f3d5-4915-9202-9e90768b7243}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main\WndSimpleFrame.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="resource.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+    <ClInclude Include="main\BrowserWndManager.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="main\WndFrameBase.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="menu_tray\menu_tray_wnd.h">
+      <Filter>menu_tray</Filter>
+    </ClInclude>
+    <ClInclude Include="menu_tray\menu_tray_set_wnd.h">
+      <Filter>menu_tray</Filter>
+    </ClInclude>
+    <ClInclude Include="screen\screen_info_controller.h">
+      <Filter>screen</Filter>
+    </ClInclude>
+    <ClInclude Include="main\print_preview.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="main\WndSubFrame.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="fileversion_number.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+    <ClInclude Include="menu_tray\ui_option_screen.h">
+      <Filter>menu_tray</Filter>
+    </ClInclude>
+    <ClInclude Include="extended_control\button_hand_ui.h">
+      <Filter>extended_control</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main\WndSimpleFrame.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main\BrowserWndManager.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="main\WndFrameBase.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="menu_tray\menu_tray_wnd.cpp">
+      <Filter>menu_tray</Filter>
+    </ClCompile>
+    <ClCompile Include="menu_tray\menu_tray_set_wnd.cpp">
+      <Filter>menu_tray</Filter>
+    </ClCompile>
+    <ClCompile Include="screen\screen_info_controller.cpp">
+      <Filter>screen</Filter>
+    </ClCompile>
+    <ClCompile Include="main\print_preview.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="main\WndSubFrame.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="menu_tray\ui_option_screen.cpp">
+      <Filter>menu_tray</Filter>
+    </ClCompile>
+    <ClCompile Include="extended_control\button_hand_ui.cpp">
+      <Filter>extended_control</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\resource\images\logo256x256.ico">
+      <Filter>resources\images</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\bin\release\Skin\WndSimpleFrame.xml">
+      <Filter>resources\Skin</Filter>
+    </Xml>
+    <Xml Include="..\bin\release\Skin\print_preview.xml">
+      <Filter>resources\Skin</Filter>
+    </Xml>
+    <Xml Include="..\bin\release\Skin\menu_tray\menu_tray.xml">
+      <Filter>resources\Skin</Filter>
+    </Xml>
+    <Xml Include="..\bin\release\Skin\menu_tray\menu_tray_set.xml">
+      <Filter>resources\Skin</Filter>
+    </Xml>
+  </ItemGroup>
+</Project>

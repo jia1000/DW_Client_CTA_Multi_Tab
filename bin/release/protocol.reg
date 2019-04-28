@@ -1,0 +1,16 @@
+Windows Registry Editor Version 5.00
+
+
+[HKEY_CLASSES_ROOT\dpclient]
+
+@="URL:dpclient Protocol Handler"
+
+"URL Protocol"=""
+
+[HKEY_CLASSES_ROOT\dpclient\shell]
+
+[HKEY_CLASSES_ROOT\dpclient\shell\open]
+
+[HKEY_CLASSES_ROOT\dpclient\shell\open\command]
+
+@="E:\\Work\\Deepwise\\Source code\\AskDoctor_Client\\output\\release\\BrowserApp.exe -risurl=%1"

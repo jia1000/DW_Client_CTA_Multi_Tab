@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="control">
+      <UniqueIdentifier>{fe8a21b6-1899-47ee-82d0-5fa2252ceb16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cef3">
+      <UniqueIdentifier>{96e4b0c9-33c5-4b6b-853b-07b129140a53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cef3\browser">
+      <UniqueIdentifier>{255dcb85-e833-4e7d-84cf-ed6317be8ad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cef3\common">
+      <UniqueIdentifier>{eeaf5bb6-039f-4c39-970d-ba3325d395d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cef3\renderer">
+      <UniqueIdentifier>{2266b1fd-4e5c-4858-b3ab-73338b5f93c2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="base\Cef3\browser\cef_main_handler.h">
+      <Filter>Cef3\browser</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Cef3\browser\client_browser_app.h">
+      <Filter>Cef3\browser</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Cef3\browser\ClientResourceProvider.h">
+      <Filter>Cef3\browser</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Cef3\browser\ClientSchemeHandler.h">
+      <Filter>Cef3\browser</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Cef3\browser\main_message_loop.h">
+      <Filter>Cef3\browser</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Cef3\browser\print_to_pdf_handler.h">
+      <Filter>Cef3\browser</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Cef3\browser\WindowStateHandler.h">
+      <Filter>Cef3\browser</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Cef3\common\cef_client_handler.h">
+      <Filter>Cef3\common</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Cef3\common\client_app.h">
+      <Filter>Cef3\common</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Cef3\common\client_callback_handler.h">
+      <Filter>Cef3\common</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Cef3\common\process_message_handler.h">
+      <Filter>Cef3\common</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Cef3\renderer\client_renderer_app.h">
+      <Filter>Cef3\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Cef3\renderer\client_v8handler.h">
+      <Filter>Cef3\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Cef3\renderer\v8handler_function.h">
+      <Filter>Cef3\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="base\control\pdf_creator.h">
+      <Filter>control</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="base\control\UICefBrowser.h">
+      <Filter>control</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="base\Cef3\browser\client_browser_app.cpp">
+      <Filter>Cef3\browser</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Cef3\browser\main_message_loop.cpp">
+      <Filter>Cef3\browser</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Cef3\common\cef_client_handler.cpp">
+      <Filter>Cef3\common</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Cef3\common\client_app.cpp">
+      <Filter>Cef3\common</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Cef3\common\process_message_handler.cpp">
+      <Filter>Cef3\common</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Cef3\renderer\client_renderer_app.cpp">
+      <Filter>Cef3\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Cef3\renderer\client_v8handler.cpp">
+      <Filter>Cef3\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="base\control\pdf_creator.cpp">
+      <Filter>control</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="base\control\UICefBrowser.cpp">
+      <Filter>control</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

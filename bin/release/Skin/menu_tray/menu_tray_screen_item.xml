@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Window> 
+	<Style name="cb_style_set" value="align=&quot;left&quot; valign=&quot;vcenter&quot; height=&quot;22&quot; textcolor=&quot;#FFABBCDC&quot; hottextcolor=&quot;#FFFAFAFA&quot; textpadding=&quot;20,0,6,0&quot; normalimage=&quot;res='menu_tray/radiobox_nor.png' dest='0,5,12,17'&quot; hotimage=&quot;res='menu_tray/radiobox_hov.png' dest='0,5,12,17'&quot; pushedimage=&quot;res='menu_tray/radiobox_nor.png' dest='0,5,12,17'&quot; selectedimage=&quot;res='menu_tray/radiobox_sel.png' dest='0,5,12,17'&quot;" />
+  
+	<ListContainerElement  name="display_camera_preset_item" height="137" >
+		<HorizontalLayout  height="113" childvalign="vcenter" >
+			<OptionScreen name="screen_option" group="screen_shoots" style="cb_style_set" width="120"/>
+			<Label  name="screen_img_label" width="200" height="113" bkcolor="#FF11172D" /> 
+		</HorizontalLayout>		
+	</ListContainerElement>
+</Window>

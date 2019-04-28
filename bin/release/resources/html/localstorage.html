@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>localstorage test</title>
+</head>
+<body>
+  <input placeholder="key" id="key">
+  <input placeholder="value" id="value">
+  <button id="save">save</button>
+  <button id="get">get</button>
+
+  <script>
+    var keyInput = document.getElementById('key')
+    var valueInput = document.getElementById('value')
+    var saveBtn = document.getElementById('save')
+    var getBtn = document.getElementById('get')
+    saveBtn.addEventListener('click', function save() {
+      var key = keyInput.value
+      var value = valueInput.value
+      localStorage.setItem(key, value)
+      valueInput.value = ''
+    })
+    
+    getBtn.addEventListener('click', function get() {
+      var key = keyInput.value
+      var value = localStorage.getItem(key)
+      valueInput.value = value
+    })
+
+  </script>
+</body>
+</html>

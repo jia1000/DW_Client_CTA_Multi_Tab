@@ -1,0 +1,102 @@
+<html>
+<head>
+    <script src="jquery.min.js"></script>
+    <script language="JavaScript">
+        
+        var isFullscreen = false;
+        function maximize() {
+            isFullscreen = !isFullscreen;
+            if (isFullscreen) {
+                window.MaximizeWnd();
+            } else {
+                window.RestoreWnd();
+            }
+        }
+
+        function minimize() {
+            window.MinimizeWnd();
+        }
+
+        function closes() {
+            window.CloseWnd();
+        }
+
+        function navigate() {
+            var url = $("#txtUrlAddress").val();
+            window.location.href = url;
+        }
+
+        function decode() {
+            var encodedStr = $("span#encodedArea").html().trim();
+            var decodedStr = window.HtmlDecode(encodedStr);
+            $("#outputArea").html(decodedStr);
+        }
+
+        function setAddress(address) {
+            $("#txtUrlAddress").val(address);
+        }
+
+        function doQuery() {
+            window.cefQuery({
+                request: "WindowState",
+                onSuccess: function (response) { alert(response); },
+                onFailure: function (code, msg) { alert(code + " - " + msg); }
+            });
+        }
+    </script>
+
+    <style type="text/css">
+        body {
+            background:#FFFFFF;
+        }
+        .title-area 
+        {
+            width: 300px;
+            height: 60px;
+            background: #F1F1f1;
+           -webkit-app-region: drag;
+        }
+    </style>
+</head>
+<body>
+    <!-- JS调用C++接口 -->
+    <div style="width:auto; height:32px;">
+        <input type="text" id="txtUrlAddress" value="http://client/html/test.htm" style="width:500px" /><input type="button" value="Goto" onclick="navigate();" />
+
+        <input type="button" value="最小" onclick="minimize();" />
+        <input type="button" value="最大" onclick="maximize();" />
+        <input type="button" value="关闭" onclick="closes();" />
+        <input type="button" value="状态" onclick="doQuery();" />
+    </div>
+    <!-- 通过title-area定义两个可拖动区域: title-area里添加了css属性-webkit-app-region: drag -->
+    <div style="height:100px;">
+        <div class='title-area' style="float:left">
+            此为可拖动区域：添加css属性-webkit-app-region: drag
+        </div>
+
+        <p style="width:100px; background:#ff0000; color:#F1F1f1; float:left">文字文字文文字文字</p>
+
+        <div class='title-area' style="float:left">
+            <!--另一个可拖动区域-->
+        </div>
+    </div>
+    <!-- JS调用C++解密字符串，以下是base64编码后的字符串 -->
+    <div>        
+        <input type="button" value="解码" onclick="decode();" />
+        <span id="encodedArea">
+            
+        </span>
+    </div>
+    <div id="outputArea">
+    </div>
+    <!-- 调用本地的静态资源（基地址http://client/+文件相对路径） -->
+    <div style="margin-top:30px;">
+        <span>调用本地的静态资源，如splash.gif（基地址http://client/+文件相对路径）</span>
+        <img src="http://client/images/splash.gif" width="500" height="260" />
+    </div>
+    <!-- 打开新页面 -->
+    <div style="margin-top:30px;">
+        <a href="http://client/html/test.htm" target="_blank">打开新窗口</a>
+    </div>
+</body>
+</html>

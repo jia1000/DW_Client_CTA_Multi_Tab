@@ -1,0 +1,106 @@
+﻿<html>
+<head>
+    <meta http-equiv=Content-Type content="text/html;charset=utf-8">
+    <script src="./jquery.min.js"></script>
+    <script language="JavaScript">
+        
+        var isFullscreen = false;
+        function maximize() {
+            isFullscreen = !isFullscreen;
+            if (isFullscreen) {
+                window.MaximizeWnd();
+            } else {
+                window.RestoreWnd();
+            }
+        }
+
+        function minimize() {
+            window.MinimizeWnd();
+        }
+
+        function closes() {
+            window.CloseWnd();
+        }
+
+        function navigate() {
+            var url = $("#txtUrlAddress").val();
+            window.location.href = url;
+        }
+        
+        function setAddress(address) {
+            $("#txtUrlAddress").val(address);
+        }
+
+
+        function decode() {
+            var encodedStr = $("#inputTxt").val().trim();
+            var decodedStr = window.HtmlDecode(encodedStr);
+            $("#outputTxt").val(decodedStr);
+        }
+
+        function encode() {
+            var plainTxt = $("#inputTxt").val().trim();            
+            var encodedStr = window.HtmlEncode(plainTxt);
+            $("#outputTxt").val(encodedStr);
+        }
+
+    </script>
+
+    <style type="text/css">
+        body {
+            background:#FFFFFF;
+        }
+
+        .title-area {
+            width: 300px;
+            height: 60px;
+            background: #F1F1f1;
+           -webkit-app-region: drag;
+        }
+
+
+
+        #plainArea {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- JS调用C++接口 -->
+    <div style="width:auto; height:32px;">
+        <input type="text" id="txtUrlAddress" value="http://client/html/test.htm" style="width:500px" /><input type="button" value="Goto" onclick="navigate();" />
+
+        <input type="button" value="最小" onclick="minimize();" />
+        <input type="button" value="最大" onclick="maximize();" />
+        <input type="button" value="关闭" onclick="closes();" />
+    </div>
+    <!-- 通过title-area定义两个可拖动区域: title-area里添加了css属性-webkit-app-region: drag -->
+    <div style="height:100px;">
+        <div class='title-area' style="float:left">
+            此为可拖动区域：添加css属性-webkit-app-region: drag
+        </div>
+
+        <p style="width:100px; background:#ff0000; color:#F1F1f1; float:left">文字文字文文字文字</p>
+
+        <div class='title-area' style="float:left">
+            <!--另一个可拖动区域-->
+        </div>
+    </div>
+    
+    <!-- JS调用C++解密字符串，以下是base64编码后的字符串 -->
+    <div>        
+        <input type="button" value=" 解密/解码 " onclick="decode();" />
+        <input type="button" value="加密/编码" onclick="encode();" />
+    </div>
+    <div id="outputArea">
+    </div>
+    <div>
+        <h3>输入：</h3>
+        <textarea  id="inputTxt" style="width: 600px; height: 300px;"></textarea>
+    </div>
+    <div>
+        <h3>输出：</h3>
+        <textarea  id="outputTxt" style="width: 600px; height: 300px;"></textarea>
+    </div>
+</body>
+</html>

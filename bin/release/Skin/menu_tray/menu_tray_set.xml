@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Window caption="0,0,0,40" size="600,444" izebox="0,0,0,0" layered="false" textrenderinghint="0" showshadow="true" shadowimage="main/shadow.png" shadowsize="6" shadowcorner="8,8,8,8" roundcorner="8,8" >
+
+	<Style name="combo_style_set" value="height=&quot;24&quot; itemfont=&quot;400&quot; textcolor=&quot;FFFAFAFA&quot; itemtextcolor=&quot;FFFAFAFA&quot; itemselectedtextcolor=&quot;#FFFAFAFA&quot; itemhottextcolor=&quot;#FFFAFAFA&quot; #valign=&quot;vcenter&quot; itembkcolor=&quot;#FF424242&quot; itemhotbkcolor=&quot;#FF545454&quot; itemselectedbkcolor=&quot;#FF383838&quot; textpadding=&quot;4,1,28,1&quot; bkcolor=&quot;#FF424242&quot; normalimage=&quot;res='sysbtn/combo.png' source='0,28,161,56' corner='2,2,28,2'&quot; hotimage=&quot;res='sysbtn/combo.png' source='0,0,161,28' corner='2,2,28,2'&quot; pushedimage=&quot;res='sysbtn/combo.png' source='0,56,161,84' corner='2,2,28,2'&quot;"/>
+	<Default name="VScrollBar" value="button1normalimage=&quot;file='sysbtn/scrollbar.png' source='0,0,16,16'&quot; button1hotimage=&quot;file='sysbtn/scrollbar.png' source='16,0,32,16,16'&quot; button1pushedimage=&quot;file='sysbtn/scrollbar.png' source='32,0,48,16'&quot; button2normalimage=&quot;file='sysbtn/scrollbar.png' source='64,0,80,16'&quot; button2hotimage=&quot;file='sysbtn/scrollbar.png' source='64,0,80,16'&quot; button2pushedimage=&quot;file='sysbtn/scrollbar.png' source='96,0,112,16'&quot; thumbnormalimage=&quot;file='sysbtn/scrollbar.png' source='192,0,208,16' corner='1,1,1,1'&quot; thumbhotimage=&quot;file='sysbtn/scrollbar.png' source='192,0,208,16' corner='1,1,1,1'&quot; thumbpushedimage=&quot;file='sysbtn/scrollbar.png' source='192,0,208,16' corner='1,1,1,1'&quot; bknormalimage=&quot;file='sysbtn/scrollbar.png' source='224,0,240,16'&quot;" />
+	
+  <VerticalLayout name="root" bkcolor="#FF1C2136" >
+	<HorizontalLayout width="600" height="40" bkcolor="#FF282E4E" bordercolor="#FF202020" bordersize="1">         
+		<Label name="title_label" text="设置" textcolor="#FFAEC4FA" textpadding="10,8,42,8" align="left" valign="vcenter" height="36" />
+		<Control />
+		<Button name="btn_sysclose" width="16" height="16" padding="10,10,10,10" tooltip="关闭" normalimage="file='menu_tray\\close.png'" />
+	</HorizontalLayout>
+    <Control height="10" bkcolor="#FF1C2136" />
+	<HorizontalLayout height="350" bkcolor="#FF1C2136" >   
+		<Control width="10" />
+		<TreeView width="92" itemtextcolor="#FFABBCDC" itemhottextcolor="#FFC8C6CB" selitemtextcolor="FFC8C6CB" itemhotbkcolor="#FF2C356A" itemselectedbkcolor="#FF2C356A" bordercolor="#FF10162A" bordersize="1"	>
+			<TreeNode name="screen_set" text="屏幕设置"  height="32" folderattr="padding=&quot;5,10,10,10&quot; width=&quot;12&quot; height=&quot;12&quot; normalimage=&quot;file='menu_tray/down_nor.png' source='0,0,12,12' &quot; selectedimage=&quot;file='menu_tray/up_nor.png' source='0,0,12,12' &quot;" >
+				<TreeNode name="screen_fixed" text="固定屏幕"  height="32"/>
+				<TreeNode name="screen_zoom"  text="放大倍率"  height="32"/>
+			</TreeNode>
+			<!--  
+			<TreeNode name="screen_about" text="软件信息"  height="32" folderattr="padding=&quot;5,10,10,10&quot; width=&quot;12&quot; height=&quot;12&quot; normalimage=&quot;file='menu_tray/down_nor.png' source='0,0,12,12' &quot; selectedimage=&quot;file='menu_tray/up_nor.png' source='0,0,12,12' &quot;" >
+				<TreeNode name="chrome_core_about" text="内核版本"  height="32"/> 	
+			</TreeNode>
+			-->
+			<TreeNode name="chrome_core_about" text="内核版本"  height="32" folderattr="padding=&quot;5,10,10,10&quot; width=&quot;12&quot; height=&quot;12&quot; " />
+		</TreeView>
+		<Control width="5" />
+		<VerticalLayout >
+			<Control height="5"/>
+			<GroupBox	name="group_box_right" text="固定屏幕" textcolor="#FFABBCDC" width="488" height="350" bkcolor="#FF1C2136" bordercolor="#FF10162A" bordersize="1" >
+				<TabLayout name="tab_switch" minwidth="400">			
+					<VerticalLayout >
+						<Label text="" textcolor="#FFFAFAFA" width="100"/>	
+					</VerticalLayout>
+					<!--  屏幕设置 -->	
+					<VerticalLayout >
+						<Control height="5"/>
+						<HorizontalLayout width="478" height="22">
+							<Label text="通过屏幕标识，您可以快速决定在哪个屏幕显示阅片界面。" textcolor="#FFABBCDC" width="364" height="22" />	
+							<ButtonHand name="btn_screen_identification" width="84" height="20" borderround="4,4" bkimage="file='menu_tray/screen_identifier.png'"  />							
+						</HorizontalLayout>
+						<Control height="16"/>
+
+						<List name="screen_list" height="258" header="hidden" vscrollbar="true" itemhotbkcolor="#FF1C2136" itemselectedbkcolor="#FF1C2136" itemtextcolor="#FFFFFFFF" >
+							<!--动态添加 screen List-->	
+						</List>
+					</VerticalLayout>
+					<!-- 放大倍率 -->	
+					<VerticalLayout >
+						<VerticalLayout>
+							<Control height="10"/>
+							<Label text="阅片界面快捷键：放大( ctrl + ) 缩小( ctrl - )" textcolor="#FFABBCDC" width="364" height="22" />	
+							<Control height="12" />
+							<HorizontalLayout height="16" >
+								<Slider name="slider_screen_zoom" enabled="true" bordersize="2" 
+									width="225" height="16" thumbsize="12,12" max="8" min="0" 
+									bkimage="file='menu_tray\\slider_bg.png' " 
+									foreimage="file='menu_tray\\slider_fg.png' " 
+									thumbimage="file='menu_tray\\slider_thumb.png'" 
+									thumbhotimage="file='menu_tray\\slider_thumb.png'" />
+								<Control width="10"/>									
+								<Button name="btn_screen_zoom_cur" text="" width="24"  borderround="4,4" textcolor="#FFABBCDC" bkcolor="#FF1C2136" />	
+							</HorizontalLayout>
+							<Control height="12"  />
+							<Label text="注意：请选择合适的倍率，避免出现文字或者图标不清晰。" textcolor="#FFABBCDC" width="364" height="22" />	
+							<Control height="15"/>
+							<ButtonHand name="btn_screen_zoom_reset" text="恢复默认" width="64" height="24" borderround="4,4" bkcolor="#FFFFFFFF" />	
+						</VerticalLayout>
+					</VerticalLayout>					
+					<!-- 版本信息  -->	
+					<VerticalLayout >
+						<HorizontalLayout height="22">
+							<Label text="版本：" textcolor="#FFABBCDC" width="70"/>	
+							<Label name="client_version_label" text="" textcolor="#FFABBCDC" width="100"/>	
+						</HorizontalLayout>
+						<HorizontalLayout height="22">
+							<Label text="内核版本：" textcolor="#FFABBCDC" width="70"/>	
+							<Label name="core_version_label" text="" textcolor="#FFABBCDC" width="100"/>	
+						</HorizontalLayout>
+						
+					</VerticalLayout>
+				</TabLayout>
+			</GroupBox>
+		</VerticalLayout>
+		<Control width="5" />
+    </HorizontalLayout>
+	
+	<Control height="10" />
+	<HorizontalLayout width="600" height="22" >
+		<Control />
+		<Label name="set_tip_info" bkimage="file='menu_tray/set_valid.png' dest='0,5,12,17'" text="设置项将在下次打开时生效" textcolor="#FFABBCDC" autocalcwidth="true" textpadding="16,0,0,0" />		
+		<Control width="10" />		
+	</HorizontalLayout>	    
+  </VerticalLayout>
+</Window>

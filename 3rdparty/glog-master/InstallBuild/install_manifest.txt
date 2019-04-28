@@ -1,0 +1,10 @@
+C:/Program Files (x86)/glog/lib/glog.lib
+C:/Program Files (x86)/glog/include/glog/logging.h
+C:/Program Files (x86)/glog/include/glog/raw_logging.h
+C:/Program Files (x86)/glog/include/glog/stl_logging.h
+C:/Program Files (x86)/glog/include/glog/vlog_is_on.h
+C:/Program Files (x86)/glog/include/glog/log_severity.h
+C:/Program Files (x86)/glog/lib/cmake/glog/glog-config.cmake
+C:/Program Files (x86)/glog/lib/cmake/glog/glog-config-version.cmake
+C:/Program Files (x86)/glog/lib/cmake/glog/glog-targets.cmake
+C:/Program Files (x86)/glog/lib/cmake/glog/glog-targets-release.cmake

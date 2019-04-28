@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Window caption="0,0,0,0" size="1024,800" sizebox="4,4,4,4" mininfo="600,400" showshadow="true" shadowsize="3" shadowcorner="3,3,3,3" layered="false">
+  <Font name="微软雅黑" size="14" bold="false" default="true" />
+  <Font id="0" name="0" size="20" bold="true" italic="false" />
+  <Font id="1" name="0" size="16" bold="false" italic="false" />
+  <Font id="2" name="0" size="14" bold="false" italic="false" />
+  <Font id="3" name="0" size="14" bold="false" italic="false" />
+  <Style name="cb_style" shared="true" value="autocalcwidth=&quot;true&quot; align=&quot;left&quot; valign=&quot;vcenter&quot; height=&quot;16&quot; textcolor=&quot;#FF000000&quot; hottextcolor=&quot;#FF000000&quot; textpadding=&quot;20,0,6,0&quot; normalimage=&quot;res='sysbtn/cb_normal.png' dest='0,0,16.16'&quot; hotimage=&quot;res='sysbtn/cb_hot.png' dest='0,0,16.16'&quot; pushedimage=&quot;res='sysbtn/cb_pushed.png' dest='0,0,16.16'&quot; selectedimage=&quot;res='sysbtn/cb_selected.png' dest='0,0,16,16'&quot;" />
+  <Style name="combo_style_set" value="height=&quot;32&quot; itemfont=&quot;2&quot; textcolor=&quot;#FF202123&quot; itemtextcolor=&quot;#FF202123&quot; itemselectedtextcolor=&quot;#FF202123&quot; itemhottextcolor=&quot;#FF202123&quot; #valign=&quot;vcenter&quot; itembkcolor=&quot;#FFFFFFFF&quot; itemhotbkcolor=&quot;#FF3590fc&quot; itemselectedbkcolor=&quot;#FF3590fc&quot; textpadding=&quot;4,1,28,1&quot; bkcolor=&quot;#FFf1f3f4&quot; normalimage=&quot;res='sysbtn/combo.png' source='0,28,161,56' corner='2,2,28,2'&quot; hotimage=&quot;res='sysbtn/combo.png' source='0,0,161,28' corner='2,2,28,2'&quot; pushedimage=&quot;res='sysbtn/combo.png' source='0,56,161,84' corner='2,2,28,2'&quot;"/>
+  <Default name="VScrollBar" value="button1normalimage=&quot;file='sysbtn/scrollbar.png' source='0,0,16,16'&quot; button1hotimage=&quot;file='sysbtn/scrollbar.png' source='16,0,32,16,16'&quot; button1pushedimage=&quot;file='sysbtn/scrollbar.png' source='32,0,48,16'&quot; button2normalimage=&quot;file='sysbtn/scrollbar.png' source='64,0,80,16'&quot; button2hotimage=&quot;file='sysbtn/scrollbar.png' source='64,0,80,16'&quot; button2pushedimage=&quot;file='window/checkbox_on.png' source='96,0,112,16'&quot; thumbnormalimage=&quot;file='sysbtn/scrollbar.png' source='192,0,208,16' corner='1,1,1,1'&quot; thumbhotimage=&quot;file='sysbtn/scrollbar.png' source='192,0,208,16' corner='1,1,1,1'&quot; thumbpushedimage=&quot;file='sysbtn/scrollbar.png' source='192,0,208,16' corner='1,1,1,1'&quot; bknormalimage=&quot;file='sysbtn/scrollbar.png' source='224,0,240,16'&quot;" />
+  <Style name="cb_style_set" value="align=&quot;left&quot; valign=&quot;vcenter&quot; textcolor=&quot;#FF2087ce&quot; hottextcolor=&quot;#FF2087ce&quot; textpadding=&quot;32,0,6,0&quot; normalimage=&quot;res='window/checkbox_off.png' dest='0,8,16,24'&quot; selectedimage=&quot;res='window/checkbox_on.png' dest='0,8,16,24'&quot;" />
+  
+  <HorizontalLayout bkcolor="#FF272B2E" bordersize="1" bordercolor="#FFFFFFFF" borderround="0">
+    
+    <VerticalLayout name="appbar" bkcolor="#FFFFFFFF" width="315" showshadow="true" shadowsize="3" shadowcorner="3,3,3,3">
+      
+      <VerticalLayout width="315">
+        <VerticalLayout height="130" padding="15,15">
+          <!-- 头部开始 -->
+          <HorizontalLayout height="80">
+            <Label name="print_desc" text="打印" font="0" textcolor="#FF686969" align="left" valign="vcenter" />
+          </HorizontalLayout>
+
+          <HorizontalLayout height="70" align="right">
+            <HorizontalLayout width="100" ></HorizontalLayout>
+          
+            <Button name="btn_print" width="80" height="35" text="打印" tooltip="打印" font="3"
+                    bordersize="2,2" bordercolor="#FFabc7f5" borderround="5,5"
+                    bkcolor="#FF2d73e5" textcolor="#FFF2F2F2" hottextcolor="#FFFFFFFF"
+                    padding="15,0,15,0" />
+
+            <Button name="btn_cancel" width="80" height="35" text="取消" tooltip="取消" font="3"
+                    bordersize="1" bordercolor="#FFdadce0" borderround="5,5"
+                    bkcolor="#FFFFFFFF" hotbkcolor="#FFF8FAFE" textcolor="#FF2D73E5" hottextcolor="#FF2D73E5" />
+          </HorizontalLayout>
+        </VerticalLayout>
+        <!-- 结束 -->
+        
+        <HorizontalLayout height="2" bordersize="0,2,0,0" bordercolor="#FFe8eaed"></HorizontalLayout>
+        
+        <HorizontalLayout height="50" padding="0,25,0,0">
+          <Label name="LabelUI1" text="页面设置" font="1" height="32" padding="15,0" textcolor="#FF696969" disabledtextcolor="#FFA7A6AA" align="left" />
+        </HorizontalLayout>
+        
+        <VerticalLayout width="285" padding="15,15">
+          <HorizontalLayout name="paper_box" height="55" visible="false">
+            <Label name="LabelUI1" text="纸张" font="2" width="80" height="32" padding="15,0" textcolor="#FF696969" disabledtextcolor="#FFA7A6AA" align="left" />
+            <Control />
+            <Combo name="combo_paper" width="180" font="2" height="32" bkcolor="#FFf1f3f4"
+                   bordersize="2" bordercolor="#FFE1E3E4" focusbordercolor="#FFabc7f5" borderround="2,3"
+                   normalimage="res='window/arrow_down.png' dest='160,13,172,20'"
+                   hotimage="res='window/arrow_down.png' dest='160,13,172,20'"
+                   pushedimage="res='window/arrow_down.png' dest='160,13,172,20'"
+                   textpadding="8,5,8,5" align="left" valign="vcenter" itemalign="left"
+                   itemtextpadding="8,5,8,5" itemfont="2">
+            </Combo>
+          </HorizontalLayout>
+          
+          <HorizontalLayout name="margin_type_box" height="42">
+            <Label name="LabelUI1" text="页边距" font="2" width="80" height="32" padding="15,0" textcolor="#FF696969" disabledtextcolor="#FFA7A6AA" align="left" />
+            <Control />
+            <Combo name="combo_padding" width="180" font="2" height="32" bkcolor="#FFf1f3f4" 
+                   bordersize="2" bordercolor="#FFE1E3E4" focusbordercolor="#FFabc7f5" borderround="2,3"
+                   normalimage="res='window/arrow_down.png' dest='160,13,172,20'" 
+                   hotimage="res='window/arrow_down.png' dest='160,13,172,20'" 
+                   pushedimage="res='window/arrow_down.png' dest='160,13,172,20'"
+                   textpadding="8,5,8,5" align="left" valign="vcenter" itemalign="left"
+                   itemtextpadding="8,5,8,5" itemfont="2">
+              <ListLabelElement valign="vcenter" text="默任" />
+              <ListLabelElement valign="vcenter" text="无" />
+              <ListLabelElement valign="vcenter" text="最小值" />
+              <ListLabelElement valign="vcenter" text="自定义" />
+            </Combo>
+          </HorizontalLayout>
+          
+          <HorizontalLayout name="padding_box" height="190" padding="0,15,0,0">
+            <Control />
+            <VerticalLayout width="180" align="left">
+              <HorizontalLayout height="42">
+                <Label name="LabelUI1" text="左边距" align="left" font="2" height="26" padding="0,0,15,0" textcolor="#FF696969" disabledtextcolor="#FFA7A6AA" />
+                <Edit name="edit_left" maxchar="3" align="left" style="edit_style" numberonly="true"
+                      width="45" height="26" bkcolor="#FFf1f3f4" textcolor="#FF2081c5" nativebkcolor="#FFf1f3f4"
+                      bordersize="1" bordercolor="#FFf1f3f4" borderround="3,3" focusbordercolor="#FFabc7f5" />
+                <Label name="unit1" text="mm" align="left" font="2" height="26" padding="5,0,5,0" textcolor="#FF696969" disabledtextcolor="#FFA7A6AA" />
+              </HorizontalLayout>
+              <HorizontalLayout height="42">
+                <Label name="LabelUI2" text="右边距" align="left" font="2" height="26" padding="0,0,15,0" textcolor="#FF696969" disabledtextcolor="#FFA7A6AA" />
+                <Edit name="edit_right" maxchar="3" align="left" style="edit_style" numberonly="true"
+                      width="45" height="26" bkcolor="#FFf1f3f4" textcolor="#FF2081c5" nativebkcolor="#FFf1f3f4"
+                      bordersize="1" bordercolor="#FFf1f3f4" borderround="3,3" focusbordercolor="#FFabc7f5" />
+                <Label name="unit2" text="mm" align="left" font="2" height="26" padding="5,0,5,0" textcolor="#FF696969" disabledtextcolor="#FFA7A6AA" />
+              </HorizontalLayout>
+              <HorizontalLayout height="42">
+                <Label name="LabelUI1" text="上边距" align="left" font="2" height="26" padding="0,0,15,0" textcolor="#FF696969" disabledtextcolor="#FFA7A6AA" />
+                <Edit name="edit_top" maxchar="3" align="left" style="edit_style" numberonly="true"
+                      width="45" height="26" bkcolor="#FFf1f3f4" textcolor="#FF2081c5" nativebkcolor="#FFf1f3f4"
+                      bordersize="1" bordercolor="#FFf1f3f4" borderround="3,3" focusbordercolor="#FFabc7f5" />
+                <Label name="unit3" text="mm" align="left" font="2" height="26" padding="5,0,5,0" textcolor="#FF696969" disabledtextcolor="#FFA7A6AA" />
+              </HorizontalLayout>
+              <HorizontalLayout height="42">
+                <Label name="LabelUI2" text="下边距" align="left" font="2" height="26" padding="0,0,15,0" textcolor="#FF696969" disabledtextcolor="#FFA7A6AA" />
+                <Edit name="edit_bottom" maxchar="3" align="left" style="edit_style" numberonly="true"
+                      width="45" height="26" bkcolor="#FFf1f3f4" textcolor="#FF2081c5" nativebkcolor="#FFf1f3f4"
+                      bordersize="1" bordercolor="#FFf1f3f4" borderround="3,3" focusbordercolor="#FFabc7f5" />
+                <Label name="unit4" text="mm" align="left" font="2" height="26" padding="5,0,5,0" textcolor="#FF696969" disabledtextcolor="#FFA7A6AA" />
+              </HorizontalLayout>
+
+              <Label name="padding_desc" text="* 输入数字后按回车键生效" align="left" font="3" width="180" height="26" padding="0,0,0,0" textcolor="#FF696969" disabledtextcolor="#FFA7A6AA" />
+            </VerticalLayout>
+          </HorizontalLayout>
+          
+          <HorizontalLayout height="50" padding="0,15,0,0">
+            <Label name="LabelUI1" text="选项" font="2" width="80" height="32" padding="15,0" textcolor="#FF696969" disabledtextcolor="#FFA7A6AA" align="left" />
+            <Control />
+            <VerticalLayout width="180">
+              <Option name="option_header_footer" font="2" text="页眉页脚" style="cb_style_set" textcolor="#FF696969"
+                      width="125" height="32" valign="vcenter" />
+            </VerticalLayout>
+          </HorizontalLayout>
+        </VerticalLayout>
+      </VerticalLayout>
+		</VerticalLayout>
+    <VerticalLayout name="browser_box" bkcolor="#FFe8eaed">
+      <Cef padding="0,0,0,0" />
+		</VerticalLayout>
+    <VerticalLayout name="loading_box" bkcolor="#FFe8eaed" visible="false">
+      <HorizontalLayout valign="vcenter">
+        <Label name="loading_tip" font="2" valign="vcenter" align="center" text="正在加载预览..."></Label>
+        <Label name="loading_tip_error" font="2" valign="vcenter" align="center" text="生成预览文件失败！"></Label>
+      </HorizontalLayout>     
+    </VerticalLayout>
+	</HorizontalLayout>
+</Window>

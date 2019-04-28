@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window  showshadow="true" layered="false">
+<Font name="微软雅黑" size="14" bold="false" default="true" />
+
+  <Menu name="menu_tray_menu" itembkcolor="0xFF282E4E" itemselectedbkcolor="0x664460D4" itemtextpadding="30,0,30,0" itemhottextcolor="0xBF4779F4" itemselectedtextcolor="0xFF4779F4" itemtextcolor="0xFFFFFF">
+  <MenuElement  width="120" height="32" bkcolor="0xFF272B2E" hotbkcolor="#FF3B3D3E">
+		<Button name="tray_menu_set" text="设置" 
+            textpadding="5,0,30,0" hottextcolor="0xFFFFFFFF" pushedtextcolor="0x66FFFFFF" textcolor="0xFFFFFFFF" 
+            normalimage="file='menu_tray\\set_nor.png' dest='9,8,25,24' " 
+            hotimage="file='menu_tray\\set_hov.png' dest='9,8,25,24' " 
+            pushedimage="file='menu_tray\\set_push.png' dest='9,8,25,24' " />
+	</MenuElement>
+	<MenuElement  width="120" height="32" bkcolor="0xFF272B2E" hotbkcolor="#FF3B3D3E">
+		<Button name="tray_menu_close" text="关闭"
+            textpadding="5,0,30,0" hottextcolor="0xFFFFFFFF" pushedtextcolor="0x66FFFFFF" textcolor="0xFFFFFFFF" 
+            normalimage="file='menu_tray\\close_nor.png' dest='9,8,25,24' " 
+            hotimage="file='menu_tray\\close_hov.png' dest='9,8,25,24' " 
+  pushedimage="file='menu_tray\\close_push.png' dest='9,8,25,24' "/>
+	</MenuElement>
+  </Menu>
+</Window>
