@@ -1,3 +1,4 @@
+#pragma once
 
 #include <algorithm>
 #include <cctype>
@@ -13,20 +14,57 @@
 
 #define HANDLER_SCHEME_NAME "client"
 #define HANDLER_DOMAIN_NAME "resources"
+#define HANDLER_POSTDATA_NAME "postdata"
 
 // Implementation of the schema handler for client:// requests.
 class ClientSchemeHandler : public CefResourceHandler {
 public:
 	ClientSchemeHandler() : offset_(0) {}
 
+	// 使用XMLHttpRequest进行交互：第3步：重写该函数，用于接收JS的post请求
 	virtual bool ProcessRequest(CefRefPtr<CefRequest> request,
 		CefRefPtr<CefCallback> callback)
 		OVERRIDE {
 			CEF_REQUIRE_IO_THREAD();
-
+			
 			bool handled = false;
+			char *buf = NULL;
+			std::string sPostData;
+			std::wstring wsPostData;
 
 			std::string url = request->GetURL();
+
+			CefRefPtr<CefPostData> postData = request->GetPostData();
+			if (postData) {
+				CefPostData::ElementVector elements;
+				postData->GetElements(elements);
+
+				if (elements.size() > 0) {
+					std::wstring queryString;
+					CefRefPtr<CefPostDataElement> data = elements[0];
+					if (data->GetType() == PDE_TYPE_BYTES) {
+						const unsigned int length = data->GetBytesCount();
+						if (length > 0) {
+							char *arraybuffer = new char[length];
+							if (arraybuffer) {
+								memset(arraybuffer, 0, length);
+								data->GetBytes(length, arraybuffer);
+							}							
+							//buffer里存储了arraybuffer的数据
+							wchar_t *wc_buffer = new wchar_t[(length + 2) / 2];
+
+							if (wc_buffer) {
+								memset(wc_buffer, 0, length + 2);
+								memcpy((char*)wc_buffer, arraybuffer, length);
+								std::wstring wsPostData2(wc_buffer);
+								::MessageBox(NULL, wsPostData2.c_str(), _T("Postdata"), MB_OK);
+							}
+						}
+					}
+				}
+			}
+
+
 			//// 转换为小写
 			//for (int i = 0; i < url.size(); i++)
 			//	url[i] = std::tolower(url[i]);
@@ -124,6 +162,7 @@ public:
 		OVERRIDE 
 	{
 		CEF_REQUIRE_IO_THREAD();
+		// 使用XMLHttpRequest进行交互：第2步：需要实现一个CefResourceHandler派生类
 		return new ClientSchemeHandler();
 	}
 

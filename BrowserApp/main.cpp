@@ -9,6 +9,9 @@
 #include "util/MiniDump.h"
 #include <process.h>
 
+
+#include "base/Cef3/browser/ClientSchemeHandler.h"
+
 #define SINGLE_INSTANCE		_T("DR. WISE CLIENT BROWSER")
 //#define RENDERER_DEBUG
 
@@ -70,6 +73,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		return -1;
 	}
 	
+	// 使用XMLHttpRequest进行交互：第1步：注册Scheme
+	CefRegisterSchemeHandlerFactory("http", HANDLER_POSTDATA_NAME, new ClientSchemeHandlerFactory);
+
 	// ------------------duilib初始化------------------
 	//CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath() + _T("Skin\\"));
 	CPaintManagerUI::SetResourcePath(Configurations::getInstance()->GetSkinDir().c_str());
