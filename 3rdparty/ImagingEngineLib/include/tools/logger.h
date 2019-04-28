@@ -60,10 +60,10 @@ public:
 #ifdef _DEBUG		
 		LOG(WARNING) << msg;	
 #else
-		wstring logLevel = Configurations::getInstance()->GetLogLevel();		
-		if (logLevel == _T("DEBUG")) {
-			LOG(WARNING) << msg;
-		}
+		//wstring logLevel = Configurations::getInstance()->GetLogLevel();		
+		//if (logLevel == _T("DEBUG")) {
+		//	LOG(WARNING) << msg;
+		//}
 #endif // _DEBUG
 	}
 	

@@ -33,11 +33,11 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -62,13 +62,18 @@
     <IntDir>$(SolutionDir)\temp\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)\lib\\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)\temp\$(ProjectName)\$(Configuration)\</IntDir>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\VTK\include\vtk-5.10;$(ProjectDir)\include;$(ProjectDir)\include\render;$(ProjectDir)\include\builder;$(ProjectDir)\include\data;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\VTK-5.10.1\Imaging;..\..\..\VTK-5.10.1\VolumeRendering;..\..\..\VTK-5.10.1\Common;..\..\..\VTK-5.10.1;..\..\..\VTK-5.10.1\Filtering;..\..\..\VTK-5.10.1\Rendering;..\..\..\VTK-5.10.1\Graphi;..\..\..\VTK-5.10.1\IO;..\..\..\VTK-5.10.1\Graphics;..\..\..\VTK-5.10.1\Hybrid;..\..\..\VTK-5.10.1\Widgets;$(ProjectDir)\include;$(ProjectDir)\include\render;$(ProjectDir)\include\builder;$(ProjectDir)\include\data;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -95,6 +100,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\..\..\VTK-5.10.1\Imaging;..\..\..\VTK-5.10.1\VolumeRendering;..\..\..\VTK-5.10.1\Common;..\..\..\VTK-5.10.1;..\..\..\VTK-5.10.1\Filtering;..\..\..\VTK-5.10.1\Rendering;..\..\..\VTK-5.10.1\Graphi;..\..\..\VTK-5.10.1\IO;..\..\..\VTK-5.10.1\Graphics;..\..\..\VTK-5.10.1\Hybrid;..\..\..\VTK-5.10.1\Widgets;$(ProjectDir)\include;$(ProjectDir)\include\render;$(ProjectDir)\include\builder;$(ProjectDir)\include\data;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
