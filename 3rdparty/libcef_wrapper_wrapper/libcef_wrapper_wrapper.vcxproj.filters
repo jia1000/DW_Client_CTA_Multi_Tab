@@ -68,6 +68,9 @@
     <ClInclude Include="base\control\UICefBrowser.h">
       <Filter>control</Filter>
     </ClInclude>
+    <ClInclude Include="base\Cef3\browser\DicomImageStateHandler.h">
+      <Filter>Cef3\browser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\Cef3\browser\client_browser_app.cpp">

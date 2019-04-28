@@ -164,6 +164,7 @@
     <ClInclude Include="base\Cef3\browser\ClientResourceProvider.h" />
     <ClInclude Include="base\Cef3\browser\ClientSchemeHandler.h" />
     <ClInclude Include="base\Cef3\browser\client_browser_app.h" />
+    <ClInclude Include="base\Cef3\browser\DicomImageStateHandler.h" />
     <ClInclude Include="base\Cef3\browser\main_message_loop.h" />
     <ClInclude Include="base\Cef3\browser\print_to_pdf_handler.h" />
     <ClInclude Include="base\Cef3\browser\WindowStateHandler.h" />

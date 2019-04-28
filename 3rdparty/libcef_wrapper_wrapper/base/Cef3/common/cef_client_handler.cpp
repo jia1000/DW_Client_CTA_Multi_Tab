@@ -9,6 +9,7 @@
 #include "base/control/UICefBrowser.h"
 #include "../browser/WindowStateHandler.h"
 #include "../browser/ClientResourceProvider.h"
+#include "../browser/DicomImageStateHandler.h"
 #include "../browser/print_to_pdf_handler.h"
 
 const char kTestOrigin[] = "http://client/";
@@ -114,6 +115,8 @@ void CCefClientHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser)
  		//test_runner::CreateMessageHandlers(message_handler_set_);
 		message_handler_set_.insert(new WindowStateHandler());
 		message_handler_set_.insert(new PrintToPdfHandler());
+		message_handler_set_.insert(new DicomImageStateHandler(m_pOwner));
+
  		auto it = message_handler_set_.begin();
  		for (; it != message_handler_set_.end(); ++it)
  			message_router_->AddHandler(*(it), false);

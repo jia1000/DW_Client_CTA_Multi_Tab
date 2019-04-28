@@ -215,6 +215,17 @@
             var t = document.getElementById("send_count");
             t.value = text;
         }
+        /// 使用异步通信，进行c++和js交互
+        function doQuery() {
+            var text = $("#query_text").val();
+            window.cefQuery({
+                    request: text,
+                    persistent: false,
+                    onSuccess: function(response) { alert(response); },
+                    onFailure: function(code, msg) { alert(code + " - " + msg); }
+                }
+            );
+        }
     </script>
 </head>
 
@@ -226,6 +237,13 @@
         <input type="text" id="postText" title="需要发送到C++的文本" />
         <input type="button" value="发送字符串到C++" onclick="doPostString();" />
         <p><span>发送次数：</span><input type="text" id="send_count" style="border:0; color:#f6931f; font-weight:bold;"></p>
+
+        <select id="query_text">
+            <option>success</option>
+            <option>failure</option>
+        </select>
+        <input type="button" value="Query" onclick="doQuery();" />
+
     </div>
    
     <!-- slider -->
