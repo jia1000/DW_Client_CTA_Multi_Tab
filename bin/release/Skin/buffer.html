@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Test</title>
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/jquery/1.11.3/jquery-ui.min.css">
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery-ui.min.js"></script>
+
+    <script language="JavaScript">
+        var flag = false;
+        var counter = 0;
+        var oReq = null;
+        var mousePositionX;
+        var mousePositionY;
+        var maxImagesCount = 285;
+        var currFilePath;
+
+        $(document).ready(function () {
+            $("#slider").slider({
+                range: "min",
+                min: 1,
+                max: maxImagesCount,
+                value: 140,
+                slide: function (event, ui) {
+                    $("#amount").val(ui.value);
+                    //var ids = ui.value == 0 ? 1 : parseInt(ui.value / 100 * maxImagesCount);
+                    var url = "http://buffer/" + ui.value;
+                    sendGet(url, displayContent, null);
+                }
+            });
+
+            ///onmousemove事件处理程序
+            $("#moveArea").mousemove(function (e) {
+                var offsetX = e.pageX - mousePositionX;
+                var offsetY = e.pageY - mousePositionY;
+
+                if (offsetX > 0) {
+                    if (counter >= maxImagesCount) {
+                        counter = 0;
+                    }
+                    counter++;
+                    var url = "http://buffer/" + counter;
+                    sendGet(url, displayContent, null);
+                }
+                else if (offsetX < 0) {
+                    counter--;
+                    if (counter < 1) {
+                        counter = maxImagesCount;
+                    }
+                    var url = "http://buffer/" + counter;
+                    sendGet(url, displayContent, null);
+                }
+
+                mousePositionX = e.pageX;
+                mousePositionY = e.pageY;
+                $("#mousePos").text("X坐标：" + e.pageX + ", Y坐标：" + e.pageY);
+            });
+        });
+        
+        ///执行统计时间的测试
+        function doTestPerformance() {
+            clearTime("#begintime");
+            clearTime("#middletime");
+
+            writeTime("#begintime", "Begin");
+
+            var maxcount = 2;
+            for (var i = 1; i <= maxcount; i++) {
+                var counter = i % 286 === 0 ? 1 : i % 286;
+                var url = "http://buffer/" + counter;
+                var islastone = i == maxcount;
+                
+                sendGet(url, displayContent, islastone);
+                //sendGetSync(url, displayContent, islastone);
+            }
+        }
+        ///显示图像和信息
+        function displayContent(text, finished) {
+            var myDate = new Date();
+            var timestring = myDate.toLocaleString();
+            var milisec = myDate.getMilliseconds();
+            $("#idscheme").html("<p>输出http返回数据-" + timestring + "." + milisec + "</p>");
+            
+            // display the image 
+            showImageByArrayBuffer(text);
+            
+            if (finished === true) {
+                writeTime("#middletime", "middletime");
+            }
+        }
+        ///异步方式发送GET请求
+        function sendGet(url, callback, params) {
+
+            oReq = new XMLHttpRequest();
+            oReq.open("GET", url, true);
+            oReq.responseType = "arraybuffer";
+            oReq.onload = function (oEvent) {
+                var arrayBuffer = oReq.response; // Note: not oReq.responseText
+                if (arrayBuffer) {
+                    callback(oReq.response, params);
+                }
+            };
+            oReq.ontimeout = function (e) { alert("ontimeout"); };
+            oReq.onerror = function (e) { alert("onerror" + oReq.status); };
+            oReq.onloadend = function (e) {  };
+            oReq.send(null);
+        }
+        ///同步方式发送GET请求
+        function sendGetSync(url, callback, params) {
+
+            oReq = new XMLHttpRequest();
+            oReq.open("GET", url, false);            
+            //oReq.responseType = "text";
+            //oReq.timeout = 3000;
+            //oReq.onload = function (oEvent) {
+            //    alert(oReq.responseText);
+            //};
+            oReq.ontimeout = function (e) { alert("ontimeout"); };
+            oReq.onerror = function (e) { alert("onerror" + oReq.status); };
+            oReq.onloadend = function (e) { };
+            oReq.send(null);
+
+            var result = oReq.status;
+            //OK
+            if (result == 200) {
+                callback(oReq.response, params);
+            }
+        }
+        ///通过arraybuffer显示图像
+        function showImageByArrayBuffer(data) {
+            // display the image 
+            var bytes = new Uint8Array(data);
+            var data = "";
+            var len = bytes.byteLength;
+            for (var i = 0; i < len; ++i) {
+                data += String.fromCharCode(bytes[i]);
+            }
+            $('#imgtag').attr("src", "data:image/png;base64," + window.btoa(data));
+        }
+        ///写时间标签的函数
+        function writeTime(tagid, timestr) {
+            var myDate = new Date();
+            var timestring = myDate.toLocaleString();
+            var milisec = myDate.getMilliseconds();
+            $(tagid).html(timestr + ": " + timestring + "." + milisec);
+        }
+        ///写时间标签的函数
+        function clearTime(tagid) {
+            $(tagid).html("");
+        }
+        ///发送文件到C++
+        function doPostFile() {
+            //缓存的file对象
+            if (currFilePath === undefined) return;
+
+            var reader = new FileReader();//新建一个FileReader
+            reader.readAsArrayBuffer(currFilePath);//读取文件 
+            reader.onload = function (evt) { //读取完文件之后会回来这里
+                var fileString = evt.target.result; // 读取文件内容
+                alert(fileString);
+                var url = 'http://postdata/';
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url, true);
+                xhr.send(fileString);
+            }
+
+        }
+        ///发送字符串到C++
+        function doPostString() {
+            var textStr = $("#postText").val();
+            var data = str2ab(textStr);
+            //假设data是你需要发送的arraybuffer
+            var url = 'http://postdata/';
+            var int8View = new window.Uint8Array(data);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.send(int8View);
+        }
+        ///字符串转为ArrayBuffer对象，参数为字符串
+        function str2ab(str) {
+            var buf = new ArrayBuffer(str.length * 2); // 每个字符占用2个字节
+            var bufView = new Uint16Array(buf);
+            for (var i = 0, strLen = str.length; i < strLen; i++) {
+                bufView[i] = str.charCodeAt(i);
+            }
+            return buf;
+        }
+        ///读取文件
+        function jsReadFiles(files) {
+            if (files.length) {
+                var file = files[0];
+                //缓存文件路径
+                currFilePath = files[0];
+
+                var reader = new FileReader();//new一个FileReader实例
+                if (/text+/.test(file.type)) {//判断文件类型，是不是text类型
+                    reader.onload = function () {
+                        $('body').append('<pre>' + this.result + '</pre>');
+                    }
+                    reader.readAsText(file);
+                } else if (/image+/.test(file.type)) {//判断文件是不是imgage类型
+                    reader.onload = function () {
+                        $('body').append('<img src="' + this.result + '"/>');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+
+        /// 点击“发送字符串到C++”后， c++端返回命令，用来显示发送的次数
+        function jsSendCount(text) {
+           // $("#send_count").text = text;
+            var t = document.getElementById("send_count");
+            t.value = text;
+        }
+    </script>
+</head>
+
+<body style="background:#FFF;">
+    <div style="margin-bottom:20px;">
+        <input type="button" value="性能测试" onclick="doTestPerformance();" /><br /><br />
+        <input type="file" id="postFile" onchange="jsReadFiles(this.files)" title="选择图像文件" />
+        <input type="button" value="发送文件到C++" onclick="doPostFile();" /><br /><br />
+        <input type="text" id="postText" title="需要发送到C++的文本" />
+        <input type="button" value="发送字符串到C++" onclick="doPostString();" />
+        <p><span>发送次数：</span><input type="text" id="send_count" style="border:0; color:#f6931f; font-weight:bold;"></p>
+    </div>
+   
+    <!-- slider -->
+    <div>
+        <p><span>当前图像：</span><input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;"></p>        
+        <div id="slider" style=""></div>
+    </div>
+    
+    <!-- mouse move event -->
+    <div style="display:none">
+        <div id="mousePos"></div>
+        <div id="moveArea" style="width:1000px; height:300px; background:#0ff;">在此区域滑动鼠标，响应http请求</div>
+    </div>
+    
+    <!-- timer -->
+    <p id="idscheme" style="background:#00ff90"></p>    
+    <p id="begintime"></p>
+    <p id="middletime"></p>
+    <p id="endtime"></p>
+
+    <!-- display image -->
+    <div>
+        <img src="#" id="imgtag" title="load image through http request..." />
+    </div>
+
+</body>
+</html>

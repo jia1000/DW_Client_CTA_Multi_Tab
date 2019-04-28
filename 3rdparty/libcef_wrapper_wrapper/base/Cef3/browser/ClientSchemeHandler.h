@@ -19,7 +19,7 @@
 // Implementation of the schema handler for client:// requests.
 class ClientSchemeHandler : public CefResourceHandler {
 public:
-	ClientSchemeHandler() : offset_(0) {}
+	ClientSchemeHandler(CefRefPtr<CefFrame> frame) : offset_(0) , frame_(frame){}
 
 	// 使用XMLHttpRequest进行交互：第3步：重写该函数，用于接收JS的post请求
 	virtual bool ProcessRequest(CefRefPtr<CefRequest> request,
@@ -57,7 +57,22 @@ public:
 								memset(wc_buffer, 0, length + 2);
 								memcpy((char*)wc_buffer, arraybuffer, length);
 								std::wstring wsPostData2(wc_buffer);
-								::MessageBox(NULL, wsPostData2.c_str(), _T("Postdata"), MB_OK);
+								//::MessageBox(NULL, wsPostData2.c_str(), _T("Postdata"), MB_OK);
+								// 遇到有空格的文本时，会出现问题。
+								static int count = 1;
+								std::wstring text;
+								std::wstringstream wss;
+								wss << _T("jsSendCount('");
+								wss << count;
+								//wss << _T("");
+								wss << _T(".send_txt:");
+								wss << wsPostData2;
+
+								wss << _T("')");
+								wss >> text;
+								
+								frame_->ExecuteJavaScript(text.c_str(), "", 0);
+								count++;
 							}
 						}
 					}
@@ -145,6 +160,7 @@ private:
 	std::string data_;
 	std::string mime_type_;
 	size_t offset_;
+	CefRefPtr<CefFrame> frame_;
 
 	IMPLEMENT_REFCOUNTING(ClientSchemeHandler);
 };
@@ -163,7 +179,7 @@ public:
 	{
 		CEF_REQUIRE_IO_THREAD();
 		// 使用XMLHttpRequest进行交互：第2步：需要实现一个CefResourceHandler派生类
-		return new ClientSchemeHandler();
+		return new ClientSchemeHandler(frame);
 	}
 
 	IMPLEMENT_REFCOUNTING(ClientSchemeHandlerFactory);
