@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="E:\Work\Deepwise\Other\CEF\DuiCEF-master\3rdparty\glog-master\InstallBuild\CMakeFiles\8c8ae8c383d8870adf7a2f87cccb9531\PACKAGE_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{FDE50260-BFC0-33D5-8F57-5608035D72F6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
