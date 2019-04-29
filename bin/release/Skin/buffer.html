@@ -167,17 +167,7 @@
             }
 
         }
-        ///发送字符串到C++
-        function doPostString() {
-            var textStr = $("#postText").val();
-            var data = str2ab(textStr);
-            //假设data是你需要发送的arraybuffer
-            var url = 'http://postdata/';
-            var int8View = new window.Uint8Array(data);
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', url, true);
-            xhr.send(int8View);
-        }
+
         ///字符串转为ArrayBuffer对象，参数为字符串
         function str2ab(str) {
             var buf = new ArrayBuffer(str.length * 2); // 每个字符占用2个字节
@@ -212,8 +202,37 @@
         /// 点击“发送字符串到C++”后， c++端返回命令，用来显示发送的次数
         function jsSendCount(text) {
            // $("#send_count").text = text;
-            var t = document.getElementById("send_count");
+            alert(text);
+            var t = document.getElementById("recv_text");
             t.value = text;
+        }
+        ///发送字符串到C++
+        function doPostString() {
+            var textStr = $("#postText").val();
+            var data = str2ab(textStr);
+            //假设data是你需要发送的arraybuffer
+            var url = 'http://postdata/';
+            var int8View = new window.Uint8Array(data);
+            var xhr = new XMLHttpRequest();
+            //  第3个参数async为true，表示为异步，否则为同步
+            xhr.open('POST', url, true);
+            xhr.send(int8View);
+        }
+        ///发送字符串到C++ 使用json
+        function doPostStringUesJson() {
+            var text1 = $("#postText").val();
+            var text2 = $("#postText2").val();
+            var json_data = {};
+            json_data.func_name = text1;
+            json_data.paras_name = text2;
+            var json_str = JSON.stringify(json_data);
+
+            var url = 'http://postdata/';
+
+            var xhr = new XMLHttpRequest();
+            //  第3个参数async为true，表示为异步，否则为同步
+            xhr.open('POST', url, true);
+            xhr.send(json_str);
         }
         /// 使用异步通信，进行c++和js交互
         function doQuery() {
@@ -235,7 +254,13 @@
         <input type="file" id="postFile" onchange="jsReadFiles(this.files)" title="选择图像文件" />
         <input type="button" value="发送文件到C++" onclick="doPostFile();" /><br /><br />
         <input type="text" id="postText" title="需要发送到C++的文本" />
-        <input type="button" value="发送字符串到C++" onclick="doPostString();" />
+        <input type="text" id="postText2" title="需要发送到C++的文本2" />
+        <!-- <input type="button" value="发送字符串到C++" onclick="doPostString();" /> -->
+        <input type="button" value="发送字符串到C++" onclick="doPostStringUesJson();" />
+        <form >
+            <label>发送文本</label>
+            <textarea  id="recv_text" cols="50" rows="10" >在这里输入内容...</textarea>
+        </form>
         <p><span>发送次数：</span><input type="text" id="send_count" style="border:0; color:#f6931f; font-weight:bold;"></p>
 
         <select id="query_text">
