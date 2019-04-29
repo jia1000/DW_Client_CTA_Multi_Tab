@@ -36,21 +36,23 @@ typedef CCefBrowserUI CCefUI;
 #define ENABLE_ENCODE
 
 #ifdef _DEBUG
-#ifdef _USED_CHROME_69_3497
-    #pragma comment(lib, "libcef_dll_wrapper_69_3497/libcef_dll_wrapper_d.lib")
-#else
-    #pragma comment(lib, "libcef_dll_wrapper_49_2623/libcef_dll_wrapper_d.lib")
-#endif
+	#ifdef _USED_CHROME_69_3497
+		#pragma comment(lib, "libcef_dll_wrapper_69_3497/libcef_dll_wrapper_d.lib")
+	#else
+		#pragma comment(lib, "libcef_dll_wrapper_49_2623/libcef_dll_wrapper_d.lib")
+	#endif
     #pragma comment(lib, "encrypt/encrypt_d.lib")
     #pragma comment(lib, "util/util_d.lib")
+	#pragma comment(lib, "jsoncpp/jsoncpp_d.lib")
 #else
-#ifdef _USED_CHROME_69_3497
-    #pragma comment(lib, "libcef_dll_wrapper_69_3497/libcef_dll_wrapper.lib")
-#else
-    #pragma comment(lib, "libcef_dll_wrapper_49_2623/libcef_dll_wrapper.lib")
-#endif
+	#ifdef _USED_CHROME_69_3497
+		#pragma comment(lib, "libcef_dll_wrapper_69_3497/libcef_dll_wrapper.lib")
+	#else
+		#pragma comment(lib, "libcef_dll_wrapper_49_2623/libcef_dll_wrapper.lib")
+	#endif
     #pragma comment(lib, "encrypt/encrypt.lib")
-    #pragma comment(lib, "util/util.lib")
+	#pragma comment(lib, "util/util.lib")
+	#pragma comment(lib, "jsoncpp/jsoncpp.lib")
 #endif 
 
 // TODO: 在此处引用程序需要的其他头文件

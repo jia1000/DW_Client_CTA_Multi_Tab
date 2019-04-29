@@ -71,7 +71,7 @@
     <OutDir>$(SolutionDir)\lib\$(ProjectName)_49_2623\</OutDir>
     <IntDir>$(SolutionDir)\temp\$(ProjectName)\$(Configuration)\\</IntDir>
     <TargetName>libcef_wrapper_wrapper_d</TargetName>
-    <IncludePath>$(ProjectDir);$(SolutionDir);$(SolutionDir)/BrowserApp;$(SolutionDir)/3rdparty/libcef_dll_49_2623/libcef_dll;$(SolutionDir)3rdparty;$(SolutionDir)3rdparty/DuiLib;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(SolutionDir);$(SolutionDir)/BrowserApp;$(SolutionDir)/3rdparty/libcef_dll_49_2623/libcef_dll;$(SolutionDir)3rdparty;$(SolutionDir)3rdparty/jsoncpp;$(SolutionDir)3rdparty/DuiLib;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_69_3497|Win32'">
     <OutDir>$(SolutionDir)\lib\$(ProjectName)_69_3497\</OutDir>
@@ -97,7 +97,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty;$(SolutionDir)/3rdparty/libcef_dll_49_2623/libcef_dll;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty/jsoncpp;$(SolutionDir)3rdparty;$(SolutionDir)/3rdparty/libcef_dll_49_2623/libcef_dll;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -112,7 +112,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_USED_CHROME_69_3497;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty;$(SolutionDir)3rdparty/libcef_dll_69_3497/libcef_dll;$(SolutionDir)3rdparty/libcef_dll_69_3497/libcef_dll/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty;$(SolutionDir)3rdparty/libcef_dll_69_3497/libcef_dll;$(SolutionDir)3rdparty/libcef_dll_69_3497/libcef_dll/include;$(SolutionDir)3rdparty/jsoncpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -129,7 +129,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty;$(SolutionDir)/3rdparty/libcef_dll_49_2623/libcef_dll;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty;$(SolutionDir)/3rdparty/libcef_dll_49_2623/libcef_dll;$(SolutionDir)3rdparty/jsoncpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
@@ -148,7 +148,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_USED_CHROME_69_3497;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty;$(SolutionDir)/3rdparty/libcef_dll_69_3497/libcef_dll;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty;$(SolutionDir)/3rdparty/libcef_dll_69_3497/libcef_dll;$(SolutionDir)3rdparty/jsoncpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
