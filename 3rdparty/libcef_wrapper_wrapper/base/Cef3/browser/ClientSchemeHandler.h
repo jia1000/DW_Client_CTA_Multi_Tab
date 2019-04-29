@@ -18,6 +18,7 @@
 #define HANDLER_DOMAIN_NAME "resources"
 #define HANDLER_POSTDATA_NAME "postdata"
 
+#define URL_POST_DATA	"http://postdata/"
 #define JSON_KEY_NAME_1 "func_name"
 #define JSON_KEY_NAME_2 "paras_name"
 
@@ -39,62 +40,12 @@ public:
 
 			std::string url = request->GetURL();
 
-			CefRefPtr<CefPostData> postData = request->GetPostData();
-			if (postData) {
-				CefPostData::ElementVector elements;
-				postData->GetElements(elements);
-
-				if (elements.size() > 0) {
-					std::wstring queryString;
-					CefRefPtr<CefPostDataElement> data = elements[0];
-					if (data->GetType() == PDE_TYPE_BYTES) {
-						const unsigned int length = data->GetBytesCount();
-						if (length > 0) {
-							char *arraybuffer = new char[length];
-							if (arraybuffer) {
-								memset(arraybuffer, 0, length);
-								data->GetBytes(length, arraybuffer);
-
-								// 解析从浏览器发送过来的Json数据
-								Json::Reader reader;
-								Json::Value root;
-								bool ret = reader.parse(arraybuffer, root, false);
-								if (!ret) {
-									return false;
-								}
-								// 获得关键性的参数
-								std::string key_name1("");
-								std::string key_name2("");
-								if (root[JSON_KEY_NAME_1].isString()) {
-									key_name1 = root[JSON_KEY_NAME_1].asString();
-								}
-								if (root[JSON_KEY_NAME_2].isString()) {
-									key_name2 = root[JSON_KEY_NAME_2].asString();
-								}
-
-								// 模拟再发送给浏览器
-								Json::FastWriter writer;
-								Json::Value inputjson;
-								inputjson[JSON_KEY_NAME_1] = key_name1;
-								inputjson[JSON_KEY_NAME_2] = key_name2;
-
-								std::string jsonstr = writer.write(inputjson);
-
-								// 有换行符的json字符串， JS不能处理。
-								if (*jsonstr.rbegin() == '\n') {
-									jsonstr.erase(jsonstr.end() - 1);
-								}
-								
-								std::string text("jsSendCount('");
-								std::string postfix("')");
-								text += jsonstr;
-								text += postfix;
-								frame_->ExecuteJavaScript(text.c_str(), "", 0);
-							}
-						}
-					}
-				}
+			if (url == URL_POST_DATA) {
+				ParsePostData(request);
+			} else {
 			}
+			
+
 
 			if (handled) {
 				// Indicate the headers are available.
@@ -104,6 +55,66 @@ public:
 
 			return false;
 	};
+
+	void ParsePostData(CefRefPtr<CefRequest> request)
+	{
+		CefRefPtr<CefPostData> postData = request->GetPostData();
+		if (postData) {
+			CefPostData::ElementVector elements;
+			postData->GetElements(elements);
+
+			if (elements.size() > 0) {
+				std::wstring queryString;
+				CefRefPtr<CefPostDataElement> data = elements[0];
+				if (data->GetType() == PDE_TYPE_BYTES) {
+					const unsigned int length = data->GetBytesCount();
+					if (length > 0) {
+						char *arraybuffer = new char[length];
+						if (arraybuffer) {
+							memset(arraybuffer, 0, length);
+							data->GetBytes(length, arraybuffer);
+
+							// 解析从浏览器发送过来的Json数据
+							Json::Reader reader;
+							Json::Value root;
+							bool ret = reader.parse(arraybuffer, root, false);
+							if (!ret) {
+								return ;
+							}
+							// 获得关键性的参数
+							std::string key_name1("");
+							std::string key_name2("");
+							if (root[JSON_KEY_NAME_1].isString()) {
+								key_name1 = root[JSON_KEY_NAME_1].asString();
+							}
+							if (root[JSON_KEY_NAME_2].isString()) {
+								key_name2 = root[JSON_KEY_NAME_2].asString();
+							}
+
+							// 模拟再发送给浏览器
+							Json::FastWriter writer;
+							Json::Value inputjson;
+							inputjson[JSON_KEY_NAME_1] = key_name1;
+							inputjson[JSON_KEY_NAME_2] = key_name2;
+
+							std::string jsonstr = writer.write(inputjson);
+
+							// 有换行符的json字符串， JS不能处理。
+							if (*jsonstr.rbegin() == '\n') {
+								jsonstr.erase(jsonstr.end() - 1);
+							}
+
+							std::string text("jsSendCount('");
+							std::string postfix("')");
+							text += jsonstr;
+							text += postfix;
+							frame_->ExecuteJavaScript(text.c_str(), "", 0);
+						}
+					}
+				}
+			}
+		}
+	}
 
 	virtual void GetResponseHeaders(CefRefPtr<CefResponse> response,
 		int64& response_length,
