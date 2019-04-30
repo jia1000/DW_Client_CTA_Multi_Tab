@@ -13,14 +13,22 @@
 #include "include/wrapper/cef_helpers.h"
 
 #include "json/json.h"
+#include <fstream> // ifstream, ifstream::in
+#include <io.h>
+#include <string>
 
-#define HANDLER_SCHEME_NAME "client"
-#define HANDLER_DOMAIN_NAME "resources"
-#define HANDLER_POSTDATA_NAME "postdata"
+using namespace std;
 
-#define URL_POST_DATA	"http://postdata/"
-#define JSON_KEY_NAME_1 "func_name"
-#define JSON_KEY_NAME_2 "paras_name"
+#define HANDLER_SCHEME_NAME			"client"
+#define HANDLER_DOMAIN_NAME			"resources"
+#define HANDLER_POSTDATA_NAME		"postdata"
+#define HANDLER_BUFFER_IMAGE_NAME	"buffer_image"
+
+
+#define URL_POST_DATA				"http://postdata/"
+#define URL_BUFFER_IMAGE			"http://buffer_image/"
+#define JSON_KEY_NAME_1				"func_name"
+#define JSON_KEY_NAME_2				"paras_name"
 
 // Implementation of the schema handler for client:// requests.
 class ClientSchemeHandler : public CefResourceHandler {
@@ -42,10 +50,16 @@ public:
 
 			if (url == URL_POST_DATA) {
 				ParsePostData(request);
-			} else {
+			} else if(url.find(URL_BUFFER_IMAGE) == 0) {
+				std::string url_path = URL_BUFFER_IMAGE;
+				const std::string& relative_path = url.substr(url_path.length());
+				if (LoadBinaryResource(relative_path, data_)) {
+					//读取图像成功后，需要设置handled，致使返回为true
+					handled = true;
+					// Set the resulting mime type
+					mime_type_ = "image/jpg";//"arraybuffer";//
+				}
 			}
-			
-
 
 			if (handled) {
 				// Indicate the headers are available.
@@ -116,6 +130,62 @@ public:
 		}
 	}
 
+	bool LoadBinaryResource(const std::string& resource_name, std::string& resource_data) {  
+		//sleep 1 second
+		//Sleep(10);
+		DWORD dwSize;
+		//图像数据长度
+		int length;
+		//文件指针
+		FILE* fp;
+
+		//得到当前时间
+		SYSTEMTIME st;
+		::GetLocalTime(&st);
+		//	int milisec = st.wMilliseconds % 285;
+		char ss[10];
+		//随机
+		//sprintf(ss,"%03d",milisec);
+
+		//顺序
+		stringstream str;
+		str<<resource_name;
+		int i;
+		str>>i;
+		sprintf(ss,"%d", i);
+
+		string path =  "C:\\ztest2\\" + string(ss) + ".jpg";
+
+		//判断文件是否存在
+		if(_access(path.c_str(),0) == -1){
+			return false;
+		}
+
+		fp=fopen(path.c_str(), "rb");
+		//获取图像数据总长度	 
+		fseek(fp, 0, SEEK_END);	 
+		length=ftell(fp);	 
+		rewind(fp);	 
+		//根据图像数据长度分配内存buffer	
+		char* ImgBuffer=(char*)malloc( length* sizeof(char) );	 
+		//将图像数据读入buffer	 
+		fread(ImgBuffer, length, 1, fp);	 
+		fclose(fp);
+
+		dwSize = length;
+		resource_data = std::string(ImgBuffer, dwSize);
+
+		//得到当前时间
+		SYSTEMTIME st2;
+		::GetLocalTime(&st2);
+		//char chName[1000] = { 0 };
+		//printf_s(chName, "%02d-%02d-%02d.%03d", st2.wHour, st2.wMinute, st2.wSecond, st2.wMilliseconds);
+
+		// 到此，图片已经成功的被读取到内存（buffer）中
+		//delete [] buffer;
+		free(ImgBuffer);
+		return true;
+	}
 	virtual void GetResponseHeaders(CefRefPtr<CefResponse> response,
 		int64& response_length,
 		CefString& redirectUrl) OVERRIDE {
@@ -125,6 +195,11 @@ public:
 
 			response->SetMimeType(mime_type_);
 			response->SetStatus(200);
+
+			// 加了这个命令ok
+			CefRequest::HeaderMap headers;
+			headers.insert(std::make_pair("Access-Control-Allow-Origin", "*"));
+			response->SetHeaderMap(headers);
 
 			// Set the resulting response length
 			response_length = data_.length();

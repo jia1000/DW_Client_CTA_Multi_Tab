@@ -69,13 +69,29 @@
             var maxcount = 2;
             for (var i = 1; i <= maxcount; i++) {
                 var counter = i % 286 === 0 ? 1 : i % 286;
-                var url = "http://buffer/" + counter;
+                var url = "http://buffer_image/" + counter;
                 var islastone = i == maxcount;
                 
                 sendGet(url, displayContent, islastone);
                 //sendGetSync(url, displayContent, islastone);
             }
         }
+        // 显示图像
+        function doShowImageInCanvas() {
+            clearTime("#begintime");
+            clearTime("#middletime");
+
+            writeTime("#begintime", "Begin");
+
+            var file_name = $("#image_name_edit").val();
+            var url = "http://buffer_image/" + file_name;
+            var islastone = true;
+
+            sendGet(url, displayContent, islastone);
+
+        }
+
+
         ///显示图像和信息
         function displayContent(text, finished) {
             var myDate = new Date();
@@ -92,10 +108,11 @@
         }
         ///异步方式发送GET请求
         function sendGet(url, callback, params) {
-
             oReq = new XMLHttpRequest();
             oReq.open("GET", url, true);
             oReq.responseType = "arraybuffer";
+            // oReq.responseType = "text";
+            // 请求成功回调函数
             oReq.onload = function (oEvent) {
                 var arrayBuffer = oReq.response; // Note: not oReq.responseText
                 if (arrayBuffer) {
@@ -103,7 +120,9 @@
                 }
             };
             oReq.ontimeout = function (e) { alert("ontimeout"); };
-            oReq.onerror = function (e) { alert("onerror" + oReq.status); };
+            oReq.onerror = function (e) {
+                alert("onerror-status : " + oReq.status + "status.text: " + oReq.statusText + "....");
+            };
             oReq.onloadend = function (e) {  };
             oReq.send(null);
         }
@@ -165,7 +184,23 @@
                 xhr.open('POST', url, true);
                 xhr.send(fileString);
             }
+        }
+        ///发送文件到C++
+        function doPostFile2() {
+            // var url = 'http://buffer_image/';
+            var text1 = $("#postText").val();
+            var text2 = $("#postText2").val();
+            var json_data = {};
+            json_data.func_name = text1;
+            json_data.paras_name = text2;
+            var json_str = JSON.stringify(json_data);
 
+            var url = 'http://buffer_image/';
+
+            var xhr = new XMLHttpRequest();
+            //  第3个参数async为true，表示为异步，否则为同步
+            xhr.open('POST', url, true);
+            xhr.send(json_str);
         }
 
         ///字符串转为ArrayBuffer对象，参数为字符串
@@ -245,12 +280,20 @@
                 }
             );
         }
+
+
+
     </script>
 </head>
 
 <body style="background:#FFF;">
     <div style="margin-bottom:20px;">
         <input type="button" value="性能测试" onclick="doTestPerformance();" /><br /><br />
+        <select id="image_name_edit" title="显示图像的名称" >
+            <option>1</option>
+            <option>2</option>
+        </select>
+        <input type="button" value="显示图片" onclick="doShowImageInCanvas();" /><br /><br />
         <input type="file" id="postFile" onchange="jsReadFiles(this.files)" title="选择图像文件" />
         <input type="button" value="发送文件到C++" onclick="doPostFile();" /><br /><br />
         <input type="text" id="postText" title="需要发送到C++的文本" />
