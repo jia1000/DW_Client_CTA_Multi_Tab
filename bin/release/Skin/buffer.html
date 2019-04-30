@@ -84,7 +84,7 @@
             writeTime("#begintime", "Begin");
 
             var file_name = $("#image_name_edit").val();
-            var url = "http://buffer_image/" + file_name;
+            var url = "http://local_image/" + file_name;
             var islastone = true;
 
             sendGet(url, displayContent, islastone);
@@ -178,10 +178,26 @@
             reader.readAsArrayBuffer(currFilePath);//读取文件 
             reader.onload = function (evt) { //读取完文件之后会回来这里
                 var fileString = evt.target.result; // 读取文件内容
-                alert(fileString);
-                var url = 'http://postdata/';
+                //alert(fileString);
+                var url = 'http://buffer_image/';
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', url, true);
+                xhr.responseType = "arraybuffer";
+
+                // 请求成功回调函数
+                xhr.onload = function (oEvent) {
+                    var arrayBuffer = xhr.response; // Note: not oReq.responseText
+
+                    if (arrayBuffer) {
+                        displayContent(xhr.response, true);
+                    }
+                };
+                xhr.ontimeout = function (e) { alert("ontimeout"); };
+                xhr.onerror = function (e) {
+                    alert("onerror-status : " + xhr.status + "status.text: " + xhr.statusText + "....");
+                };
+                xhr.onloadend = function (e) {   };
+
                 xhr.send(fileString);
             }
         }

@@ -23,9 +23,11 @@ using namespace std;
 #define HANDLER_DOMAIN_NAME			"resources"
 #define HANDLER_POSTDATA_NAME		"postdata"
 #define HANDLER_BUFFER_IMAGE_NAME	"buffer_image"
+#define HANDLER_LOCAL_IMAGE_NAME	"local_image"
 
 
 #define URL_POST_DATA				"http://postdata/"
+#define URL_LOCAL_IMAGE				"http://local_image/"
 #define URL_BUFFER_IMAGE			"http://buffer_image/"
 #define JSON_KEY_NAME_1				"func_name"
 #define JSON_KEY_NAME_2				"paras_name"
@@ -50,10 +52,17 @@ public:
 
 			if (url == URL_POST_DATA) {
 				ParsePostData(request);
-			} else if(url.find(URL_BUFFER_IMAGE) == 0) {
-				std::string url_path = URL_BUFFER_IMAGE;
+			} else if(url.find(URL_LOCAL_IMAGE) == 0) {
+				std::string url_path = URL_LOCAL_IMAGE;
 				const std::string& relative_path = url.substr(url_path.length());
-				if (LoadBinaryResource(relative_path, data_)) {
+				if (LoadBinaryResourceWithLocalImage(relative_path, data_)) {
+					//读取图像成功后，需要设置handled，致使返回为true
+					handled = true;
+					// Set the resulting mime type
+					mime_type_ = "image/jpg";//"arraybuffer";//
+				}
+			} else if(url.find(URL_BUFFER_IMAGE) == 0) {
+				if (LoadBinaryResourceWithJSBuffer(request, data_)) {
 					//读取图像成功后，需要设置handled，致使返回为true
 					handled = true;
 					// Set the resulting mime type
@@ -130,7 +139,66 @@ public:
 		}
 	}
 
-	bool LoadBinaryResource(const std::string& resource_name, std::string& resource_data) {  
+	bool LoadBinaryResourceWithJSBuffer(CefRefPtr<CefRequest> request, std::string& resource_data) { 
+		CefRefPtr<CefPostData> postData = request->GetPostData();
+		if (postData) {
+			CefPostData::ElementVector elements;
+			postData->GetElements(elements);
+
+			if (elements.size() > 0) {
+				std::wstring queryString;
+				CefRefPtr<CefPostDataElement> data = elements[0];
+				if (data->GetType() == PDE_TYPE_BYTES) {
+					const unsigned int length = data->GetBytesCount();
+					if (length > 0) {
+						char *arraybuffer = new char[length];
+						if (arraybuffer) {
+							memset(arraybuffer, 0, length);
+							data->GetBytes(length, arraybuffer);
+
+							
+							// 保存为文件
+							{
+								FILE* fp;
+								fp = fopen("C:\\ztest2\\100.jpg", "wb");
+								if (fp) {
+									fwrite(arraybuffer, 1, length, fp);
+									fclose(fp);
+								}
+							}
+
+							// 临时，打开一个图像，回传给JS。以后，会回传一个经过处理过的图像，给JS端。
+							{
+								FILE* fp;
+								fp = fopen("C:\\ztest2\\2000.jpg", "rb");
+								if (fp) {
+									int length = 0;
+									//获取图像数据总长度	 
+									fseek(fp, 0, SEEK_END);	 
+									length=ftell(fp);	 
+									rewind(fp);	 
+									//根据图像数据长度分配内存buffer	
+									char* ImgBuffer=(char*)malloc( length* sizeof(char) );	 
+									//将图像数据读入buffer	 
+									fread(ImgBuffer, length, 1, fp);	 
+									fclose(fp);
+
+									resource_data =   std::string(ImgBuffer, length);
+
+									return true;
+								}
+							}
+							
+
+							
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	bool LoadBinaryResourceWithLocalImage(const std::string& resource_name, std::string& resource_data) {  
 		//sleep 1 second
 		//Sleep(10);
 		DWORD dwSize;

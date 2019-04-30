@@ -74,8 +74,10 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	}
 	
 	// 使用XMLHttpRequest进行交互：第1步：注册Scheme
-	CefRegisterSchemeHandlerFactory("http", HANDLER_POSTDATA_NAME, new ClientSchemeHandlerFactory);
-	CefRegisterSchemeHandlerFactory("http", HANDLER_BUFFER_IMAGE_NAME, new ClientSchemeHandlerFactory);
+	CefRegisterSchemeHandlerFactory("http", HANDLER_POSTDATA_NAME,		new ClientSchemeHandlerFactory);
+	CefRegisterSchemeHandlerFactory("http", HANDLER_LOCAL_IMAGE_NAME,	new ClientSchemeHandlerFactory);
+	CefRegisterSchemeHandlerFactory("http", HANDLER_BUFFER_IMAGE_NAME,	new ClientSchemeHandlerFactory);
+
 
 
 	// ------------------duilib初始化------------------
