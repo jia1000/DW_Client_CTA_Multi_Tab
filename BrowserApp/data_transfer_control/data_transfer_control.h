@@ -22,7 +22,7 @@ public:
 
 	static DataTransferController* GetInstance();
 
-
+	bool ParseImageOperationData(std::string json_data, std::string& js_data);
 
 
 

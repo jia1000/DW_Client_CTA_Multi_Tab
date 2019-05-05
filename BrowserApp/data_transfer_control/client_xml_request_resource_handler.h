@@ -11,6 +11,7 @@
 #include "include/cef_request.h"
 #include "include/cef_scheme.h"
 #include "include/wrapper/cef_helpers.h"
+#include "data_transfer_control/data_transfer_control.h"
 
 #include "json/json.h"
 #include <fstream> // ifstream, ifstream::in
@@ -21,13 +22,13 @@ using namespace std;
 
 #define HANDLER_SCHEME_NAME			"client"
 #define HANDLER_DOMAIN_NAME			"resources"
+#define HANDLER_IAMGE_OPERATION		"image_operation"
 #define HANDLER_POSTDATA_NAME		"postdata"
 #define HANDLER_BUFFER_IMAGE_NAME	"buffer_image"
 #define HANDLER_LOCAL_IMAGE_NAME	"local_image"
 
-
+#define URL_IMAGE_OPERATION			"http://image_operation"
 #define URL_POST_DATA				"http://postdata/"
-#define URL_LOCAL_IMAGE				"http://local_image/"
 #define URL_BUFFER_IMAGE			"http://buffer_image/"
 #define JSON_KEY_NAME_1				"func_name"
 #define JSON_KEY_NAME_2				"paras_name"
@@ -52,17 +53,16 @@ public:
 
 			if (url == URL_POST_DATA) {
 				ParsePostData(request);
-			} else if(url.find(URL_LOCAL_IMAGE) == 0) {
-				std::string url_path = URL_LOCAL_IMAGE;
-				const std::string& relative_path = url.substr(url_path.length());
-				if (LoadBinaryResourceWithLocalImage(relative_path, data_)) {
+			} else if(url.find(URL_BUFFER_IMAGE) == 0) {
+				if (LoadBinaryResourceWithJSBuffer(request, data_)) {
 					//读取图像成功后，需要设置handled，致使返回为true
 					handled = true;
 					// Set the resulting mime type
 					mime_type_ = "image/jpg";//"arraybuffer";//
 				}
-			} else if(url.find(URL_BUFFER_IMAGE) == 0) {
-				if (LoadBinaryResourceWithJSBuffer(request, data_)) {
+			} else if(url.find(URL_IMAGE_OPERATION) == 0) {
+				if (ParseImageOperationPostData(request, data_)) {
+					frame_->ExecuteJavaScript(data_.c_str(), "", 0);
 					//读取图像成功后，需要设置handled，致使返回为true
 					handled = true;
 					// Set the resulting mime type
@@ -78,6 +78,35 @@ public:
 
 			return false;
 	};
+	bool ParseImageOperationPostData(CefRefPtr<CefRequest> request, std::string& resource_data)
+	{
+		CefRefPtr<CefPostData> postData = request->GetPostData();
+		if (postData) {
+			CefPostData::ElementVector elements;
+			postData->GetElements(elements);
+
+			if (elements.size() > 0) {
+				std::wstring queryString;
+				CefRefPtr<CefPostDataElement> data = elements[0];
+				if (data->GetType() == PDE_TYPE_BYTES) {
+					const unsigned int length = data->GetBytesCount();
+					if (length > 0) {
+						char *arraybuffer = new char[length];
+						if (arraybuffer) {
+							memset(arraybuffer, 0, length);
+							data->GetBytes(length, arraybuffer);
+
+							if (DataTransferController::GetInstance()->ParseImageOperationData(arraybuffer, resource_data)) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return false;
+	}
 
 	void ParsePostData(CefRefPtr<CefRequest> request)
 	{
@@ -197,62 +226,6 @@ public:
 			}
 		}
 		return false;
-	}
-	bool LoadBinaryResourceWithLocalImage(const std::string& resource_name, std::string& resource_data) {  
-		//sleep 1 second
-		//Sleep(10);
-		DWORD dwSize;
-		//图像数据长度
-		int length;
-		//文件指针
-		FILE* fp;
-
-		//得到当前时间
-		SYSTEMTIME st;
-		::GetLocalTime(&st);
-		//	int milisec = st.wMilliseconds % 285;
-		char ss[10];
-		//随机
-		//sprintf(ss,"%03d",milisec);
-
-		//顺序
-		stringstream str;
-		str<<resource_name;
-		int i;
-		str>>i;
-		sprintf(ss,"%d", i);
-
-		string path =  "C:\\ztest2\\" + string(ss) + ".jpg";
-
-		//判断文件是否存在
-		if(_access(path.c_str(),0) == -1){
-			return false;
-		}
-
-		fp=fopen(path.c_str(), "rb");
-		//获取图像数据总长度	 
-		fseek(fp, 0, SEEK_END);	 
-		length=ftell(fp);	 
-		rewind(fp);	 
-		//根据图像数据长度分配内存buffer	
-		char* ImgBuffer=(char*)malloc( length* sizeof(char) );	 
-		//将图像数据读入buffer	 
-		fread(ImgBuffer, length, 1, fp);	 
-		fclose(fp);
-
-		dwSize = length;
-		resource_data = std::string(ImgBuffer, dwSize);
-
-		//得到当前时间
-		SYSTEMTIME st2;
-		::GetLocalTime(&st2);
-		//char chName[1000] = { 0 };
-		//printf_s(chName, "%02d-%02d-%02d.%03d", st2.wHour, st2.wMinute, st2.wSecond, st2.wMilliseconds);
-
-		// 到此，图片已经成功的被读取到内存（buffer）中
-		//delete [] buffer;
-		free(ImgBuffer);
-		return true;
 	}
 	virtual void GetResponseHeaders(CefRefPtr<CefResponse> response,
 		int64& response_length,

@@ -79,6 +79,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	CefRegisterSchemeHandlerFactory("http", HANDLER_LOCAL_IMAGE_NAME,	new ClientSchemeHandlerFactory);
 	//CefRegisterSchemeHandlerFactory("http", HANDLER_BUFFER_IMAGE_NAME,	new ClientSchemeHandlerFactory);
 	CefRegisterSchemeHandlerFactory("http", HANDLER_BUFFER_IMAGE_NAME,	new ClientXMLRequestSchemeHandlerFactory);
+	CefRegisterSchemeHandlerFactory("http", HANDLER_IAMGE_OPERATION,	new ClientXMLRequestSchemeHandlerFactory);
 
 
 
