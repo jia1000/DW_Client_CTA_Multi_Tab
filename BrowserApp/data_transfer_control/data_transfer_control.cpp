@@ -9,6 +9,8 @@
 #define JSON_KEY_NAME_1				"request_type"
 #define JSON_KEY_NAME_2				"image_operation"
 #define JSON_KEY_NAME_3				"image_paras"
+#define JSON_KEY_NAME_4				"image_data"
+
 
 
 DataTransferController* DataTransferController::instance = nullptr;
@@ -42,7 +44,9 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 	std::string key_name1("");
 	std::string key_name2("");
 	std::string key_name3("");
+	std::string key_name4("");
 
+	
 	if (root[JSON_KEY_NAME_1].isString()) {
 		key_name1 = root[JSON_KEY_NAME_1].asString();
 	}
@@ -52,9 +56,12 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 	if (root[JSON_KEY_NAME_3].isString()) {
 		key_name3 = root[JSON_KEY_NAME_3].asString();
 	}
+	if (root[JSON_KEY_NAME_4].isString()) {
+		key_name4 = root[JSON_KEY_NAME_4].asString();
+	}
 
 	if (key_name2 == "Zoom") {
-		ImageZoom(key_name3);
+		ImageZoom(key_name3, key_name4);
 	} else if (key_name2 == "Rotate") {
 		ImageRotate(key_name3);
 	} else if (key_name2 == "Move") {
@@ -67,6 +74,7 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 	inputjson[JSON_KEY_NAME_1] = key_name1;
 	inputjson[JSON_KEY_NAME_2] = key_name2;
 	inputjson[JSON_KEY_NAME_3] = key_name3;
+	inputjson[JSON_KEY_NAME_4] = key_name4;
 
 
 	std::string jsonstr = writer.write(inputjson);
@@ -81,12 +89,15 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 	text += jsonstr;
 	text += postfix;
 	//frame_->ExecuteJavaScript(text.c_str(), "", 0);
-	js_data = text;
+	//js_data = text;
+
+	// 使用XML Request 的回调机制，传回json字符串
+	js_data = jsonstr;
 
 	return true;
 }
 
-bool DataTransferController::ImageZoom(std::string str_rate)
+bool DataTransferController::ImageZoom(std::string str_rate, const std::string& image_data)
 {
 	return false;
 }

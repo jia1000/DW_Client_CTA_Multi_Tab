@@ -62,11 +62,10 @@ public:
 				}
 			} else if(url.find(URL_IMAGE_OPERATION) == 0) {
 				if (ParseImageOperationPostData(request, data_)) {
-					frame_->ExecuteJavaScript(data_.c_str(), "", 0);
 					//读取图像成功后，需要设置handled，致使返回为true
 					handled = true;
 					// Set the resulting mime type
-					mime_type_ = "image/jpg";//"arraybuffer";//
+					mime_type_ = "text";//"image/jpg";//"arraybuffer";//
 				}
 			}
 

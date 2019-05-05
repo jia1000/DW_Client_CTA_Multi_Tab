@@ -30,7 +30,7 @@ private:
 	DataTransferController();
 	static DataTransferController* instance;
 
-	bool ImageZoom(std::string str_rate);
+	bool ImageZoom(std::string str_rate, const std::string& image_data);
 	bool ImageRotate(std::string str_angel);
 	bool ImageMove(std::string str_move_position);
 
