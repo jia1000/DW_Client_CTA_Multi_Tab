@@ -37,7 +37,10 @@ using namespace Gdiplus;
 typedef CCefBrowserUI CCefUI;
 #define ENABLE_ENCODE
 
-
+////OpenCV核心库头文件
+//#include <opencv2\core\core.hpp>
+////OpenCV图形处理头文件
+//#include <opencv2\highgui\highgui.hpp>
 
 #ifdef _USED_CHROME_69_3497
     #pragma comment(lib, "libcef_69_3497/libcef.lib")
@@ -56,6 +59,10 @@ typedef CCefBrowserUI CCefUI;
 #endif
     #pragma comment(lib, "Duilib/DuiLib_d.lib")
     #pragma comment(lib, "glog/glog_d.lib")
+	////OpenCV核心动态链接库，和core.hpp头文件对应
+	//#pragma comment(lib,"Debug/opencv_core320d.lib")
+	////OpenCV图形处理动态链接库，和highgui.hpp头文件对应
+	//#pragma comment(lib,"Debug/opencv_highgui320d.lib")
 #else	
 #ifdef _USED_CHROME_69_3497
     #pragma comment(lib, "libcef_dll_wrapper_69_3497/libcef_dll_wrapper.lib")
@@ -66,6 +73,10 @@ typedef CCefBrowserUI CCefUI;
 #endif
     #pragma comment(lib, "Duilib/DuiLib.lib")
     #pragma comment(lib, "glog/glog.lib")
+	////OpenCV核心动态链接库，和core.hpp头文件对应
+	//#pragma comment(lib,"Release/opencv_core320.lib")
+	////OpenCV图形处理动态链接库，和highgui.hpp头文件对应
+	//#pragma comment(lib,"Release/opencv_highgui320.lib")
 #endif
 
 //#include <vld.h>
