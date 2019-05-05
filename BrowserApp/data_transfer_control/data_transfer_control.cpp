@@ -6,8 +6,10 @@
 #include <fstream> // ifstream, ifstream::in
 #include <io.h>
 
-#define JSON_KEY_NAME_1				"func_name"
-#define JSON_KEY_NAME_2				"paras_name"
+#define JSON_KEY_NAME_1				"request_type"
+#define JSON_KEY_NAME_2				"image_operation"
+#define JSON_KEY_NAME_3				"image_paras"
+
 
 DataTransferController* DataTransferController::instance = nullptr;
 
@@ -39,11 +41,24 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 	// 获得关键性的参数
 	std::string key_name1("");
 	std::string key_name2("");
+	std::string key_name3("");
+
 	if (root[JSON_KEY_NAME_1].isString()) {
 		key_name1 = root[JSON_KEY_NAME_1].asString();
 	}
 	if (root[JSON_KEY_NAME_2].isString()) {
 		key_name2 = root[JSON_KEY_NAME_2].asString();
+	}
+	if (root[JSON_KEY_NAME_3].isString()) {
+		key_name3 = root[JSON_KEY_NAME_3].asString();
+	}
+
+	if (key_name2 == "Zoom") {
+		ImageZoom(key_name3);
+	} else if (key_name2 == "Rotate") {
+		ImageRotate(key_name3);
+	} else if (key_name2 == "Move") {
+		ImageMove(key_name3);
 	}
 
 	// 模拟再发送给浏览器
@@ -51,6 +66,8 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 	Json::Value inputjson;
 	inputjson[JSON_KEY_NAME_1] = key_name1;
 	inputjson[JSON_KEY_NAME_2] = key_name2;
+	inputjson[JSON_KEY_NAME_3] = key_name3;
+
 
 	std::string jsonstr = writer.write(inputjson);
 
@@ -67,4 +84,19 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 	js_data = text;
 
 	return true;
+}
+
+bool DataTransferController::ImageZoom(std::string str_rate)
+{
+	return false;
+}
+
+bool DataTransferController::ImageRotate(std::string str_angel)
+{
+	return false;
+}
+
+bool DataTransferController::ImageMove(std::string str_move_position)
+{
+	return false;
 }
