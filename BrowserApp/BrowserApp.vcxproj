@@ -100,16 +100,17 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UILIB_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty/jsoncpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\opencv\include;$(SolutionDir)3rdparty/jsoncpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Wldap32.lib;IlmImfd.lib;libjasperd.lib;libjpegd.lib;libpngd.lib;libtiffd.lib;libwebpd.lib;opencv_calib3d320d.lib;opencv_core320d.lib;opencv_features2d320d.lib;opencv_flann320d.lib;opencv_highgui320d.lib;opencv_imgcodecs320d.lib;opencv_imgproc320d.lib;opencv_ml320d.lib;opencv_objdetect320d.lib;opencv_photo320d.lib;opencv_shape320d.lib;opencv_stitching320d.lib;opencv_superres320d.lib;opencv_ts320d.lib;opencv_video320d.lib;opencv_videoio320d.lib;opencv_videostab320d.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\opencv\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_69_3497|Win32'">
@@ -118,16 +119,17 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UILIB_STATIC;_CRT_SECURE_NO_WARNINGS;_USED_CHROME_69_3497;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty/jsoncpp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\opencv\include;$(SolutionDir)3rdparty/jsoncpp</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Wldap32.lib;IlmImfd.lib;libjasperd.lib;libjpegd.lib;libpngd.lib;libtiffd.lib;libwebpd.lib;opencv_calib3d320d.lib;opencv_core320d.lib;opencv_features2d320d.lib;opencv_flann320d.lib;opencv_highgui320d.lib;opencv_imgcodecs320d.lib;opencv_imgproc320d.lib;opencv_ml320d.lib;opencv_objdetect320d.lib;opencv_photo320d.lib;opencv_shape320d.lib;opencv_stitching320d.lib;opencv_superres320d.lib;opencv_ts320d.lib;opencv_video320d.lib;opencv_videoio320d.lib;opencv_videostab320d.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\opencv\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>xcopy $(SolutionDir)bin\release\install   $(SolutionDir)bin\release_69_3497\install\  /e /y
@@ -144,8 +146,8 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_UT;UILIB_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty/jsoncpp</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\opencv\include;$(SolutionDir)3rdparty/jsoncpp</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -153,6 +155,8 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\opencv\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Wldap32.lib;IlmImf.lib;libjasper.lib;libjpeg.lib;libpng.lib;libtiff.lib;libwebp.lib;opencv_calib3d320.lib;opencv_core320.lib;opencv_features2d320.lib;opencv_flann320.lib;opencv_highgui320.lib;opencv_imgcodecs320.lib;opencv_imgproc320.lib;opencv_ml320.lib;opencv_objdetect320.lib;opencv_photo320.lib;opencv_shape320.lib;opencv_stitching320.lib;opencv_superres320.lib;opencv_ts320.lib;opencv_video320.lib;opencv_videoio320.lib;opencv_videostab320.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_69_3497|Win32'">
@@ -164,9 +168,9 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_UT;UILIB_STATIC;_CRT_SECURE_NO_WARNINGS;_USED_CHROME_69_3497;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty/jsoncpp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\opencv\include;$(SolutionDir)3rdparty/jsoncpp</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -174,6 +178,8 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\opencv\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Wldap32.lib;IlmImf.lib;libjasper.lib;libjpeg.lib;libpng.lib;libtiff.lib;libwebp.lib;opencv_calib3d320.lib;opencv_core320.lib;opencv_features2d320.lib;opencv_flann320.lib;opencv_highgui320.lib;opencv_imgcodecs320.lib;opencv_imgproc320.lib;opencv_ml320.lib;opencv_objdetect320.lib;opencv_photo320.lib;opencv_shape320.lib;opencv_stitching320.lib;opencv_superres320.lib;opencv_ts320.lib;opencv_video320.lib;opencv_videoio320.lib;opencv_videostab320.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>rd $(SolutionDir)bin\release_69_3497\install /s /q

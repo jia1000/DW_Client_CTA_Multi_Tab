@@ -3,12 +3,12 @@
   <ItemGroup>
     <ClCompile Include="..\src\demangle.cc" />
     <ClCompile Include="..\src\logging.cc" />
-    <ClCompile Include="..r\src\raw_logging.cc" />
     <ClCompile Include="..\src\symbolize.cc" />
     <ClCompile Include="..\src\utilities.cc" />
     <ClCompile Include="..\src\vlog_is_on.cc" />
     <ClCompile Include="..\src\signalhandler.cc" />
     <ClCompile Include="..\src\windows\port.cc" />
+    <ClCompile Include="..\src\raw_logging.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="glog\logging.h" />
