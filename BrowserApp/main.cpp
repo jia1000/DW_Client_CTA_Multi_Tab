@@ -11,6 +11,7 @@
 
 
 #include "base/Cef3/browser/ClientSchemeHandler.h"
+#include "data_transfer_control/client_xml_request_resource_handler.h"
 
 #define SINGLE_INSTANCE		_T("DR. WISE CLIENT BROWSER")
 //#define RENDERER_DEBUG
@@ -76,7 +77,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	// 使用XMLHttpRequest进行交互：第1步：注册Scheme
 	CefRegisterSchemeHandlerFactory("http", HANDLER_POSTDATA_NAME,		new ClientSchemeHandlerFactory);
 	CefRegisterSchemeHandlerFactory("http", HANDLER_LOCAL_IMAGE_NAME,	new ClientSchemeHandlerFactory);
-	CefRegisterSchemeHandlerFactory("http", HANDLER_BUFFER_IMAGE_NAME,	new ClientSchemeHandlerFactory);
+	//CefRegisterSchemeHandlerFactory("http", HANDLER_BUFFER_IMAGE_NAME,	new ClientSchemeHandlerFactory);
+	CefRegisterSchemeHandlerFactory("http", HANDLER_BUFFER_IMAGE_NAME,	new ClientXMLRequestSchemeHandlerFactory);
+
 
 
 

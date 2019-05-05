@@ -25,6 +25,9 @@
     <Filter Include="extended_control">
       <UniqueIdentifier>{c5ae12b6-f3d5-4915-9202-9e90768b7243}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data_transfer_control">
+      <UniqueIdentifier>{1f1afae6-c0f7-4501-952a-1ba30edede61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\WndSimpleFrame.h">
@@ -64,6 +67,12 @@
     <ClInclude Include="extended_control\button_hand_ui.h">
       <Filter>extended_control</Filter>
     </ClInclude>
+    <ClInclude Include="data_transfer_control\data_transfer_control.h">
+      <Filter>data_transfer_control</Filter>
+    </ClInclude>
+    <ClInclude Include="data_transfer_control\client_xml_request_resource_handler.h">
+      <Filter>data_transfer_control</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\WndSimpleFrame.cpp">
@@ -96,6 +105,9 @@
     </ClCompile>
     <ClCompile Include="extended_control\button_hand_ui.cpp">
       <Filter>extended_control</Filter>
+    </ClCompile>
+    <ClCompile Include="data_transfer_control\data_transfer_control.cpp">
+      <Filter>data_transfer_control</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
