@@ -2,7 +2,7 @@
 
 #include "data_transfer_control.h"
 
-
+#include <algorithm>
 
 #include "json/json.h"
 #include <fstream> // ifstream, ifstream::in
@@ -57,6 +57,8 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 	}
 	if (root[JSON_KEY_IMAGE_OPERATION].isString()) {
 		key_name2 = root[JSON_KEY_IMAGE_OPERATION].asString();
+		// 都转为小写字符
+		std::transform(key_name2.begin(), key_name2.end(), key_name2.begin(), ::tolower);
 	}
 	if (root[JSON_KEY_IMAGE_PARAS].isString()) {
 		key_name3 = root[JSON_KEY_IMAGE_PARAS].asString();
