@@ -30,8 +30,8 @@ using namespace std;
 #define URL_IMAGE_OPERATION			"http://image_operation"
 #define URL_POST_DATA				"http://postdata/"
 #define URL_BUFFER_IMAGE			"http://buffer_image/"
-#define JSON_KEY_NAME_1				"func_name"
-#define JSON_KEY_NAME_2				"paras_name"
+#define JSON_KEY_REQUEST_TYPE		"func_name"
+#define JSON_KEY_IMAGE_OPERATION	"paras_name"
 
 // Implementation of the schema handler for client:// requests.
 class ClientXMLRequestResourceHandler : public CefResourceHandler {
@@ -135,18 +135,18 @@ public:
 							// 获得关键性的参数
 							std::string key_name1("");
 							std::string key_name2("");
-							if (root[JSON_KEY_NAME_1].isString()) {
-								key_name1 = root[JSON_KEY_NAME_1].asString();
+							if (root[JSON_KEY_REQUEST_TYPE].isString()) {
+								key_name1 = root[JSON_KEY_REQUEST_TYPE].asString();
 							}
-							if (root[JSON_KEY_NAME_2].isString()) {
-								key_name2 = root[JSON_KEY_NAME_2].asString();
+							if (root[JSON_KEY_IMAGE_OPERATION].isString()) {
+								key_name2 = root[JSON_KEY_IMAGE_OPERATION].asString();
 							}
 
 							// 模拟再发送给浏览器
 							Json::FastWriter writer;
 							Json::Value inputjson;
-							inputjson[JSON_KEY_NAME_1] = key_name1;
-							inputjson[JSON_KEY_NAME_2] = key_name2;
+							inputjson[JSON_KEY_REQUEST_TYPE] = key_name1;
+							inputjson[JSON_KEY_IMAGE_OPERATION] = key_name2;
 
 							std::string jsonstr = writer.write(inputjson);
 

@@ -37,7 +37,14 @@ private:
 	DataTransferController();
 	static DataTransferController* instance;
 
+	
+	/**
+	[@param1 str_rate		]:[in ] 缩放倍率
+	[@param2 in_image_data	]:[in ] 图像原始数据，base64编码
+	[@param3 out_image_data	]:[out] 图像缩放后数据，base64编码
+	*/
 	bool ImageZoom(std::string str_rate, std::string& in_image_data, std::string& out_image_data);
+		
 	//逆时针旋转图像degree角度（原尺寸）
 	bool ImageRotate1(std::string str_angel, std::string& in_image_data, std::string& out_image_data);
 	//旋转图像内容不变，尺寸相应变大

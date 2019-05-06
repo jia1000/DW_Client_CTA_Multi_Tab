@@ -8,11 +8,14 @@
 #include <fstream> // ifstream, ifstream::in
 #include <io.h>
 
-#define JSON_KEY_NAME_1				"request_type"
-#define JSON_KEY_NAME_2				"image_operation"
-#define JSON_KEY_NAME_3				"image_paras"
-#define JSON_KEY_NAME_4				"image_data"
+#define JSON_KEY_REQUEST_TYPE				"request_type"
+#define JSON_KEY_IMAGE_OPERATION			"image_operation"
+#define JSON_KEY_IMAGE_PARAS				"image_paras"
+#define JSON_KEY_IMAGE_DATA					"image_data"
 
+#define JSON_VALUE_IMAGE_OPERATION_ZOOM		"zoom"
+#define JSON_VALUE_IMAGE_OPERATION_ROTATE	"rotate"
+#define JSON_VALUE_IMAGE_OPERATION_MOVE		"move"
 
 
 DataTransferController* DataTransferController::instance = nullptr;
@@ -49,26 +52,26 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 	std::string key_name4("");
 
 	
-	if (root[JSON_KEY_NAME_1].isString()) {
-		key_name1 = root[JSON_KEY_NAME_1].asString();
+	if (root[JSON_KEY_REQUEST_TYPE].isString()) {
+		key_name1 = root[JSON_KEY_REQUEST_TYPE].asString();
 	}
-	if (root[JSON_KEY_NAME_2].isString()) {
-		key_name2 = root[JSON_KEY_NAME_2].asString();
+	if (root[JSON_KEY_IMAGE_OPERATION].isString()) {
+		key_name2 = root[JSON_KEY_IMAGE_OPERATION].asString();
 	}
-	if (root[JSON_KEY_NAME_3].isString()) {
-		key_name3 = root[JSON_KEY_NAME_3].asString();
+	if (root[JSON_KEY_IMAGE_PARAS].isString()) {
+		key_name3 = root[JSON_KEY_IMAGE_PARAS].asString();
 	}
-	if (root[JSON_KEY_NAME_4].isString()) {
-		key_name4 = root[JSON_KEY_NAME_4].asString();
+	if (root[JSON_KEY_IMAGE_DATA].isString()) {
+		key_name4 = root[JSON_KEY_IMAGE_DATA].asString();
 	}
 
 	std::string out_image_data = "";
 
-	if (key_name2 == "Zoom") {
+	if (key_name2 == JSON_VALUE_IMAGE_OPERATION_ZOOM) {
 		ImageZoom(key_name3, key_name4, out_image_data);
-	} else if (key_name2 == "Rotate") {
+	} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_ROTATE) {
 		ImageRotate1(key_name3, key_name4, out_image_data);
-	} else if (key_name2 == "Move") {
+	} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_MOVE) {
 		static bool test_flag = true;
 		if (test_flag) {
 			ImageMove1(key_name3, key_name4, out_image_data);
@@ -80,10 +83,10 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 	// 模拟再发送给浏览器
 	Json::FastWriter writer;
 	Json::Value inputjson;
-	inputjson[JSON_KEY_NAME_1] = key_name1;
-	inputjson[JSON_KEY_NAME_2] = key_name2;
-	inputjson[JSON_KEY_NAME_3] = key_name3;
-	inputjson[JSON_KEY_NAME_4] = out_image_data;
+	inputjson[JSON_KEY_REQUEST_TYPE]	= key_name1;
+	inputjson[JSON_KEY_IMAGE_OPERATION] = key_name2;
+	inputjson[JSON_KEY_IMAGE_PARAS]		= key_name3;
+	inputjson[JSON_KEY_IMAGE_DATA]		= out_image_data;
 
 
 	std::string jsonstr = writer.write(inputjson);
