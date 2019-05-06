@@ -193,6 +193,7 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
   <ItemGroup>
     <ClInclude Include="data_transfer_control\client_xml_request_resource_handler.h" />
     <ClInclude Include="data_transfer_control\data_transfer_control.h" />
+    <ClInclude Include="data_transfer_control\image_process.h" />
     <ClInclude Include="extended_control\button_hand_ui.h" />
     <ClInclude Include="fileversion_number.h" />
     <ClInclude Include="main\WndFrameBase.h" />
@@ -209,6 +210,7 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="data_transfer_control\data_transfer_control.cpp" />
+    <ClCompile Include="data_transfer_control\image_process.cpp" />
     <ClCompile Include="extended_control\button_hand_ui.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main\BrowserWndManager.cpp" />

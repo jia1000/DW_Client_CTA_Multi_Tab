@@ -31,34 +31,8 @@ public:
 
 	bool ParseImageOperationData(std::string json_data, std::string& js_data);
 
-
-
 private:
 	DataTransferController();
 	static DataTransferController* instance;
-
 	
-	/**
-	[@param1 str_rate		]:[in ] 缩放倍率
-	[@param2 in_image_data	]:[in ] 图像原始数据，base64编码
-	[@param3 out_image_data	]:[out] 图像缩放后数据，base64编码
-	*/
-	bool ImageZoom(std::string str_rate, std::string& in_image_data, std::string& out_image_data);
-		
-	//逆时针旋转图像degree角度（原尺寸）
-	bool ImageRotate1(std::string str_angel, std::string& in_image_data, std::string& out_image_data);
-	//旋转图像内容不变，尺寸相应变大
-	bool ImageRotate2(std::string str_angel, std::string& in_image_data, std::string& out_image_data);
-
-	// 平移，大小不变
-	bool ImageMove1(std::string str_move_position, std::string& in_image_data, std::string& out_image_data);
-	// 平移，但会改变图像大小
-	bool ImageMove2(std::string str_move_position, std::string& in_image_data, std::string& out_image_data);
-
-
-	// opencv Mat和base64的互转
-	static std::string base64Decode(const char* Data, int DataByte);
-	static std::string base64Encode(const unsigned char* Data, int DataByte);
-	static std::string Mat2Base64(const cv::Mat &img, std::string imgType);
-	static cv::Mat Base2Mat(std::string &base64_data);
 };

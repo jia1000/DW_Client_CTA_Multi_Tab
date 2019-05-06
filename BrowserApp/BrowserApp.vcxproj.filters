@@ -73,6 +73,9 @@
     <ClInclude Include="data_transfer_control\client_xml_request_resource_handler.h">
       <Filter>data_transfer_control</Filter>
     </ClInclude>
+    <ClInclude Include="data_transfer_control\image_process.h">
+      <Filter>data_transfer_control</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\WndSimpleFrame.cpp">
@@ -107,6 +110,9 @@
       <Filter>extended_control</Filter>
     </ClCompile>
     <ClCompile Include="data_transfer_control\data_transfer_control.cpp">
+      <Filter>data_transfer_control</Filter>
+    </ClCompile>
+    <ClCompile Include="data_transfer_control\image_process.cpp">
       <Filter>data_transfer_control</Filter>
     </ClCompile>
   </ItemGroup>
