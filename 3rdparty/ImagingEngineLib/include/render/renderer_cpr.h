@@ -32,27 +32,33 @@ namespace DW {
 			void Render() override;
 			ShowBuffer* GetShowBuffer() override;
 			void SetData(VolData* data) override;
-			// get handler
+			/// get handler
 			IThreedPickHandler* GetThreedPickHandler() { return this; }
 			IThreedMeasureHandler* GetThreedMeasureHandler() { return this; }
 			IThreedOrientationHandler* GetThreedOrientationHandler() { return this; }
 
-			// IThreedPickHandler implementation
+			/// IThreedPickHandler implementation
 			bool PickByImagePos(const Vector2i& in_pnt, Vector3d& out_point) override;
 			bool PickByImagePos(const int& x, const int& y, Vector3d& out_point) override;
 			bool PickBy3DPoint(const Vector3d&, int&, int&) override;
-			// IThreedMeasureHandler implementation
+			/// IThreedMeasureHandler implementation
 			float CalculateLength(Vector3d&, Vector3d&) override;
-			// IThreedOrientationHandler implementation
+			/// IThreedOrientationHandler implementation
 			void GetOrientationTags(Vector3d&, Vector3d&, Vector3d&, Vector3d&) override;
-			// 设置旋转轴
-			void SetRotationAxis(float x, float y, float z);
-			// 获取旋转轴
-			void GetRotationAxis(float& x, float& y, float& z);
-			// 获取旋转中心点
-			void GetRotationCenter(float& x, float& y, float& z);
 
-			// methods for testing
+			/// 设置旋转轴
+			void SetRotationAxis(float x, float y, float z);
+			/// 获取旋转轴
+			void GetRotationAxis(float& x, float& y, float& z);
+			/// 获取旋转中心点
+			void GetRotationCenter(float& x, float& y, float& z);
+			/// Convert world coordinate to display coordinate
+			void ComputeWorldToDisplay(Point3f& world_pos, Point3f& display_pos) override;
+			void ComputeWorldToDisplay(double x, double y, double z, double display_point[3]) override;
+			/// Convert vtkImageData to showbuffer object
+			void BufferTransform() override;
+
+			/// methods for testing
 			void SetOffScreenRendering(bool);
 		protected:
 			virtual void DoRender();
@@ -108,6 +114,8 @@ namespace DW {
 			// 图像中心点(也是旋转中心点)，非图像几何中心点
 			// 计算方法：曲线在图像上矩形范围的中心点
 			Point3f rotation_center_;
+			static int tmp_counter_;
+			int cpr_file_id;
 		};
 	}
 }

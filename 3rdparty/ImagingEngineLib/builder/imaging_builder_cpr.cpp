@@ -6,11 +6,14 @@
 #include "render/renderer_straightened_cpr.h"
 #include "render/renderer_stretched_cpr.h"
 
+#include "io/txt_reader.h"
+#include "tools/string_util.h"
+
 using namespace DW::Builder;
 
 CPRImagingBuilder::CPRImagingBuilder()
 {
-	imaging_ = new CPRImaging();
+	imaging_ = new CPRImaging("");
 }
 
 CPRImagingBuilder::~CPRImagingBuilder()
@@ -27,36 +30,40 @@ void CPRImagingBuilder::BuildData(IDicomReader* data)
 	}
 }
 
-void CPRImagingBuilder::BuildRenderer()
+void CPRImagingBuilder::BuildRenderer(string str)
 {
-	if (imaging_){
+	if (imaging_ && curve_path_.empty() == false){
 		CPRRenderParam *param = new CPRRenderParam();
 		param->SetWidth(512);
 		param->SetHeight(512);
 		param->SetCurve(new VolCurve());
-		param->GetCurve()->AddControlPoint(256,512-231,0);
-		param->GetCurve()->AddControlPoint(260,512-229,5);
-		param->GetCurve()->AddControlPoint(259,512-232,10);
-		param->GetCurve()->AddControlPoint(258,512-240,20);
-		param->GetCurve()->AddControlPoint(256,512-243,25);
-		param->GetCurve()->AddControlPoint(257,512-244,30);
-		param->GetCurve()->AddControlPoint(250,512-253,40);
-		param->GetCurve()->AddControlPoint(249,512-258,50);
-		param->GetCurve()->AddControlPoint(248,512-261,60);
-		param->GetCurve()->AddControlPoint(247,512-269,70);
-		param->GetCurve()->AddControlPoint(247,512-274,80);
-		param->GetCurve()->AddControlPoint(251,512-276,90);
-		param->GetCurve()->AddControlPoint(242,512-277,100);
-		param->GetCurve()->AddControlPoint(235,512-279,105);
-		param->GetCurve()->AddControlPoint(235,512-277,110);
-		param->GetCurve()->AddControlPoint(234,512-279,115);
-		param->GetCurve()->AddControlPoint(227,512-281,130);
+		vector<string> curve_data = ReadTxt(curve_path_.c_str());
+		auto it = curve_data.begin();
+		while (it != curve_data.end()){
+			vector<string> arr_data = Split(*it, ",");
+			if (arr_data.size() >= 3){
+				int x = atoi(arr_data[0].c_str());
+				int y = atoi(arr_data[1].c_str());
+				int z = atoi(arr_data[2].c_str()) - 1;
+				param->GetCurve()->AddControlPoint(x, y, z);
+			}
+			++it;
+		}
 		param->GetCurve()->Update();
 		param->SetDirection(1.0f, 0.0f, 0.0f);
-		param->SetWindowWidthLevel(1500, -600);
+		// 设置默认窗口窗位
+		if (imaging_->GetData()){
+			int width, level;
+			imaging_->GetData()->GetDefaultWindowWidthLevel(width, level);
+			param->SetWindowWidthLevel(width, level);
+		}
 		render_param_ = param;
-		//renderer_ = new StretchedCPRRenderer();
-		renderer_ = new StraightededCPRRenderer();
+		if (str == "Straightened"){
+			renderer_ = new StraightededCPRRenderer();
+		}
+		else{
+			renderer_ = new StretchedCPRRenderer();
+		}
 		renderer_->SetRenderParam(render_param_);
 		renderer_->SetData(imaging_->GetData());
 		imaging_->SetRenderer(renderer_);

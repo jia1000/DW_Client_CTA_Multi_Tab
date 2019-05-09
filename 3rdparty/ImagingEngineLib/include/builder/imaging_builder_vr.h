@@ -22,7 +22,7 @@ namespace DW {
 			VRImagingBuilder(void);
 			~VRImagingBuilder();
 			void BuildData(IDicomReader* data) override;
-			void BuildRenderer() override;
+			void BuildRenderer(string param = "") override;
 			IThreedImaging* GetImaging() override;
 		protected:
 						

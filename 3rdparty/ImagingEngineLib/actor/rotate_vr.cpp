@@ -35,6 +35,7 @@ void VRRotateActor::Execute(ActorArgs* args)
 			Camera* camera = renderer->GetCamera();
 			if (camera){
 				camera->Rotate(vr_rotate->GetAngle());
+				renderer->Render();
 
 				CGLogger::Info("VRRotateActor execute. Angle=" + to_string(vr_rotate->GetAngle()));
 			}
@@ -49,7 +50,7 @@ void VRRotateActor::Rotate(Vector3d axis, float angle)
 		if (renderer){
 			Camera* camera = renderer->GetCamera();
 			if (camera){
-				camera->Rotate(axis, angle);
+				camera->RotateWXYZ(angle, (float)axis[0], (float)axis[1], (float)axis[2]);
 			}
 		}
 	}

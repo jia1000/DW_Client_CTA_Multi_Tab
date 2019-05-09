@@ -11,6 +11,7 @@
 #include "data_definition.h"
 #include "render_param.h"
 #include "vtk_include.h"
+#include "data/render_mode.h"
 
 using namespace DW::IMAGE;
 
@@ -22,28 +23,23 @@ namespace DW {
 		public:
 			VRRenderParam();
 			~VRRenderParam();
-			float GetAmbient();
-			void SetAmbient(float v);
-			float GetDiffuse();
-			void SetDiffuse(float v);
-			float GetSpecular();
-			void SetSpecular(float v);
-			float GetSpecularPower();
-			void SetSpecularPower(float v);
-			vtkSmartPointer<vtkColorTransferFunction> GetColorFunction();
-			void SetColorFunction(vtkSmartPointer<vtkColorTransferFunction> func);
-			vtkSmartPointer<vtkPiecewiseFunction> GetOpacityFunction();
-			void SetOpacityFunction(vtkSmartPointer<vtkPiecewiseFunction> func);
-			vtkSmartPointer<vtkPiecewiseFunction> GetGradientFunction();
-			void SetGradientFunction(vtkSmartPointer<vtkPiecewiseFunction> func);
+
+			/// Set the desired update rate
+			void SetDesiredUpdateRate(float rate);
+			/// Get the desired update rate
+			float GetDesiredUpdateRate();
+
+			/// Set volume reconstruction method
+			void SetRenderingMode(RenderMode mode);
+			/// Get volume reconstruction method
+			RenderMode GetRenderMode();
+
 		private:
-			float ambient_;
-			float diffuse_;
-			float specular_;
-			float specular_power_;
-			vtkSmartPointer<vtkColorTransferFunction> color_func_;
-			vtkSmartPointer<vtkPiecewiseFunction> opacity_func_;
-			vtkSmartPointer<vtkPiecewiseFunction> gradient_func_;
+			/// The desired update rate which tells how quickly they need to render
+			/// When camera is still, the desired update rate should also be updated to a small value
+			float desired_update_rate_;
+			/// Render mode: what kind of mapper is used.
+			RenderMode rendering_mode_;
 		};
 	}
 }

@@ -70,7 +70,7 @@ public:
 	///
 	void Update(float xmin,float ymin,float zmin,float xmax,float ymax,float zmax);
 
-private:
+protected:
 	//X的最小值
 	float Xmin;
 	//X的最大值

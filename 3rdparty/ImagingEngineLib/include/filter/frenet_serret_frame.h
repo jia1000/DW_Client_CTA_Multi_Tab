@@ -54,7 +54,7 @@
 class VTK_EXPORT vtkFrenetSerretFrame : public vtkPolyDataAlgorithm
 {
 public:
-	vtkTypeRevisionMacro(vtkFrenetSerretFrame,vtkPolyDataAlgorithm);
+	//vtkTypeRevisionMacro(vtkFrenetSerretFrame,vtkPolyDataAlgorithm);
 	static vtkFrenetSerretFrame* New();
 
 	//! Set ConsistentNormals to 1 if you want your frames to be 'smooth'.

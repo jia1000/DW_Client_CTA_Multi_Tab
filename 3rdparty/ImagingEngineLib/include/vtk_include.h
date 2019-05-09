@@ -50,7 +50,6 @@
 #include "vtkResliceCursorWidget.h"
 #include "vtkResliceCursorLineRepresentation.h"
 #include "vtkBiDimensionalWidget.h"
-//#include"vtkAutoInit.h"
 #include"vtkAxesActor.h"
 #include"vtkTransform.h"
 #include"vtkTextActor.h"
@@ -66,3 +65,11 @@
 #include <vtkWindowLevelLookupTable.h>
 #include <vtkDataSetMapper.h>
 #include <vtkGPUVolumeRayCastMapper.h>
+#include <vtkPlanes.h>
+#include <vtkImageMagnify.h>
+#include <vtkTransformFilter.h>
+#include <vtkImageTranslateExtent.h>
+#include <vtkWindowToImageFilter.h>
+#include <vtkImageSlabReslice.h>
+#include <vtkJPEGWriter.h>
+#include <vtkBMPWriter.h>

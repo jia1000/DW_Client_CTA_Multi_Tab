@@ -6,62 +6,62 @@ using namespace std;
 
 bool SaveBmp1(char *fileName,void *imgBuffer, int imWidth, int imHeight)
 {
-	if (!imgBuffer)
-	{
-		return 0;
-	}
+	//if (!imgBuffer)
+	//{
+	//	return 0;
+	//}
 
-	int biBitCount = 32;
-	int colorTablesize = 0;				// 1024;	//灰度图像颜色表
-	int lineByte = (imWidth * biBitCount / 8 + 3)/ 4 * 4;
-	FILE *fp = fopen(fileName, "wb");
+	//int biBitCount = 32;
+	//int colorTablesize = 0;				// 1024;	//灰度图像颜色表
+	//int lineByte = (imWidth * biBitCount / 8 + 3)/ 4 * 4;
+	//FILE *fp = fopen(fileName, "wb");
 
-	if (!fp)
-	{
-		return 0 ;
-	}
+	//if (!fp)
+	//{
+	//	return 0 ;
+	//}
 
-	LBITMAPFILEHEADER filehead;
-	filehead.bfType = 0x4D42;
-	filehead.bfSize = sizeof(LBITMAPFILEHEADER) + sizeof(LBITMAPINFOHEADER) + colorTablesize + lineByte * imHeight;
-	filehead.bfReserved1 = 0;
-	filehead.bfReserved2 = 0;
-	filehead.bfOffBits = 54 + colorTablesize;
+	//LBITMAPFILEHEADER filehead;
+	//filehead.bfType = 0x4D42;
+	//filehead.bfSize = sizeof(LBITMAPFILEHEADER) + sizeof(LBITMAPINFOHEADER) + colorTablesize + lineByte * imHeight;
+	//filehead.bfReserved1 = 0;
+	//filehead.bfReserved2 = 0;
+	//filehead.bfOffBits = 54 + colorTablesize;
 
-	//写位图文件头进文件
-	fwrite(&filehead , sizeof(LBITMAPFILEHEADER), 1, fp);
+	////写位图文件头进文件
+	//fwrite(&filehead , sizeof(LBITMAPFILEHEADER), 1, fp);
 
-    //申请位图文件信息头结构变量， 填写文件信息头信息
-	LBITMAPINFOHEADER infoHead;
-	infoHead.biBitCount = biBitCount;
-	infoHead.biClrImportant = 0;
-	infoHead.biClrUsed = 0;
-	infoHead.biSize = 40;
-	infoHead.biWidth = imWidth;
-	infoHead.biHeight = imHeight;
-	infoHead.biPlanes = 1;
-	infoHead.biCompression = 0;
-	infoHead.biSizeImage = lineByte * imHeight;
-	infoHead.biXPelsPerMeter = 0;
-	infoHead.biYPelsPerMeter = 0;
+ //   //申请位图文件信息头结构变量， 填写文件信息头信息
+	//LBITMAPINFOHEADER infoHead;
+	//infoHead.biBitCount = biBitCount;
+	//infoHead.biClrImportant = 0;
+	//infoHead.biClrUsed = 0;
+	//infoHead.biSize = 40;
+	//infoHead.biWidth = imWidth;
+	//infoHead.biHeight = imHeight;
+	//infoHead.biPlanes = 1;
+	//infoHead.biCompression = 0;
+	//infoHead.biSizeImage = lineByte * imHeight;
+	//infoHead.biXPelsPerMeter = 0;
+	//infoHead.biYPelsPerMeter = 0;
 
-	fwrite(&infoHead, sizeof(LBITMAPINFOHEADER), 1, fp);
-	//fwrite(&filehead, sizeof(LBITMAPFILEHEADER), 1, fp);
+	//fwrite(&infoHead, sizeof(LBITMAPINFOHEADER), 1, fp);
+	////fwrite(&filehead, sizeof(LBITMAPFILEHEADER), 1, fp);
 
-	LRGBQUAD *pColorTable = new LRGBQUAD[256];
+	//LRGBQUAD *pColorTable = new LRGBQUAD[256];
 
-	for (int i = 0 ; i < 256 ; i++)
-	{
-		pColorTable[i].rgbBlue = i;
-		pColorTable[i].rgbGreen = i;
-		pColorTable[i].rgbRed = i;
-		//pColorTable[i].rgbReserved = 0;
-	}
-	fwrite(pColorTable, sizeof(LRGBQUAD), 256, fp);
+	//for (int i = 0 ; i < 256 ; i++)
+	//{
+	//	pColorTable[i].rgbBlue = i;
+	//	pColorTable[i].rgbGreen = i;
+	//	pColorTable[i].rgbRed = i;
+	//	//pColorTable[i].rgbReserved = 0;
+	//}
+	//fwrite(pColorTable, sizeof(LRGBQUAD), 256, fp);
 
-	//写位图数据进文件
-	fwrite(imgBuffer, imHeight*lineByte, 1, fp);
-	fclose(fp);
+	////写位图数据进文件
+	//fwrite(imgBuffer, imHeight*lineByte, 1, fp);
+	//fclose(fp);
 
 	return 1;
 }

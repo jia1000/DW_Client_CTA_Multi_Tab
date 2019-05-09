@@ -33,8 +33,8 @@ protected:
 	// opencv MatºÍbase64µÄ»¥×ª
 	static std::string base64Decode(const char* Data, int DataByte);
 	static std::string base64Encode(const unsigned char* Data, int DataByte);
-	static std::string Mat2Base64(const cv::Mat &img, std::string imgType);
-	static cv::Mat Base2Mat(std::string &base64_data);
+	std::string Mat2Base64(const cv::Mat &img, std::string imgType);
+	cv::Mat Base2Mat(std::string &base64_data);
 };
 
 //////////////////////////////////////////////////////////////////////////

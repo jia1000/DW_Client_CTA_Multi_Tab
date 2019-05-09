@@ -20,6 +20,19 @@ using namespace DW::IMAGE;
 VolCurve::VolCurve()
 {
 	using_consistent_normal_ = true;
+
+	char buf[64] = {0};
+	GUID guid;
+	_snprintf(buf, sizeof(buf)
+		, "{%08X-%04X-%04x-%02X%02X-%02X%02X%02X%02X%02X%02X}"
+		, guid.Data1
+		, guid.Data2
+		, guid.Data3
+		, guid.Data4[0], guid.Data4[1]
+	, guid.Data4[2], guid.Data4[3], guid.Data4[4], guid.Data4[5]
+	, guid.Data4[6], guid.Data4[7]
+	);
+	curve_id_ = string(buf);  
 }
 
 VolCurve::~VolCurve()
@@ -82,7 +95,7 @@ void VolCurve::Update()
 	sample_points_.clear();
 	// 比如，进行cardinal样条插值
 	string polyDataFileName="D:\\polydata.txt";
-	int resolution = 374;
+	int resolution = 432;
 	// Read the Polyline
 	// 控制点总数
 	int control_points = GetNumberOfControlPoint();

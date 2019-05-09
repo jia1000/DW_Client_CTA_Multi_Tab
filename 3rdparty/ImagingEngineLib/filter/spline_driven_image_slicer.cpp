@@ -161,7 +161,11 @@ int vtkSplineDrivenImageSlicer::RequestData(
 
 
 	// Compute the local normal and tangent to the path
+#if VTK_MAJOR_VERSION > 5
+	this->localFrenetFrames->SetInputData( pathCopy );
+#else
 	this->localFrenetFrames->SetInput( pathCopy );
+#endif
 	this->localFrenetFrames->SetViewUp( this->Incidence );
 	this->localFrenetFrames->ComputeBinormalOn();
 	this->localFrenetFrames->Update( );
@@ -190,7 +194,11 @@ int vtkSplineDrivenImageSlicer::RequestData(
 		ptId = nbCellPoints - 1;
 
 	// Build a new reslicer with image input as input too.
+#if VTK_MAJOR_VERSION > 5
+	this->reslicer->SetInputData( inputCopy ); 
+#else
 	this->reslicer->SetInput( inputCopy ); 
+#endif
 
 	// Get the Frenet-Serret chart at point ptId:
 	// - position (center)
@@ -237,7 +245,11 @@ int vtkSplineDrivenImageSlicer::RequestData(
 	{
 		vtkSmartPointer<vtkProbeFilter> probe = vtkSmartPointer<vtkProbeFilter>::New( );
 		probe->SetInputConnection( plane->GetOutputPort( ) );
+#if VTK_MAJOR_VERSION > 5
+		probe->SetSourceData( inputCopy );
+#else
 		probe->SetSource( inputCopy );
+#endif
 		probe->Update( );
 		outputPlane->DeepCopy(probe->GetOutputDataObject(0));
 	} 

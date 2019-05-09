@@ -3,7 +3,17 @@
   Program:   ImagingEngine
   Module:    renderer_straightened_cpr.cpp
   author: 	 zhangjian
-  Brief:	 
+  Brief:	 平面拉伸CPR渲染方法
+			 算法流程：
+			 1.按照感兴趣方向(vector of interest)计算cpr图像的最大宽度，
+			 边距以包围盒范围为准，并以初始采样点的左右边距来表示
+			 2.计算旋转角度的sin和cos，以得到新的局部坐标系平面的法线方向
+			 3.在局部坐标系平面内，沿着法线方向计算每个三维坐标点
+			 4.使用三线性插值计算该三维坐标对应的CT值
+			 4.经过2,3和4步骤后，形成以curve长度为高度的cpr图像
+			 5.应用窗宽窗位后输出图像
+			 图像旋转：
+			 上层传入旋转角度，通过上面第2部计算旋转后的图像
 
   =========================================================================*/
 #include "render/renderer_straightened_cpr.h"
@@ -14,11 +24,13 @@
 #include "render/render_param_cpr.h"
 #include <vtkMath.h>
 #include "tools/math.h"
+#include "tools/vtk_image_data_creator.h"
 
 using namespace DW::Render;
 
 StraightededCPRRenderer::StraightededCPRRenderer()
 {
+	render_mode_ = RenderMode::STRAIGHTENED_CPR;
 	show_buffer_ = new ShowBuffer();
 }
 
@@ -36,6 +48,11 @@ void StraightededCPRRenderer::DoRender()
 	if (param_imp == NULL) return;
 	VolCurve* curve = param_imp->GetCurve();
 	if (curve == NULL) return;
+
+	// 图像属性
+	int image_width = volume_data_->GetSliceWidth();
+	int image_height = volume_data_->GetSliceHeight();
+	int image_count = volume_data_->GetSliceCount();
 
 	// 深拷贝参数？
 	camera_ = param_imp->GetCamera();
@@ -68,19 +85,22 @@ void StraightededCPRRenderer::DoRender()
 	short* ct_buffer = reinterpret_cast<short *>(show_buffer_->GetShowBuffer());
 
 	double origins[3], spaces[3];
-	vtkSmartPointer<vtkImageData> imagedata = volume_data_->GetVtkData();
-	imagedata->GetOrigin(origins);
-	imagedata->GetSpacing(spaces);
-	vtkSmartPointer<vtkImageData> m_imageDataVTK = vtkSmartPointer<vtkImageData>::New();
-	m_imageDataVTK->SetOrigin( origins );
-	m_imageDataVTK->SetSpacing ( spaces );
-	m_imageDataVTK->SetDimensions( cols, rows, 1 );
-	m_imageDataVTK->SetScalarTypeToShort(); // the data will be 16 bit
-	m_imageDataVTK->SetNumberOfScalarComponents(1);
-	m_imageDataVTK->AllocateScalars();
-	short* ptr = (short*)m_imageDataVTK->GetScalarPointer();
-
-	float angle = param_imp->GetAngle();
+	int dim[3];
+	volume_data_->GetPixelData()->GetVtkImageData()->GetOrigin(origins);
+	volume_data_->GetPixelData()->GetVtkImageData()->GetSpacing(spaces);
+	dim[0] = width;
+	dim[1] = height;
+	dim[2] = 1;
+	short* ptr = NULL;
+	VtkImageDataCreator imageDataCreator;
+	imageDataCreator.SetOrigin(origins);
+	imageDataCreator.SetSpacing(spaces);
+	imageDataCreator.SetDimensions(dim);
+	imageDataCreator.SetNumberOfComponents(1);
+	output_vtk_image_data_ = imageDataCreator.Create(ptr);
+	ptr = (short*)output_vtk_image_data_->GetScalarPointer();
+	
+	float angle = param_imp->GetAngle() * PI / 180;
 	float fsin = sinf(angle);
 	float fcos = cosf(angle);
 
@@ -107,30 +127,17 @@ void StraightededCPRRenderer::DoRender()
 			x[1] = current_sample[1] + half_width * normal[1];
 			x[2] = current_sample[2] + half_width * normal[2];
 
+			if (x[0] < 0 || x[0] > image_width - 1 || 
+				x[1] < 0 || x[1] > image_height - 1 || 
+				x[2] < 0 || x[2] > image_count - 1){
+					continue;
+			}
+
 			short val = 0;
 			TrilinearInterpolation(val, x[0], x[1], x[2], volume_data_);
 			*(ptr + row * cols + col) = val;
 		}
 	}
 
-	// 设置窗宽窗位的范围
-	int ww = 0, wl = 0;
-	// 从渲染参数对象中拿到窗宽窗位
-	param_imp->GetWindowWidthLevel(ww, wl);
-	vtkSmartPointer<vtkLookupTable> colorTable =
-		vtkSmartPointer<vtkLookupTable>::New();
-	// 窗宽窗位转换到最小最大值
-	colorTable->SetRange(wl - ww / 2, wl + (ww + 1) / 2);
-	colorTable->SetValueRange(0.0, 1.0);
-	colorTable->SetSaturationRange(0.0, 0.0);		//灰度图像
-	colorTable->SetRampToLinear();
-	colorTable->Build();
-
-	vtkSmartPointer<vtkImageMapToColors> colorMap =
-		vtkSmartPointer<vtkImageMapToColors>::New();
-	colorMap->SetLookupTable(colorTable);
-	colorMap->SetInputConnection(m_imageDataVTK->GetProducerPort());
-	colorMap->Update();
-
-	output_vtk_image_data_ = colorMap->GetOutput();
+	BufferTransform();
 }

@@ -37,15 +37,23 @@
 #include "tools/math.h"
 #include "render/render_param_cpr.h"
 #include "tools/convert_vtk_image_data_to_rgba.h"
+#include "tools/timer.h"
+#include "tools/logger.h"
+#include "processing/image_process.h"
 
 using namespace DW::IMAGE;
 using namespace DW::Render;
+using namespace DW::CV;
+
+int CPRRenderer::tmp_counter_ = 0;
 
 CPRRenderer::CPRRenderer()
 {
 	render_window_ = vtkSmartPointer<vtkRenderWindow>::New();
 	is_first_render_ = true;
 	show_buffer_ = new ShowBuffer();
+	tmp_counter_++;
+	cpr_file_id = tmp_counter_;
 }
 CPRRenderer::~CPRRenderer()
 {
@@ -59,21 +67,6 @@ void CPRRenderer::Render()
 }
 ShowBuffer *CPRRenderer::GetShowBuffer()
 {
-	if (output_vtk_image_data_ && show_buffer_){
-		//原来的方法，用来对比生成的图像
-		int width = output_vtk_image_data_->GetDimensions()[0];
-		int height = output_vtk_image_data_->GetDimensions()[1];
-
-		// 从8位转换到32位
-		int slice = -1;
-
-		UNITDATASHOW* pdata = reinterpret_cast<UNITDATASHOW*>( output_vtk_image_data_->GetScalarPointer() );
-		int number_of_components = output_vtk_image_data_->GetNumberOfScalarComponents();
-
-		show_buffer_->SetBufferData(pdata, width, height, number_of_components * 8);
-
-		show_buffer_->DumpBufferToFile("D:\\cpr_new_1.bmp");
-	}
 	return show_buffer_;
 }
 void CPRRenderer::SetData(VolData* data)
@@ -83,104 +76,7 @@ void CPRRenderer::SetData(VolData* data)
 
 void CPRRenderer::DoRender()
 {
-	//if (render_param_ == NULL) return;
-	//CPRRenderParam* param_imp = dynamic_cast<CPRRenderParam *>(render_param_);
-	//if (param_imp == NULL) return;
-	//// 深拷贝参数？
-	//camera_ = param_imp->GetCamera();
-	//float direction[3];
-	//param_imp->GetDirection(direction[0], direction[1], direction[2]);
-	//float left_distance = 0.0f, right_distance = 0.0f;
-	//CalculateImageSize(param_imp->GetCurve(), direction, 1.0, left_distance, right_distance);
-	//// 缓存初始采样点左右边距
-	//origin_padding_left_ = left_distance;
-	//origin_padding_right_ = right_distance;
-	//int width = (int)(left_distance + 0.5) + (int)(right_distance + 0.5);
-	//int height = param_imp->GetCurve()->GetNumberOfSamplePoint();
 
-	//int rows=height;
-	//int cols=width;
-	//unsigned int spacing = 1.0;
-	//unsigned int cnt = 0;
-	//float step = 1.0f;
-
-	//show_buffer_->InitBufferData(cols, rows, 16);
-	//// 从vtk获取的ImageData像素值是经过偏移转换的，因此带着符号的：最大967，最小-3024
-	//// 因此此处用short指针取值
-	//short* ct_buffer = reinterpret_cast<short *>(show_buffer_->GetShowBuffer());
-
-	//double origins[3], spaces[3];
-	//vtkSmartPointer<vtkImageData> imagedata = volume_data_->GetVtkData();
-	//imagedata->GetOrigin(origins);
-	//imagedata->GetSpacing(spaces);
-	//vtkSmartPointer<vtkImageData> m_imageDataVTK = vtkSmartPointer<vtkImageData>::New();
-	//m_imageDataVTK->SetOrigin( origins );
-	//m_imageDataVTK->SetSpacing ( spaces );
-	//m_imageDataVTK->SetDimensions( cols, rows, 1 );
-	//m_imageDataVTK->SetScalarTypeToShort(); // the data will be 16 bit
-	//m_imageDataVTK->SetNumberOfScalarComponents(1);
-	//m_imageDataVTK->AllocateScalars();
-	//short* ptr = (short*)m_imageDataVTK->GetScalarPointer();
-
-	//float x[3];
-	//double distance_from_origin = 0.0;
-	//float origin[3], current_sample[3], projection[3];
-	//param_imp->GetCurve()->GetSamplePoint (0, origin[0], origin[1], origin[2]);
-	//int minval=100000, maxval = -100000;
-	//for (int row = 0; row < rows; row++)
-	//{
-	//	param_imp->GetCurve()->GetSamplePoint (row, current_sample[0], current_sample[1], current_sample[2]);
-	//	// 求解curpnt在向量LineOri上过prepnt点的投影点坐标、
-	//	MathTool::Compute3DProjectionOnLine (direction, origin, current_sample, projection);
-	//	// 计算投影距离,同向为正,反向为负
-	//	float tmp_distance = MathTool::ComputeDistanceBetweenPoints (origin, projection, direction);
-	//	for (int col = 0; col < cols; col++)
-	//	{
-	//		distance_from_origin = (col - origin_padding_left_) * step + tmp_distance;
-	//		float p[3];
-	//		param_imp->GetCurve()->GetSamplePoint (row, p[0], p[1], p[2]);
-	//		x[0] = p[0] + direction[0] * distance_from_origin * spacing;
-	//		x[1] = p[1] + direction[1] * distance_from_origin * spacing;
-	//		x[2] = p[2] + direction[2] * distance_from_origin * spacing;
-	//		short val = 0;
-	//		TrilinearInterpolation(val, x[0], x[1], x[2], volume_data_);
-	//		*(ptr + row * cols + col) = val;
-
-	//		// 测试：找到最大最小CT值
-	//		if (val < minval)
-	//			minval = val;
-	//		if (val > maxval)
-	//			maxval = val;
-	//	}
-	//}
-
-	////memcpy((unsigned short *)m_imageDataVTK->GetScalarPointer(), reinterpret_cast<unsigned short *>(ct_buffer), rows*cols);
-	////m_imageDataVTK->Modified();
-
-	////设置窗宽窗位的范围
-	//vtkSmartPointer<vtkLookupTable> colorTable =
-	//	vtkSmartPointer<vtkLookupTable>::New();
-	//colorTable->SetRange(-1350, 150);
-	//colorTable->SetValueRange(0.0, 1.0);
-	//colorTable->SetSaturationRange(0.0, 0.0);		//灰度图像
-	//colorTable->SetRampToLinear();
-	//colorTable->Build();
-
-	//vtkSmartPointer<vtkImageMapToColors> colorMap =
-	//	vtkSmartPointer<vtkImageMapToColors>::New();
-	//colorMap->SetLookupTable(colorTable);
-	//colorMap->SetInputConnection(m_imageDataVTK->GetProducerPort());
-	//colorMap->Update();
-
-	////// convert to 32 bits bitmap
-	////vtkImageData *pTmpImageData = NULL;	
-	////ConvertVtkImagedataToRGBA* convert = new ConvertVtkImagedataToRGBA();
-	////if(false == convert->ConvertImageScalarsToRGBA(m_imageDataVTK, &pTmpImageData, -1, 1500, -500))
-	////{
-	////	return;
-	////}
-
-	//output_vtk_image_data_ = colorMap->GetOutput();
 }
 
 vtkSmartPointer<vtkPolyData> CPRRenderer::SweepLine (VolCurve *curve,
@@ -384,9 +280,9 @@ void CPRRenderer::TrilinearInterpolation(short& ctv, float ix, float iy, float i
 {
 	short gO,gP,gQ,gR,gS,gT,gU,gV,gA,gB,gC,gD,gE,gF; 
 	int nnx,nny,nnz;
-	nnx = ix;
-	nny = iy;
-	nnz = iz;
+	nnx = (int)ix;
+	nny = (int)iy;
+	nnz = MathTool::Round(iz);
 	int width = data->GetSliceWidth();
 	int slice_number = data->GetSliceCount();
 	int height = data->GetSliceHeight();
@@ -394,44 +290,27 @@ void CPRRenderer::TrilinearInterpolation(short& ctv, float ix, float iy, float i
 		ctv = 0;	
 		return;
 	}
-
 	int nID = nny*width+nnx;
 	int nID1 = (nny+1)*width+nnx;
 	double dZ = (iz-nnz);
-	if(nnz <= slice_number-2) {
-		gO = *(reinterpret_cast<short *>(data->GetDataPointer(nnx, nny, nnz)));
-		gP = *(reinterpret_cast<short *>(data->GetDataPointer(nnx, nny, nnz+1)));
-		gQ = *(reinterpret_cast<short *>(data->GetDataPointer(nnx+1, nny, nnz)));
-		gR = *(reinterpret_cast<short *>(data->GetDataPointer(nnx+1, nny, nnz+1)));
-		gS = *(reinterpret_cast<short *>(data->GetDataPointer(nnx, nny+1, nnz)));
-		gT = *(reinterpret_cast<short *>(data->GetDataPointer(nnx, nny+1, nnz+1)));
-		gU = *(reinterpret_cast<short *>(data->GetDataPointer(nnx+1, nny+1, nnz)));
-		gV = *(reinterpret_cast<short *>(data->GetDataPointer(nnx+1, nny+1, nnz+1)));
-		gA = (short)(dZ*(gP-gO))+gO;
-		gB = (short)(dZ*(gR-gQ))+gQ;
-		gC = (short)(dZ*(gT-gS))+gS;
-		gD = (short)(dZ*(gV-gU))+gU;
-		gE = (short)((ix-nnx)*(gB-gA))+gA;
-		gF = (short)((ix-nnx)*(gD-gC))+gC;
-		ctv = (short)((iy-nny)*(gF-gE))+gE;
-	}
-	else {
-		gO = *(reinterpret_cast<short *>(data->GetDataPointer(nnx, nny, nnz)));
-		gP = *(reinterpret_cast<short *>(data->GetDataPointer(nnx, nny, nnz-1)));
-		gQ = *(reinterpret_cast<short *>(data->GetDataPointer(nnx+1, nny, nnz)));
-		gR = *(reinterpret_cast<short *>(data->GetDataPointer(nnx+1, nny, nnz-1)));
-		gS = *(reinterpret_cast<short *>(data->GetDataPointer(nnx, nny+1, nnz)));
-		gT = *(reinterpret_cast<short *>(data->GetDataPointer(nnx, nny+1, nnz-1)));
-		gU = *(reinterpret_cast<short *>(data->GetDataPointer(nnx+1, nny+1, nnz)));
-		gV = *(reinterpret_cast<short *>(data->GetDataPointer(nnx+1, nny+1, nnz-1)));
-		gA = (short)(dZ*(gP-gO))+gO;
-		gB = (short)(dZ*(gR-gQ))+gQ;
-		gC = (short)(dZ*(gT-gS))+gS;
-		gD = (short)(dZ*(gV-gU))+gU;
-		gE = (short)((ix-nnx)*(gB-gA))+gA;
-		gF = (short)((ix-nnx)*(gD-gC))+gC;
-		ctv = (short)((iy-nny)*(gF-gE))+gE;
-	}
+	// 最后一层不超出范围
+	int nnz_next = nnz < slice_number-1 ? nnz+1 : nnz-1;
+	gO = *(reinterpret_cast<short *>(data->GetDataPointer(nnx, nny, nnz)));
+	gP = *(reinterpret_cast<short *>(data->GetDataPointer(nnx, nny, nnz_next)));
+	gQ = *(reinterpret_cast<short *>(data->GetDataPointer(nnx+1, nny, nnz)));
+	gR = *(reinterpret_cast<short *>(data->GetDataPointer(nnx+1, nny, nnz_next)));
+	gS = *(reinterpret_cast<short *>(data->GetDataPointer(nnx, nny+1, nnz)));
+	gT = *(reinterpret_cast<short *>(data->GetDataPointer(nnx, nny+1, nnz_next)));
+	gU = *(reinterpret_cast<short *>(data->GetDataPointer(nnx+1, nny+1, nnz)));
+	gV = *(reinterpret_cast<short *>(data->GetDataPointer(nnx+1, nny+1, nnz_next)));
+	
+	gA = (short)(dZ*(gP-gO))+gO;
+	gB = (short)(dZ*(gR-gQ))+gQ;
+	gC = (short)(dZ*(gT-gS))+gS;
+	gD = (short)(dZ*(gV-gU))+gU;
+	gE = (short)((ix-nnx)*(gB-gA))+gA;
+	gF = (short)((ix-nnx)*(gD-gC))+gC;
+	ctv = (short)((iy-nny)*(gF-gE))+gE;
 }
 
 void CPRRenderer::UpdateRotation()
@@ -511,5 +390,64 @@ void CPRRenderer::GetBoundingBoxBorder(float cross_pnt[3],
 	else{
 		if (tmp_distance > left_distance)
 			left_distance = tmp_distance;
+	}
+}
+
+void CPRRenderer::ComputeWorldToDisplay(Point3f& world_pos, Point3f& display_pos)
+{
+
+}
+
+void CPRRenderer::ComputeWorldToDisplay(double x, double y, double z, double display_point[3])
+{
+
+}
+
+void CPRRenderer::BufferTransform()
+{
+	if (output_vtk_image_data_ && show_buffer_){
+		
+		/// Apply window width/level
+		int ww = 0, wl = 0;
+		/// 从渲染参数对象中拿到窗宽窗位
+		CPRRenderParam* param_imp = dynamic_cast<CPRRenderParam *>(render_param_);
+		if (param_imp == NULL){
+			return;
+		}
+		param_imp->GetWindowWidthLevel(ww, wl);
+		vtkSmartPointer<vtkLookupTable> colorTable =
+			vtkSmartPointer<vtkLookupTable>::New();
+		/// 窗宽窗位转换到最小最大值
+		colorTable->SetRange(wl - ww / 2, wl + (ww + 1) / 2);
+		colorTable->SetValueRange(0.0, 1.0);
+		colorTable->SetSaturationRange(0.0, 0.0);		//灰度图像
+		colorTable->SetRampToLinear();
+		colorTable->Build();
+
+		vtkSmartPointer<vtkImageMapToColors> colorMap =
+			vtkSmartPointer<vtkImageMapToColors>::New();
+		colorMap->SetLookupTable(colorTable);
+#if VTK_MAJOR_VERSION > 5
+		colorMap->SetInputData(output_vtk_image_data_);
+#else
+		colorMap->SetInput(output_vtk_image_data_);
+#endif	
+		colorMap->Update();
+		vtkSmartPointer<vtkImageData> formatted_image_data = colorMap->GetOutput();
+		if (formatted_image_data == NULL){
+			return;
+		}
+
+		//原来的方法，用来对比生成的图像
+		int width = formatted_image_data->GetDimensions()[0];
+		int height = formatted_image_data->GetDimensions()[1];		
+		// 从8位转换到32位
+		int slice = -1;
+
+		UNITDATASHOW* pdata = reinterpret_cast<UNITDATASHOW*>( formatted_image_data->GetScalarPointer() );
+		int number_of_components = formatted_image_data->GetNumberOfScalarComponents();
+
+		show_buffer_->SetBufferData(pdata, width, height, number_of_components * 8);
+
 	}
 }

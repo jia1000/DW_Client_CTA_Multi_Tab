@@ -12,17 +12,19 @@ VolData::VolData()
 
 VolData::~VolData()
 {
-
+	Destroy();
 }
 
-UNITDATA3D* VolData::GetData()
+IPixelData* VolData::GetPixelData()
 {
-	return series_data_;
+	return pixel_data_;
 }
-vtkImageData* VolData::GetVtkData()
+
+void VolData::SetPixelData(IPixelData* data)
 {
-	return vtk_series_data;
+	pixel_data_ = data;
 }
+
 void VolData::SetBitsPerPixel(BYTE bits)
 {
 	bits_per_pixel_ = bits;
@@ -31,18 +33,12 @@ void VolData::SetBitsStored(BYTE bits)
 {
 	bits_stored_ = bits;
 }
-void VolData::SetData(UNITDATA3D* data)
-{
-	series_data_ = data;
-}
+
 void VolData::SetMark(UNITMARK3D* mark)
 {
 	series_mark_ = mark;
 }
-void VolData::SetVtkData(vtkImageData* data)
-{
-	vtk_series_data = data;
-}
+
 void VolData::SetSliceWidth(int width)
 {
 	slice_width_ = width;
@@ -77,33 +73,36 @@ void VolData::SetBoundingBox(float xmin,float ymin,float zmin,float xmax,float y
 }
 void *VolData::GetDataPointer(int x, int y, int z)
 {
-	if (vtk_series_data){
-		return vtk_series_data->GetScalarPointer(x, y, z);
+	if (pixel_data_){
+		return pixel_data_->GetDataPointer(x, y, z);
 	}
-	return series_data_ + (x + y * slice_width_ + z * slice_width_ * slice_height_) * (bits_per_pixel_ / 8);
+	return NULL;
 }
-void *VolData::GetDataPointer()
-{
-	if (vtk_series_data){
-		return vtk_series_data->GetScalarPointer();
-	}
-	return series_data_;
-}
+
 void VolData::Destroy() {
-	if (series_data_){
-		delete series_data_;
-		series_data_ = NULL;
+	if (pixel_data_){
+		delete pixel_data_;
+		pixel_data_ = NULL;
 	}
 	if (series_mark_){
 		delete series_mark_;
 		series_mark_ = NULL;
-	}
-	if (vtk_series_data){
-		vtk_series_data->Delete();
 	}
 	if (bounding_box_){
 		delete bounding_box_;
 		bounding_box_ = NULL;
 	}
 	delete this;
+}
+
+void VolData::GetDefaultWindowWidthLevel(int &width, int &level)
+{
+	width = window_width_;
+	level = window_level_;
+}
+
+void VolData::SetDefaultWindowWidthLevel(int width, int level)
+{
+	window_width_ = width;
+	window_level_ = level;
 }

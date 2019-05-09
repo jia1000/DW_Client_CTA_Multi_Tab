@@ -86,18 +86,6 @@ namespace DW {
 			{
 				thickness_ = thickness;
 			}
-			// 设置窗宽窗位
-			void SetWindowWidthLevel(int width, int level)
-			{
-				window_width_ = width;
-				window_level_ = level;
-			}
-			// 获取窗宽窗位
-			void GetWindowWidthLevel(int& width, int& level)
-			{
-				width = window_width_;
-				level = window_level_;
-			}
 			// 设置旋转轴
 			void SetAxis(float x, float y, float z)
 			{
@@ -147,10 +135,6 @@ namespace DW {
 			VolCurve* curve_;
 			// 层厚
 			float thickness_;
-			// 窗宽
-			int window_width_;
-			// 窗位
-			int window_level_;
 			// 旋转轴
 			Vector3f rotation_axis_;
 			// 旋转中心

@@ -11,6 +11,15 @@
 using namespace DW;
 using namespace DW::IMAGE;
 
+
+ImageDataSource *ImageDataSource::instance_ = 0;
+ImageDataSource *ImageDataSource::Get() 
+{
+	if (instance_ == nullptr)
+		instance_ = new ImageDataSource;
+	return instance_;
+}
+
 void ImageDataSource::AddDirectory(const char *directory)
 {
 

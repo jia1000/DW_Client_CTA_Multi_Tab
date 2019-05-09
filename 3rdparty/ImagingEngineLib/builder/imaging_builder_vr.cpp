@@ -1,21 +1,21 @@
 #include "imaging_builder_vr.h"
 
 #include "imaging_vr.h"
-#include "renderer_raycasting_cpu.h"
-#include "renderer_raycasting_gpu.h"
+#include "render/renderer_vr.h"
 #include "render/render_param_vr.h"
 
 using namespace DW::Builder;
 
 VRImagingBuilder::VRImagingBuilder()
 {
-	imaging_ = new VRImaging();
+	imaging_ = new VRImaging("");
 }
 
 VRImagingBuilder::~VRImagingBuilder()
 {
 	if (imaging_){
 		delete imaging_;
+		imaging_ = NULL;
 	}
 }
 
@@ -26,11 +26,11 @@ void VRImagingBuilder::BuildData(IDicomReader* data)
 	}
 }
 
-void VRImagingBuilder::BuildRenderer()
+void VRImagingBuilder::BuildRenderer(string str)
 {
 	if (imaging_){
 		render_param_ = new VRRenderParam();
-		renderer_ = new RayCastingRenderer();
+		renderer_ = new VolumeRenderer();
 		renderer_->SetRenderParam(render_param_);
 		renderer_->SetData(imaging_->GetData());
 		imaging_->SetRenderer(renderer_);

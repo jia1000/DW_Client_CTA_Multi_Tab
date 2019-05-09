@@ -6,7 +6,7 @@
   Brief:	 
 
 =========================================================================*/
-#include "render_manager.h"
+#include "render_facade.h"
 
 using namespace DW;
 using namespace DW::IMAGE;

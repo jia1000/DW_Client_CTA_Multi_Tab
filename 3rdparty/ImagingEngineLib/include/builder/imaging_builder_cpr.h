@@ -22,10 +22,15 @@ namespace DW {
 			CPRImagingBuilder(void);
 			~CPRImagingBuilder();
 			void BuildData(IDicomReader* data) override;
-			void BuildRenderer() override;
+			void BuildRenderer(string param = "") override;
 			IThreedImaging* GetImaging() override;
+
+			void SetCurvePath(string path)
+			{
+				curve_path_ = path;
+			}
 		protected:
-						
+			string curve_path_;			
 		};
 	}
 }

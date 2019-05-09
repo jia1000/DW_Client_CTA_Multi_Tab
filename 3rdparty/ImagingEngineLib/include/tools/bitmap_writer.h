@@ -106,4 +106,35 @@ public:
 		fclose(outfile);
 	}
 
+	static HBITMAP ConvertToHBITMAP(const char* pImage, int imWidth, int imHeight, DWORD maskt)
+	{
+		int x = imWidth, y = imHeight;
+
+		BITMAPINFO bmi;
+		::ZeroMemory(&bmi, sizeof(BITMAPINFO));
+		bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+		bmi.bmiHeader.biWidth = x;
+		bmi.bmiHeader.biHeight = y;
+		bmi.bmiHeader.biPlanes = 1;
+		bmi.bmiHeader.biBitCount = 32;
+		bmi.bmiHeader.biCompression = BI_RGB;
+		bmi.bmiHeader.biSizeImage = x * y * 4;
+		bool bAlphaChannel = false;
+		LPBYTE pDest = NULL;
+		HBITMAP hBitmap = ::CreateDIBSection(NULL, &bmi, DIB_RGB_COLORS, (void**)&pDest, NULL, 0);
+		if (!hBitmap) {
+			return NULL;
+		}
+
+		for (int i = 0; i < x * y; i++)
+		{
+			pDest[i * 4 + 3] = pImage[i * 4 + 3];
+			
+			pDest[i * 4] = pImage[i * 4 + 2];
+			pDest[i * 4 + 1] = pImage[i * 4 + 1];
+			pDest[i * 4 + 2] = pImage[i * 4];			
+		}
+		return hBitmap;
+	}
+
 };

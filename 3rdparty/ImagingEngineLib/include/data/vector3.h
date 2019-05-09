@@ -33,6 +33,9 @@ struct Vector3 {
 	bool operator==(const Vector3&) const;
 	bool operator!=(const Vector3&) const;
 
+	// Returns the vector module.
+	Real length() const;
+
 	Real* Ptr();
 	const Real* Ptr() const;
 
@@ -292,10 +295,9 @@ template<typename Real>
 inline bool
 	Vector3<Real>::operator==(const Vector3<Real>& v) const
 {
-	return false;
-	//return FloatUtil<Real>::NearlyZero(x, v.x) &&
-	//     FloatUtil<Real>::NearlyZero(y, v.y) &&
-	//     FloatUtil<Real>::NearlyZero(z, v.z);
+	return Abs(x - v.x) < MathTool::kEpsilon &&
+		Abs(y - v.y) < MathTool::kEpsilon &&
+		Abs(z - v.z) < MathTool::kEpsilon;
 }
 
 //------------------------------------------------------------------------------
@@ -326,6 +328,15 @@ inline const Real*
 	Vector3<Real>::Ptr() const
 {
 	return &x;
+}
+
+//------------------------------------------------------------------------------
+// Vector3::length
+//------------------------------------------------------------------------------
+template<typename Real>
+inline Real Vector3<Real>::length() const
+{
+	return sqrt(x * x + y * y + z * z);
 }
 
 //------------------------------------------------------------------------------
@@ -408,10 +419,9 @@ template<typename Real>
 inline bool
 	Compare(const Vector3<Real>& u, const Vector3<Real>& v)
 {
-	return true;
-	//return FloatUtil<Real>::Compare(u.x, v.x) &&
-	//     FloatUtil<Real>::Compare(u.y, v.y) &&
-	//     FloatUtil<Real>::Compare(u.z, v.z);
+	return Abs(u.x - v.x) < MathTool::kEpsilon &&
+		Abs(u.y - v.y) < MathTool::kEpsilon &&
+		Abs(u.z - v.z) < MathTool::kEpsilon;
 }
 
 //------------------------------------------------------------------------------

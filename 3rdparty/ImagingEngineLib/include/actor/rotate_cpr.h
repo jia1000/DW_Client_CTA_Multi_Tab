@@ -34,7 +34,7 @@ namespace DW {
 		};
 
 		///
-		// VR旋转命令参数
+		// CPR旋转命令参数
 		///
 		class CPRRotateArgs : public ActorArgs
 		{

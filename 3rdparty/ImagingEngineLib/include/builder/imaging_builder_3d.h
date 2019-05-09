@@ -28,7 +28,7 @@ namespace DW {
 		{
 		public:
 			virtual void BuildData(IDicomReader* data) = 0;
-			virtual void BuildRenderer() = 0;
+			virtual void BuildRenderer(string param = "") = 0;
 			//virtual void BuildWidget();
 			//virtual void BuildEvent();
 			virtual IThreedImaging* GetImaging() = 0;

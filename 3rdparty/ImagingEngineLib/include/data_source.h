@@ -18,12 +18,8 @@ namespace DW {
 	public:
 		~ImageDataSource() { instance_ = nullptr; }
 
-		static ImageDataSource* Get() 
-		{
-			if (instance_ == nullptr)
-				instance_ = new ImageDataSource;
-			return instance_;
-		}
+		static ImageDataSource *Get();
+
 		void AddDirectory(const char *directory);
 		void AddFiles(vector<const char *> files);
 		void AppendFile(const char *file);
@@ -31,8 +27,12 @@ namespace DW {
 		VolData *GetVolData(string series_uid);
 		void Destroy(string series_uid);
 		void DestroyAll();
+
 	private:
-		static ImageDataSource* instance_;
+		ImageDataSource() {}
+
+	private:
+		static ImageDataSource *instance_;
 		map<string, VolData *> volume_data_set_;
 	};
 

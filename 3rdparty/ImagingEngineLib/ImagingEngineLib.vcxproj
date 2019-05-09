@@ -5,8 +5,16 @@
       <Configuration>Debug_vtk8.0</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_vtk_7.1|Win32">
+      <Configuration>Debug_vtk_7.1</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="release_vtk7.1|Win32">
+      <Configuration>release_vtk7.1</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
@@ -26,6 +34,12 @@
     <PlatformToolset>v110_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vtk_7.1|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vtk8.0|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -33,9 +47,16 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release_vtk7.1|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -45,14 +66,25 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vtk_7.1|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vtk8.0|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='release_vtk7.1|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\lib\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)\temp\$(ProjectName)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vtk_7.1|Win32'">
     <OutDir>$(SolutionDir)\lib\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)\temp\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)_d</TargetName>
@@ -62,10 +94,9 @@
     <IntDir>$(SolutionDir)\temp\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\lib\\$(ProjectName)\</OutDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release_vtk7.1|Win32'">
+    <OutDir>$(SolutionDir)\lib\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)\temp\$(ProjectName)\$(Configuration)\</IntDir>
-    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -73,7 +104,20 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\VTK-5.10.1\Imaging;..\..\..\VTK-5.10.1\VolumeRendering;..\..\..\VTK-5.10.1\Common;..\..\..\VTK-5.10.1;..\..\..\VTK-5.10.1\Filtering;..\..\..\VTK-5.10.1\Rendering;..\..\..\VTK-5.10.1\Graphi;..\..\..\VTK-5.10.1\IO;..\..\..\VTK-5.10.1\Graphics;..\..\..\VTK-5.10.1\Hybrid;..\..\..\VTK-5.10.1\Widgets;$(ProjectDir)\include;$(ProjectDir)\include\render;$(ProjectDir)\include\builder;$(ProjectDir)\include\data;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\VTK\include\vtk-5.10;$(ProjectDir)\include;$(ProjectDir)\include\render;$(ProjectDir)\include\builder;$(ProjectDir)\include\data;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;$(SolutionDir)..\opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vtk_7.1|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\VTK\include\vtk-7.1;$(ProjectDir)\include;$(ProjectDir)\include\render;$(ProjectDir)\include\builder;$(ProjectDir)\include\data;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;$(SolutionDir)..\opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -86,7 +130,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\VTK\include\vtk-8.0;C:\Program Files (x86)\VTK\include;$(ProjectDir)\include;$(ProjectDir)\include\render;$(ProjectDir)\include\builder;$(ProjectDir)\include\data;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\VTK\include\vtk-7.1;C:\Program Files (x86)\VTK\include;$(ProjectDir)\include;$(ProjectDir)\include\render;$(ProjectDir)\include\builder;$(ProjectDir)\include\data;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;$(SolutionDir)..\opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -100,8 +144,24 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\..\VTK-5.10.1\Imaging;..\..\..\VTK-5.10.1\VolumeRendering;..\..\..\VTK-5.10.1\Common;..\..\..\VTK-5.10.1;..\..\..\VTK-5.10.1\Filtering;..\..\..\VTK-5.10.1\Rendering;..\..\..\VTK-5.10.1\Graphi;..\..\..\VTK-5.10.1\IO;..\..\..\VTK-5.10.1\Graphics;..\..\..\VTK-5.10.1\Hybrid;..\..\..\VTK-5.10.1\Widgets;$(ProjectDir)\include;$(ProjectDir)\include\render;$(ProjectDir)\include\builder;$(ProjectDir)\include\data;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\VTK\include\vtk-7.1;$(ProjectDir)\include;$(ProjectDir)\include\render;$(ProjectDir)\include\builder;$(ProjectDir)\include\data;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;$(SolutionDir)..\opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release_vtk7.1|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\VTK\include\vtk-7.1;$(ProjectDir)\include;$(ProjectDir)\include\render;$(ProjectDir)\include\builder;$(ProjectDir)\include\data;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;$(SolutionDir)..\opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -110,73 +170,98 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="actor\pick_point.cpp" />
-    <ClCompile Include="actor\rotate_cpr.cpp" />
-    <ClCompile Include="actor\rotate_vr.cpp" />
     <ClCompile Include="batch\batch_vr.cpp" />
     <ClCompile Include="builder\imaging_builder_cpr.cpp" />
+    <ClCompile Include="builder\imaging_builder_mpr.cpp" />
     <ClCompile Include="builder\imaging_builder_vr.cpp" />
+    <ClCompile Include="curve_source.cpp" />
     <ClCompile Include="data\aabb.cpp" />
+    <ClCompile Include="data\anatomical_plane.cpp" />
     <ClCompile Include="data\camera.cpp" />
     <ClCompile Include="data\curve_line.cpp" />
     <ClCompile Include="data\data_loader.cpp" />
+    <ClCompile Include="data\dicom_format_converter.cpp" />
+    <ClCompile Include="data\image_orientation.cpp" />
+    <ClCompile Include="data\orthogonal_plane.cpp" />
+    <ClCompile Include="data\patient_orientation.cpp" />
+    <ClCompile Include="data\pixel_data.cpp" />
     <ClCompile Include="data\show_buffer.cpp" />
     <ClCompile Include="data\vol_data.cpp" />
     <ClCompile Include="data_source.cpp" />
     <ClCompile Include="filter\frenet_serret_frame.cpp" />
     <ClCompile Include="filter\spline_driven_image_slicer.cpp" />
+    <ClCompile Include="processing\image_process.cpp" />
     <ClCompile Include="render\imaging_cpr.cpp" />
+    <ClCompile Include="render\imaging_mpr.cpp" />
     <ClCompile Include="render\imaging_vr.cpp" />
     <ClCompile Include="render\renderer_cpr.cpp" />
-    <ClCompile Include="render\renderer_raycasting_cpu.cpp" />
-    <ClCompile Include="render\renderer_raycasting_gpu.cpp" />
+    <ClCompile Include="render\renderer_mpr.cpp" />
     <ClCompile Include="render\renderer_straightened_cpr.cpp" />
     <ClCompile Include="render\renderer_stretched_cpr.cpp" />
+    <ClCompile Include="render\renderer_vr.cpp" />
+    <ClCompile Include="render\renderer_mpr_vtk.cpp" />
     <ClCompile Include="render\render_param_cpr.cpp" />
+    <ClCompile Include="render\render_param_mpr.cpp" />
     <ClCompile Include="render\render_param_vr.cpp" />
+    <ClCompile Include="render\transfer_function.cpp" />
+    <ClCompile Include="render\transfer_function_color.cpp" />
+    <ClCompile Include="render\transfer_function_opacity.cpp" />
+    <ClCompile Include="render_facade.cpp" />
     <ClCompile Include="render_manager.cpp" />
+    <ClCompile Include="render_source.cpp" />
     <ClCompile Include="tools\bmp_writer.cpp" />
     <ClCompile Include="tools\convert_vtk_image_data_to_rgba.cpp" />
+    <ClCompile Include="tools\math.cpp" />
     <ClCompile Include="tools\timer.cpp" />
     <ClCompile Include="tools\utf8_string.cpp" />
+    <ClCompile Include="tools\vtk_image_data_creator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="builder\imaging_builder_mpr.cpp" />
     <ClInclude Include="data\light.cpp" />
-    <ClInclude Include="include\actor\actor_3d.h" />
-    <ClInclude Include="include\actor\batch_vr.h" />
-    <ClInclude Include="include\actor\pick_point.h" />
-    <ClInclude Include="include\actor\rotate_cpr.h" />
-    <ClInclude Include="include\actor\rotate_vr.h" />
     <ClInclude Include="include\batch\batch.h" />
     <ClInclude Include="include\batch\batch_vr.h" />
     <ClInclude Include="include\builder\imaging_builder_3d.h" />
     <ClInclude Include="include\builder\imaging_builder_cpr.h" />
-    <ClInclude Include="include\builder\imaging_builder_vr.h" />
     <ClInclude Include="include\builder\imaging_builder_mpr.h" />
+    <ClInclude Include="include\builder\imaging_builder_vr.h" />
+    <ClInclude Include="include\curve_source.h" />
     <ClInclude Include="include\data\aabb.h" />
     <ClInclude Include="include\data\annotation_storage.h" />
+    <ClInclude Include="include\data\anatomocal_plane.h" />
     <ClInclude Include="include\data\box3.h" />
     <ClInclude Include="include\data\camera.h" />
     <ClInclude Include="include\data\curve_line.h" />
     <ClInclude Include="include\data\data_convert.h" />
     <ClInclude Include="include\data\data_definition.h" />
+    <ClInclude Include="include\data\Image_slice.h" />
+    <ClInclude Include="include\data\image_orientation.h" />
+    <ClInclude Include="include\data\image_overlay.h" />
+    <ClInclude Include="include\data\image_plane.h" />
+    <ClInclude Include="include\data\orthogonal_plane.h" />
+    <ClInclude Include="include\data\patient_orientation.h" />
+    <ClInclude Include="include\data\pixel_data.h" />
     <ClInclude Include="include\data\data_loader.h" />
     <ClInclude Include="include\data\IOD\general_image_iod.h" />
     <ClInclude Include="include\data\IOD\ct_imagel_iod.h" />
     <ClInclude Include="include\data\IOD\image_plane_iod.h" />
     <ClInclude Include="include\data\IOD\iod.h" />
     <ClInclude Include="include\data\light.h" />
+    <ClInclude Include="include\data\pixel_spacing_2d.h" />
     <ClInclude Include="include\data\render_mode.h" />
     <ClInclude Include="include\data\show_buffer.h" />
     <ClInclude Include="include\data\vector2.h" />
     <ClInclude Include="include\data\vector3.h" />
     <ClInclude Include="include\data\vol_data.h" />
+    <ClInclude Include="include\data\color4.h" />
     <ClInclude Include="include\data_source.h" />
     <ClInclude Include="include\filter\frenet_serret_frame.h" />
     <ClInclude Include="include\filter\spline_driven_image_slicer.h" />
-    <ClInclude Include="include\imaging_source.h" />
+    <ClInclude Include="include\annotation_facade.h" />
+    <ClInclude Include="include\processing\image_process.h" />
+    <ClInclude Include="include\render_source.h" />
     <ClInclude Include="include\io\dcm_reader.h" />
+    <ClInclude Include="include\io\txt_reader.h" />
+    <ClInclude Include="include\presentation\parameter_base.h" />
     <ClInclude Include="include\render\imaging_3d.h" />
     <ClInclude Include="include\render\imaging_cpr.h" />
     <ClInclude Include="include\render\imaging_mpr.h" />
@@ -185,23 +270,33 @@
     <ClInclude Include="include\render\orientation_3d.h" />
     <ClInclude Include="include\render\pick_3d.h" />
     <ClInclude Include="include\render\renderer_cpr.h" />
-    <ClInclude Include="include\render\renderer_raycasting_cpu.h" />
+    <ClInclude Include="include\render\renderer_mpr.h" />
     <ClInclude Include="include\render\renderer_3d.h" />
-    <ClInclude Include="include\render\renderer_raycasting_gpu.h" />
     <ClInclude Include="include\render\renderer_straightened_cpr.h" />
     <ClInclude Include="include\render\renderer_stretched_cpr.h" />
+    <ClInclude Include="include\render\renderer_vr.h" />
+    <ClInclude Include="include\render\renderer_mpr_vtk.h" />
     <ClInclude Include="include\render\render_param.h" />
     <ClInclude Include="include\render\render_param_cpr.h" />
+    <ClInclude Include="include\render\render_param_mpr.h" />
     <ClInclude Include="include\render\render_param_vr.h" />
-    <ClInclude Include="include\render_manager.h" />
+    <ClInclude Include="include\render\transfer_function.h" />
+    <ClInclude Include="include\render\transfer_function_color.h" />
+    <ClInclude Include="include\render\transfer_function_opacity.h" />
+    <ClInclude Include="include\render\transfer_function_template.h" />
+    <ClInclude Include="include\render\标头.h" />
+    <ClInclude Include="include\render_facade.h" />
     <ClInclude Include="include\tools\bitmap_writer.h" />
     <ClInclude Include="include\tools\common.h" />
     <ClInclude Include="include\tools\convert_vtk_image_data_to_rgba.h" />
+    <ClInclude Include="include\tools\dicom_format_converter.h" />
     <ClInclude Include="include\tools\logger.h" />
     <ClInclude Include="include\tools\math.h" />
     <ClInclude Include="include\tools\path.h" />
+    <ClInclude Include="include\tools\string_util.h" />
     <ClInclude Include="include\tools\timer.h" />
     <ClInclude Include="include\tools\utf8_string.h" />
+    <ClInclude Include="include\tools\vtk_image_data_creator.h" />
     <ClInclude Include="include\vtk_include.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

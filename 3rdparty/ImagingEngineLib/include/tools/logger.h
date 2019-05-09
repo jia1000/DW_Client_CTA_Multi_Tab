@@ -15,6 +15,7 @@
 #include "Path.h"
 #include "utf8_string.h"
 
+
 #define GOOGLE_GLOG_DLL_DECL
 #define GLOG_NO_ABBREVIATED_SEVERITIES
 
@@ -60,10 +61,10 @@ public:
 #ifdef _DEBUG		
 		LOG(WARNING) << msg;	
 #else
-		//wstring logLevel = Configurations::getInstance()->GetLogLevel();		
-		//if (logLevel == _T("DEBUG")) {
-		//	LOG(WARNING) << msg;
-		//}
+// 		wstring logLevel = Configurations::getInstance()->GetLogLevel();		
+// 		if (logLevel == _T("DEBUG")) {
+// 			LOG(WARNING) << msg;
+// 		}
 #endif // _DEBUG
 	}
 	

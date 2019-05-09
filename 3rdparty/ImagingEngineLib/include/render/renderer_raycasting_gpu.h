@@ -11,13 +11,14 @@
 #include "vtk_include.h"
 #include "data_definition.h"
 #include "renderer_raycasting_cpu.h"
+#include "render/renderer_vr.h"
 
 using namespace DW::IMAGE;
 
 namespace DW {
 	namespace Render{
 
-		class RayCastingRendererGPU : public RayCastingRenderer
+		class RayCastingRendererGPU : public VolumeRenderer
 		{
 		public:
 			RayCastingRendererGPU();

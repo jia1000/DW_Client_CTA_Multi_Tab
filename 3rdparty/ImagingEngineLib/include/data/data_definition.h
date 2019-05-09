@@ -22,18 +22,21 @@
 #include <queue>
 #include <stack>
 #include <stdint.h>
+#include <string>
 
 #define UNITDATA3D			unsigned char
 #define UNITMARK3D			unsigned char
 #define UNITDATASHOW		char
 
-typedef enum dwRenderMode {
-	Slice = 0,
-	Slab,
-	MPR,
-	VR,
-	CPR
-} RenderMode;
+#define PI 3.14159265f
+
+//typedef enum dwRenderMode {
+//	Slice = 0,
+//	Slab,
+//	MPR,
+//	VR,
+//	CPR
+//} RenderMode;
 
 struct Point3d {
 	float x;
