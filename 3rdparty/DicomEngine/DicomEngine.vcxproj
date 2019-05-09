@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C8247050-9205-425D-A818-76DA4A86EB72}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>DicomEngine</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\lib\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionFir)\temp\$(ProjectName)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_d</TargetName>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\InsightToolkit-3.20.1;..\..\..\InsightToolkit-3.20.1\Code\Common;..\..\..\InsightToolkit-3.20.1\Utilities\vxl\vcl\emulation;..\..\..\InsightToolkit-3.20.1\Utilities\vxl\vcl;..\..\..\InsightToolkit-3.20.1\Code\IO;..\..\..\InsightToolkit-3.20.1\Utilities\gdcm\;..\..\..\InsightToolkit-3.20.1\Utilities\gdcm\src;..\..\..\InsightToolkit-3.20.1\Utilities\vxl\core\;..\..\..\InsightToolkit-3.20.1\Utilities;..\..\..\InsightToolkit-3.20.1\Code\BasicFilters;..\..\..\VTK-5.10.1\Imaging;..\..\..\VTK-5.10.1\VolumeRendering;..\..\..\VTK-5.10.1\Common;..\..\..\VTK-5.10.1;..\..\..\VTK-5.10.1\Filtering;..\..\..\VTK-5.10.1\Rendering;..\..\..\VTK-5.10.1\Graphics;..\..\..\VTK-5.10.1\IO;..\..\..\dcmtk-3.6.0\include;..\..\..\dcmtk-3.6.0\dcmjpeg\include;..\..\..\dcmtk-3.6.0\dcmdata\include;..\..\..\dcmtk-3.6.0\ofstd\include;..\..\..\dcmtk-3.6.0\oflog\include;..\..\..\dcmtk-3.6.0\dcmimgle\include;..\..\..\dcmtk-3.6.0\dcmnet\include;..\..\..\dcmtk-3.6.0\dcmimage\include;..\..\..\dcmtk-3.6.0\dcmtls\include;..\..\..\dcmtk-3.6.0\dcmpstat\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="api\autoptr.cpp" />
+    <ClCompile Include="api\controllers\icontroladorcarga.cpp" />
+    <ClCompile Include="api\controllers\proxies\ipipelineproperties.cpp" />
+    <ClCompile Include="api\dicom\dicomdataset.cpp" />
+    <ClCompile Include="api\dicom\idicom.cpp" />
+    <ClCompile Include="api\icommand.cpp" />
+    <ClCompile Include="api\iexception.cpp" />
+    <ClCompile Include="api\ilock.cpp" />
+    <ClCompile Include="api\studycontextmy.cpp" />
+    <ClCompile Include="api\utils\iginkgomatrix4x4.cpp" />
+    <ClCompile Include="main\controllers\streaming\streamingloader.cpp" />
+    <ClCompile Include="main\utils\ginkgomatrix4x4.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="api\api.h" />
+    <ClInclude Include="api\autoptr.h" />
+    <ClInclude Include="api\controllers\icontroladorcarga.h" />
+    <ClInclude Include="api\controllers\proxies\ipipelineproperties.h" />
+    <ClInclude Include="api\dicom\dcmdictionary.h" />
+    <ClInclude Include="api\dicom\dcmuiddictionary.h" />
+    <ClInclude Include="api\dicom\dicomdataset.h" />
+    <ClInclude Include="api\dicom\idicom.h" />
+    <ClInclude Include="api\dicom\idicomizador.h" />
+    <ClInclude Include="api\dicom\idicommanager.h" />
+    <ClInclude Include="api\dicom\imodelodicom.h" />
+    <ClInclude Include="api\globals.h" />
+    <ClInclude Include="api\icommand.h" />
+    <ClInclude Include="api\iexception.h" />
+    <ClInclude Include="api\ilock.h" />
+    <ClInclude Include="api\iproxynotificadorprogreso.h" />
+    <ClInclude Include="api\studycontextmy.h" />
+    <ClInclude Include="api\utils\iginkgomatrix4x4.h" />
+    <ClInclude Include="itk\itkImageToVTKImageFilter.h" />
+    <ClInclude Include="itk\itkRGBImageToVTKImageFilter.h" />
+    <ClInclude Include="itk\itkVTKImageToImageFilter.h" />
+    <ClInclude Include="main\controllers\dcmtk\dicomnetclient.h" />
+    <ClInclude Include="main\controllers\streaming\streamingloader.h" />
+    <ClInclude Include="main\utils\ginkgomatrix4x4.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

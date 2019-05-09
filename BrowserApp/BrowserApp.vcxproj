@@ -103,14 +103,14 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\opencv\include;$(SolutionDir)3rdparty/jsoncpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\opencv\include;$(SolutionDir)3rdparty/jsoncpp;$(SolutionDir)3rdparty/DicomEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Wldap32.lib;IlmImfd.lib;libjasperd.lib;libjpegd.lib;libpngd.lib;libtiffd.lib;libwebpd.lib;opencv_calib3d320d.lib;opencv_core320d.lib;opencv_features2d320d.lib;opencv_flann320d.lib;opencv_highgui320d.lib;opencv_imgcodecs320d.lib;opencv_imgproc320d.lib;opencv_ml320d.lib;opencv_objdetect320d.lib;opencv_photo320d.lib;opencv_shape320d.lib;opencv_stitching320d.lib;opencv_superres320d.lib;opencv_ts320d.lib;opencv_video320d.lib;opencv_videoio320d.lib;opencv_videostab320d.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Wldap32.lib;IlmImfd.lib;libjasperd.lib;libjpegd.lib;libpngd.lib;libtiffd.lib;libwebpd.lib;opencv_calib3d320d.lib;opencv_core320d.lib;opencv_features2d320d.lib;opencv_flann320d.lib;opencv_highgui320d.lib;opencv_imgcodecs320d.lib;opencv_imgproc320d.lib;opencv_ml320d.lib;opencv_objdetect320d.lib;opencv_photo320d.lib;opencv_shape320d.lib;opencv_stitching320d.lib;opencv_superres320d.lib;opencv_ts320d.lib;opencv_video320d.lib;opencv_videoio320d.lib;opencv_videostab320d.lib;zlibd.lib;vtkCommon.lib;vtkRendering.lib;vtkexpat.lib;vtkFiltering.lib;vtkfreetype.lib;vtkftgl.lib;vtkGenericFiltering.lib;vtkGraphics.lib;vtkHybrid.lib;vtkImaging.lib;vtkIO.lib;vtkjpeg.lib;vtklibxml2.lib;vtkmetaio.lib;vtkNetCDF.lib;vtkpng.lib;vtktiff.lib;vtksys.lib;vtkzlib.lib;vtkVolumeRendering.lib;ITKAlgorithms.lib;ITKBasicFilters.lib;ITKCommon.lib;ITKDicomParser.lib;ITKExpat.lib;ITKFEM.lib;ITKIO.lib;ITKJPEG8.lib;ITKJPEG12.lib;ITKJPEG16.lib;ITKMetaIO.lib;ITKNiftiIO.lib;ITKNrrdIO.lib;ITKNumerics.lib;ITKOpenJPEG.lib;ITKPNG.lib;ITKSpatialObject.lib;ITKStatistics.lib;ITKSys.lib;ITKTIFF.lib;ITKV3P_Netlib.lib;ITKVCL.lib;ITKVNL.lib;ITKVNL_Algo.lib;ITKVNL_Inst.lib;ITKZlib.lib;ITKZNZ.lib;gdcmcharls.lib;gdcmCommon.lib;gdcmDICT.lib;gdcmDSED.lib;gdcmexpat.lib;gdcmgetopt.lib;gdcmIOD.lib;gdcmjpeg8.lib;gdcmjpeg12.lib;gdcmjpeg16.lib;gdcmMEXD.lib;gdcmMSFF.lib;gdcmopenjp2.lib;gdcmzlib.lib;dcmdata.lib;dcmnet.lib;dcmtls.lib;dcmimage.lib;dcmimgle.lib;dcmjpeg.lib;dcmsr.lib;dcmpstat.lib;Ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\opencv\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\opencv\lib\Debug;..\..\VTK-5.10.1\bin\Debug;..\..\InsightToolkit-3.20.1\bin\Debug;..\..\dcmtk-3.6.0\DebugWin32Lib;..\..\GDCM\bin\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_69_3497|Win32'">
