@@ -104,7 +104,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\VTK\include\vtk-5.10;$(ProjectDir)\include;$(ProjectDir)\include\render;$(ProjectDir)\include\builder;$(ProjectDir)\include\data;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;$(SolutionDir)..\opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\VTK-5.10.1;..\..\..\VTK-5.10.1\Common;..\..\..\VTK-5.10.1\Filtering;..\..\..\VTK-5.10.1\Graphics;..\..\..\VTK-5.10.1\Imaging;..\..\..\VTK-5.10.1\IO;..\..\..\VTK-5.10.1\Rendering;..\..\..\VTK-5.10.1\VolumeRendering;..\..\..\VTK-5.10.1\Utilities;$(ProjectDir)\include;$(ProjectDir)\include\render;$(ProjectDir)\include\builder;$(ProjectDir)\include\data;$(SolutionDir)/3rdparty/glog-master;$(SolutionDir)/3rdparty/glog-master/src;$(SolutionDir)/3rdparty/glog-master/src/windows;$(SolutionDir)..\opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
