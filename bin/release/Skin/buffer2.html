@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Test</title>
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/jquery/1.11.3/jquery-ui.min.css">
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery-ui.min.js"></script>
+
+    <script language="JavaScript" type="text/javascript">
+        var currFilePath;
+
+        /// 点击“发送字符串到C++”后， c++端返回命令，用来显示发送的次数
+        function jsSendCount(text) {
+            var t = document.getElementById("recv_text");
+            t.value = text;
+        }
+
+        ///发送字符串到C++ 使用json
+        function doPostDirUesJson() {
+            alert("haha")
+
+            var text1 = $("#request_type").val();
+            var text2 = $("#image_operation").val();
+            var text3 = $("#image_paras").val();
+            var text4 = $("#postDir").val();
+
+            var selectFiles = document.getElementById("postDir").files;
+            var dir = document.getElementById("postDir").value;
+
+            alert("dir : " + dir);
+            // for (var file in selectFiles) {
+            //     // console.log(file.webkitRelativePath);
+            //     alert(file);
+            // }
+
+            // var json_data = {};
+            // json_data.request_type = text1;
+            // json_data.image_operation = text2;
+            // json_data.image_paras = text3;
+            // // json_data.image_data = arraybuffer2base64(fileString);
+            // json_data.dir_path = text4;
+            //
+            // var json_str = JSON.stringify(json_data);
+            // var url = 'http://image_operation/';
+            //
+            // var xhr = new XMLHttpRequest();
+            // //  第3个参数async为true，表示为异步，否则为同步
+            // xhr.open('POST', url, true);
+            // xhr.responseType = "text";"arraybuffer";
+            //
+            // // 请求成功回调函数
+            // xhr.onload = function (oEvent) {
+            //     var arrayBuffer = xhr.response;
+            //     if (arrayBuffer) {
+            //         displayContent(xhr.response, true);
+            //     }
+            // };
+            // xhr.ontimeout = function (e) {
+            //     alert("ontimeout");
+            // };
+            // xhr.onerror = function (e) {
+            //     alert("onerror-status : " + xhr.status + "status.text: " + xhr.statusText + "....");
+            // };
+            // xhr.onloadend = function (e) {
+            // };
+            //
+            // xhr.send(json_str);
+        }
+
+        ///发送字符串到C++ 使用json
+        function doPostStringUesJson() {
+            //缓存的file对象
+            if (currFilePath === undefined) return;
+
+            // 读取图像文件
+            var reader = new FileReader();//新建一个FileReader
+            reader.readAsArrayBuffer(currFilePath);//读取文件
+            reader.onload = function (evt) { //读取完文件之后会回来这里
+                var fileString = evt.target.result; // 读取文件内容
+
+                var text1 = $("#request_type").val();
+                var text2 = $("#image_operation").val();
+                var text3 = $("#image_paras").val();
+
+                var json_data = {};
+                json_data.request_type = text1;
+                json_data.image_operation = text2;
+                json_data.image_paras = text3;
+                json_data.image_data = arraybuffer2base64(fileString);
+
+                var json_str = JSON.stringify(json_data);
+                var url = 'http://image_operation/';
+
+                var xhr = new XMLHttpRequest();
+                //  第3个参数async为true，表示为异步，否则为同步
+                xhr.open('POST', url, true);
+                xhr.responseType = "text";"arraybuffer";
+
+                // 请求成功回调函数
+                xhr.onload = function (oEvent) {
+                    var arrayBuffer = xhr.response;
+                    if (arrayBuffer) {
+                        displayContent(xhr.response, true);
+                    }
+                };
+                xhr.ontimeout = function (e) {
+                    alert("ontimeout");
+                };
+                xhr.onerror = function (e) {
+                    alert("onerror-status : " + xhr.status + "status.text: " + xhr.statusText + "....");
+                };
+                xhr.onloadend = function (e) {
+                };
+
+                xhr.send(json_str);
+            }
+        }
+
+        ///显示图像和信息
+        function displayContent(text, finished) {
+            // 解析json数据
+            var json_data = JSON.parse(text);
+            var text1 = json_data.request_type;
+            var text2 = json_data.image_operation;
+            var text3 = json_data.image_paras;
+            var text4 = json_data.image_data;
+
+            // 显示传回的参数
+            var t = document.getElementById("recv_text");
+            var text_paras = "";
+            text_paras += "request_type    : " + text1;
+            text_paras += "\n";
+            text_paras += "image_operation : " + text2;
+            text_paras += "\n";
+            text_paras += "image_paras     : " + text3;
+            text_paras += "\n";
+            t.value = text_paras;
+
+            // display the image
+            showImageByArrayBuffer(text4);
+        }
+
+        // 通过arraybuffer显示图像
+        function showImageByArrayBuffer(data) {
+            // display the image
+            $('#imgtag').attr("src", "data:image/png;base64," + data);
+        }
+        // arraybuffer 转为base64
+        function arraybuffer2base64(data) {
+            var bytes = new Uint8Array(data);
+            var ret = "";
+            var len = bytes.byteLength;
+            for (var i = 0; i < len; ++i) {
+                ret += String.fromCharCode(bytes[i]);
+            }
+            return window.btoa(ret);
+        }
+        /// 获取当前选择的文件
+        function jsReadFiles(files) {
+            if (files.length) {
+                var file = files[0];
+                //缓存文件路径
+                currFilePath = files[0];
+            }
+        }
+
+    </script>
+</head>
+
+<body style="background:#FFF;">
+    <div style="margin-bottom:20px;">
+
+
+        <select id="request_type" text="operation" title="request_type" >
+            <option>VR</option>
+            <option>MPR</option>
+            <option>CPR</option>
+        </select>
+        <select id="image_operation" text="operation" title="operation" >
+            <option>Zoom</option>
+            <option>Skip</option>
+            <option>Rotate</option>
+            <option>Move</option>
+            <option>WL</option>
+        </select>
+        <select id="image_paras" text="paras" title="paras" >
+            <option>1.0</option>
+            <option>0.1</option>
+            <option>0.2</option>
+            <option>0.3</option>
+            <option>0.4</option>
+            <option>0.5</option>
+            <option>0.6</option>
+            <option>0.7</option>
+            <option>0.8</option>
+            <option>0.9</option>
+            <option>2.0</option>
+            <option>3.0</option>
+        </select>
+        <br />
+
+        <input type="file" id="postFile" onchange="jsReadFiles(this.files)" title="选择图像文件" />
+        <input type="button" value="发送字符串到C++" onclick="doPostStringUesJson();" />
+        <br />
+
+        <input type="file" id="postDir"  webkitdirectory title="选择图像目录" />
+        <input type="button" value="发送Dicom文件夹到C++" onclick="doPostDirUesJson();" />
+        <br /><br />
+
+        <label>发送文本</label>
+        <form >
+            <textarea  id="recv_text" cols="50" rows="10" >在这里输入内容...</textarea>
+        </form>
+    </div>
+
+    <!-- display image -->
+    <div>
+        <img src="#" id="imgtag" title="load image through http request..." />
+    </div>
+
+</body>
+</html>
