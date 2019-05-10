@@ -22,6 +22,8 @@
 #include "opencv2/opencv.hpp"
 #include <iostream> 
 
+class ImageVRZoomProcess;
+
 class DataTransferController
 {
 public:
@@ -35,4 +37,5 @@ private:
 	DataTransferController();
 	static DataTransferController* instance;
 	
+	ImageVRZoomProcess* image_slice_skip;
 };

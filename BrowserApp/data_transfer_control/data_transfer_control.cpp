@@ -14,9 +14,16 @@
 #define JSON_KEY_IMAGE_PARAS				"image_paras"
 #define JSON_KEY_IMAGE_DATA					"image_data"
 
+//  第一级 "请求类型"    的枚举
+#define JSON_VALUE_REQUEST_TYPE_MPR			"mpr"
+#define JSON_VALUE_REQUEST_TYPE_VR			"vr"
+#define JSON_VALUE_REQUEST_TYPE_MIP			"mip"
+//  第二级 "操作操作类型"的枚举
 #define JSON_VALUE_IMAGE_OPERATION_ZOOM		"zoom"
 #define JSON_VALUE_IMAGE_OPERATION_ROTATE	"rotate"
 #define JSON_VALUE_IMAGE_OPERATION_MOVE		"move"
+#define JSON_VALUE_IMAGE_OPERATION_SKIP		"skip"
+
 
 
 DataTransferController* DataTransferController::instance = nullptr;
@@ -55,6 +62,8 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 	
 	if (root[JSON_KEY_REQUEST_TYPE].isString()) {
 		key_name1 = root[JSON_KEY_REQUEST_TYPE].asString();
+		// 都转为小写字符
+		std::transform(key_name1.begin(), key_name1.end(), key_name1.begin(), ::tolower);
 	}
 	if (root[JSON_KEY_IMAGE_OPERATION].isString()) {
 		key_name2 = root[JSON_KEY_IMAGE_OPERATION].asString();
@@ -63,6 +72,8 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 	}
 	if (root[JSON_KEY_IMAGE_PARAS].isString()) {
 		key_name3 = root[JSON_KEY_IMAGE_PARAS].asString();
+		// 都转为小写字符
+		std::transform(key_name3.begin(), key_name3.end(), key_name3.begin(), ::tolower);
 	}
 	if (root[JSON_KEY_IMAGE_DATA].isString()) {
 		key_name4 = root[JSON_KEY_IMAGE_DATA].asString();
@@ -71,8 +82,18 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 	std::string out_image_data = "";
 
 	if (key_name2 == JSON_VALUE_IMAGE_OPERATION_ZOOM) {
-		ImageZoomProcess image_zoom(key_name3, key_name4);
-		image_zoom.Excute(out_image_data);
+		if (key_name1 == JSON_VALUE_REQUEST_TYPE_VR) {
+			if (!image_slice_skip) {
+				image_slice_skip = new ImageVRZoomProcess(key_name3, key_name4);
+			} else {
+				image_slice_skip->SetSkipIndex(key_name3);
+				image_slice_skip->SetInImageData(key_name4);
+			}
+			image_slice_skip->Excute(out_image_data);
+		} else {
+			ImageZoomProcess image_zoom(key_name3, key_name4);
+			image_zoom.Excute(out_image_data);
+		}
 	} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_ROTATE) {
 		ImageRotateProcess image_zoom(key_name3, key_name4);
 		image_zoom.Excute(out_image_data);
@@ -86,6 +107,8 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 			image_zoom.Excute(out_image_data);
 
 		}
+	} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_SKIP) {
+		
 	}
 
 	// 模拟再发送给浏览器

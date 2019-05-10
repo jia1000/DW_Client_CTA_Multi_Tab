@@ -60,6 +60,7 @@ typedef CCefBrowserUI CCefUI;
     #pragma comment(lib, "Duilib/DuiLib_d.lib")
     #pragma comment(lib, "glog/glog_d.lib")
 	#pragma comment(lib, "DicomEngine/DicomEngine_d.lib")
+	#pragma comment(lib, "ImagingEngine/ImagingEngine_d.lib")
 	////OpenCV核心动态链接库，和core.hpp头文件对应
 	//#pragma comment(lib,"Debug/opencv_core320d.lib")
 	////OpenCV图形处理动态链接库，和highgui.hpp头文件对应
@@ -75,6 +76,7 @@ typedef CCefBrowserUI CCefUI;
     #pragma comment(lib, "Duilib/DuiLib.lib")
 	#pragma comment(lib, "glog/glog.lib")
 	#pragma comment(lib, "DicomEngine/DicomEngine.lib")
+	#pragma comment(lib, "ImagingEngine/ImagingEngine.lib")
 	////OpenCV核心动态链接库，和core.hpp头文件对应
 	//#pragma comment(lib,"Release/opencv_core320.lib")
 	////OpenCV图形处理动态链接库，和highgui.hpp头文件对应

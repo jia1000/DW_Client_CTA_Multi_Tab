@@ -230,7 +230,7 @@ void VolumeRenderer::DoRender(vtkSmartPointer<vtkImageData> imagedata)
 			vtk_volume_mapper_->SetRequestedRenderModeToGPU(); 
 #else
 			// vtk 5以下需要DXD库支持GPU
-			vtk_volume_mapper_->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
+			vtk_volume_mapper_->SetRequestedRenderMode(vtkSmartVolumeMapper::RayCastRenderMode);
 #endif
 			break;
 	}

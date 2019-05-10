@@ -153,6 +153,7 @@ void RenderFacade::SetOrientation(string control_id, OrientationType ori)
 					col_vec[2] = 0.0f;
 				}
 				param_mpr->SetPlaneVector(row_vec, col_vec);
+				param_mpr->SetImageCenter(255,255,0);
 			}
 		}
 		break;

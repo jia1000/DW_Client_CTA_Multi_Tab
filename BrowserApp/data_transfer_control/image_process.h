@@ -21,6 +21,8 @@
 #include "opencv2/opencv.hpp"
 #include <iostream> 
 
+#include "io/dcm_reader.h"
+
 class ImageProcessBase
 {
 public:
@@ -28,6 +30,7 @@ public:
 	~ImageProcessBase();
 
 	virtual bool Excute(std::string& out_image_data);
+	virtual bool SaveBitmapToFile(HBITMAP hBitmap, LPCWSTR lpFileName);
 
 protected:	
 	// opencv Mat和base64的互转
@@ -45,7 +48,6 @@ public:
 	~ImageZoomProcess();
 
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
-
 private:
 	std::string m_str_rate;			// 缩放倍率
 	std::string m_in_image_data;	// 图像原始数据，base64编码
@@ -93,4 +95,36 @@ public:
 private:
 	std::string m_str_move_position;// 移动像素点
 	std::string m_in_image_data;	// 图像原始数据，base64编码
+};
+
+//////////////////////////////////////////////////////////////////////////
+// 平移，但会改变图像大小
+class ImageVRZoomProcess : public ImageProcessBase
+{
+public:
+	ImageVRZoomProcess(std::string str_skip_slice_index, std::string& in_image_data);
+	~ImageVRZoomProcess();
+	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
+
+	
+
+	void SetSkipIndex(std::string str_skip_slice_index) 
+	{ 
+		m_str_zoom_scale = str_skip_slice_index; 
+	}
+	void SetInImageData(std::string& in_image_data) 
+	{
+		m_in_image_data = in_image_data;
+	}
+
+private:
+	std::string m_str_zoom_scale;	// 切片slice的索引
+	std::string m_in_image_data;		// 图像原始数据，base64编码
+
+	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;
+	DW::IO::IDicomReader* reader;
+	/// 窗口名称
+	std::string wnd_mpr1_;
+
+	std::string curve_id_;
 };
