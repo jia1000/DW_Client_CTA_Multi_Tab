@@ -35,12 +35,12 @@ namespace DW {
 		/// Zoom to specified width and height
 		void ZoomToSize(string control_id, int width, int height);
 		/// Move in current plane
-		void Move(string control_id, float dx, float dy);
-		/// Move to a new position
-		void Move(string control_id, float move_vector[3]);
-		/// Rotate image by a certain angle around normal vector of the current plane
+		void Pan(string control_id, float dx, float dy);
+		/// Move to a new 3d position
+		void MoveTo(string control_id, float move_vector[3]);
+		/// Rotate image by a certain angle in the plane
 		void Roll(string control_id, float angle);
-		/// Rotate image by a certain angle around specified axis
+		/// Rotate image by a certain angle around a specified axis
 		void Rotate(string control_id, float angle, float axis[3]);
 
 		/// Change image to a predefined orientation

@@ -24,6 +24,7 @@ int MPRRenderer::tmp_counter_ = 0;
 
 MPRRenderer::MPRRenderer()
 {
+	render_mode_ = RenderMode::MPR;
 	render_window_ = vtkSmartPointer<vtkRenderWindow>::New();
 	is_first_render_ = true;
 	show_buffer_ = new ShowBuffer();
@@ -31,7 +32,6 @@ MPRRenderer::MPRRenderer()
 	tmp_counter_++;
 	mpr_file_id = tmp_counter_;
 	dump_file_name_ = "D:\\mpr_" + to_string(mpr_file_id) + ".bmp";
-	render_mode_ = RenderMode::MPR;
 }
 MPRRenderer::~MPRRenderer()
 {

@@ -173,6 +173,7 @@ void MPRImaging::Move(float dx, float dy)
 		MPRRenderParam* param = dynamic_cast<MPRRenderParam*>(renderer_->GetRenderParam());
 		if (param){
 
+			// Cache offset number to let opencv generate a new image
 			offset_x_ += dx;
 			offset_y_ += dy;
 			param->SetOffset(offset_x_, offset_y_);
@@ -187,9 +188,13 @@ void MPRImaging::Move(float motionVector[3])
 	if (renderer_){
 		MPRRenderParam* param = dynamic_cast<MPRRenderParam*>(renderer_->GetRenderParam());
 		if (param){
-			/*param->SetOffset(motionVector);
+			
+			// Set image center to a new position
+			param->SetImageCenter(motionVector[0], motionVector[1], motionVector[2]);
+			// Call render to recalculate mpr plane according to the new position
+			renderer_->Render();
 
-			renderer_->Render();*/
+			ConvertToHBITMAP();
 		}
 	}
 }
@@ -201,6 +206,7 @@ void MPRImaging::Rotate(float angle)
 		MPRRenderParam* param = dynamic_cast<MPRRenderParam*>(renderer_->GetRenderParam());
 		if (param){
 
+			// Cache angle number to let opencv generate a new image
 			roll_angle_ += angle;
 
 			ConvertToHBITMAP();
@@ -210,7 +216,7 @@ void MPRImaging::Rotate(float angle)
 
 void MPRImaging::Rotate3D(Vector3f axis, float angle) 
 {
-
+	// Not supported
 }
 
 void MPRImaging::WindowWidthLevel(int width, int level) 

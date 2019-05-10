@@ -136,6 +136,8 @@ void VRImaging::ZoomToFitWindow()
 	renderer_->GetRenderParam()->GetCamera()->Zoom(factor);
 	/// Call render
 	renderer_->Render();
+
+	ConvertToHBITMAP();
 }
 
 void VRImaging::Move(float dx, float dy) 
@@ -175,8 +177,8 @@ void VRImaging::Rotate(float angle)
 	if (renderer_){
 		Camera* camera = renderer_->GetCamera();
 		if (camera){
-			camera->Rotate(angle);
-			renderer_->Render();
+			// Cache angle number to let opencv generate a new image
+			roll_angle_ += angle;
 
 			ConvertToHBITMAP();
 		}
@@ -185,7 +187,37 @@ void VRImaging::Rotate(float angle)
 
 void VRImaging::Rotate3D(Vector3f axis, float angle) 
 {
+	if (renderer_){
+		Camera* camera = renderer_->GetCamera();
+		if (camera){
+			Vector3f axis_x(1.0f, 0.0f, 0.0f);
+			Vector3f axis_y(0.0f, 1.0f, 0.0f);
+			Vector3f axis_z(0.0f, 0.0f, 1.0f);
+			if (axis == axis_x){
+				camera->RotateX(angle);
+			}
+			else if (axis == axis_y){
+				camera->RotateY(angle);
+			}
+			else if (axis == axis_z){
+				//camera->RotateZ(angle);
 
+				// Roll image through opencv
+				roll_angle_ += angle;
+
+				ConvertToHBITMAP();
+
+				return;
+			}
+			else{
+				camera->RotateWXYZ(angle, axis[0], axis[1], axis[2]);
+			}
+
+			renderer_->Render();
+
+			ConvertToHBITMAP();
+		}
+	}
 }
 
 void VRImaging::WindowWidthLevel(int width, int level) 

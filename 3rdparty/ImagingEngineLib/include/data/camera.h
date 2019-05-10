@@ -31,12 +31,18 @@ namespace DW {
 		public:
 			Camera();
 			~Camera();
-			/// 绕着相机向上方向旋转
-			void Rotate(float angle);
-			/// 绕着指定轴旋转
+			///// 绕着平面法向量(平面内)和图像中心点旋转
+			//void Rotate(float angle);
+			///// 绕着平面法向量(平面内)和平面内点旋转
+			//void Rotate(float angle, float x, float y);
+			/// 绕着视图X轴旋转
+			void RotateX(float angle);
+			/// 绕着视图Y轴旋转
+			void RotateY(float angle);
+			/// 绕着视图Z轴旋转
+			void RotateZ(float angle);
+			/// 绕着任意轴旋转
 			void RotateWXYZ(float angle, float x, float y, float z);
-			/// 绕着平面点旋转
-			void Rotate(float x, float y, float angle);
 			/// Zooms in on the scene with the given factor
 			/// @param zoom Factor factor that we want to apply to the camera
 			void Zoom(float factor);

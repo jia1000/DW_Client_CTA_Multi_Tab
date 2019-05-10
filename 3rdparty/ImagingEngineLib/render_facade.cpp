@@ -57,7 +57,7 @@ void RenderFacade::ZoomToSize(string control_id, int width, int height)
 	imaging->ZoomToFitWindow();
 }
 
-void RenderFacade::Move(string control_id, float dx, float dy)
+void RenderFacade::Pan(string control_id, float dx, float dy)
 {
 	IThreedImaging *imaging = GetControl(control_id);
 	if (imaging == NULL) return;
@@ -65,7 +65,7 @@ void RenderFacade::Move(string control_id, float dx, float dy)
 	imaging->Move(dx, dy);
 }
 
-void RenderFacade::Move(string control_id, float move_vector[3])
+void RenderFacade::MoveTo(string control_id, float move_vector[3])
 {
 	IThreedImaging *imaging = GetControl(control_id);
 	if (imaging == NULL) return;
@@ -120,6 +120,7 @@ void RenderFacade::SetOrientation(string control_id, OrientationType ori)
 			MPRRenderParam *param_mpr = dynamic_cast<MPRRenderParam *>(imaging->GetRenderer()->GetRenderParam());
 			if (param_mpr){
 				Vector3f row_vec, col_vec;
+				//Point3f image_center;
 				if (ori == OrientationType::AXIAL){
 					row_vec[0] = 1.0f;
 					row_vec[1] = 0.0f;
@@ -153,7 +154,6 @@ void RenderFacade::SetOrientation(string control_id, OrientationType ori)
 					col_vec[2] = 0.0f;
 				}
 				param_mpr->SetPlaneVector(row_vec, col_vec);
-				param_mpr->SetImageCenter(255,255,0);
 			}
 		}
 		break;
