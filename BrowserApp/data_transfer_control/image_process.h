@@ -62,10 +62,12 @@ protected:
 	bool SaveBitmapToFile(HBITMAP hBitmap, LPCWSTR lpFileName);
 
 	int req_type;
-	std::string m_str_req_type;		// 请求类型，如MPR VR CPR等
-	std::string m_in_image_data;	// 图像原始数据，base64编码
-	std::string m_str_opertation;	// 不同图像操作类型，如， zoom rotate move等
-	std::string m_str_paras;		// 不同图像操作类型的参数，参数含义会有不同。具体需要见产品设计
+	std::string m_key1_str_req_type;	// 请求类型，如MPR VR CPR等
+	std::string m_key2_str_opertation;	// 不同图像操作类型，如， zoom rotate move等
+	std::string m_key3_str_paras;		// 不同图像操作类型的参数，参数含义会有不同。具体需要见产品设计
+	std::string m_key4_in_image_data;	// 图像原始数据，base64编码
+	/// 窗口名称
+	std::string m_wnd_name;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -124,8 +126,7 @@ public:
 private:
 
 	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;
-	/// 窗口名称
-	std::string wnd_mpr1_;
+	
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -139,7 +140,5 @@ public:
 
 private:
 
-	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;
-	/// 窗口名称
-	std::string wnd_vr_;
+	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;	
 };

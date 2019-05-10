@@ -28,8 +28,8 @@ static bool is_create_vr_render  = false;
 
 
 ImageProcessBase::ImageProcessBase(std::string str_paras, std::string& in_image_data)
-	: m_in_image_data(in_image_data)
-	, m_str_paras(str_paras)
+	: m_key4_in_image_data(in_image_data)
+	, m_key3_str_paras(str_paras)
 	, req_type(0)
 {
 }
@@ -52,16 +52,16 @@ void ImageProcessBase::SetKey1_RequestType(std::string str_req_type)
 
 void ImageProcessBase::SetKey2_ImageOperation(std::string str_opertation) 
 { 
-	m_str_opertation = str_opertation; 
+	m_key2_str_opertation = str_opertation; 
 }
 
 void ImageProcessBase::SetKey3_ImageOperationParas(std::string str_paras) 
 { 
-	m_str_paras = str_paras; 
+	m_key3_str_paras = str_paras; 
 }
 void ImageProcessBase::SetKey4_InImageData(std::string& in_image_data) 
 {
-	m_in_image_data = in_image_data;
+	m_key4_in_image_data = in_image_data;
 }
 
 bool ImageProcessBase::Excute(std::string& out_image_data)
@@ -300,11 +300,11 @@ ImageZoomProcess::~ImageZoomProcess()
 
 bool ImageZoomProcess::Excute(std::string& out_image_data)
 {
-	cv::Mat src_image = Base2Mat(m_in_image_data);
+	cv::Mat src_image = Base2Mat(m_key4_in_image_data);
 	//cv::imwrite("C:\\ztest2\\a.png", src_image);
 
 	std::string::size_type sz;
-	double rate = std::stod(m_str_paras, &sz);
+	double rate = std::stod(m_key3_str_paras, &sz);
 
 	// Ëõ·ÅÍ¼Ïñ
 	cv::Mat dst_image;
@@ -327,10 +327,10 @@ ImageRotateProcess::~ImageRotateProcess()
 }
 bool ImageRotateProcess::Excute(std::string& out_image_data)
 {
-	cv::Mat src_image = Base2Mat(m_in_image_data);
+	cv::Mat src_image = Base2Mat(m_key4_in_image_data);
 
 	std::string::size_type sz;
-	double rate = std::stod(m_str_paras, &sz);
+	double rate = std::stod(m_key3_str_paras, &sz);
 	int degree = (int)(rate * 10) % 3;
 
 	// Ðý×ªÍ¼Ïñ
@@ -354,10 +354,10 @@ ImageMoveProcess1::~ImageMoveProcess1()
 }
 bool ImageMoveProcess1::Excute(std::string& out_image_data)
 {
-	cv::Mat src_image = Base2Mat(m_in_image_data);
+	cv::Mat src_image = Base2Mat(m_key4_in_image_data);
 
 	std::string::size_type sz;
-	double move_position = std::stod(m_str_paras, &sz);
+	double move_position = std::stod(m_key3_str_paras, &sz);
 
 	int dx = move_position * 100;
 	int dy = move_position * 100;
@@ -400,10 +400,10 @@ ImageMoveProcess2::~ImageMoveProcess2()
 }
 bool ImageMoveProcess2::Excute(std::string& out_image_data)
 {
-	cv::Mat src_image = Base2Mat(m_in_image_data);
+	cv::Mat src_image = Base2Mat(m_key4_in_image_data);
 
 	std::string::size_type sz;
-	double move_position = std::stod(m_str_paras, &sz);
+	double move_position = std::stod(m_key3_str_paras, &sz);
 
 	int dx = move_position * 100;
 	int dy = move_position * 100;
@@ -440,7 +440,7 @@ ImageMPRProcess::ImageMPRProcess(std::string str_paras, std::string& in_image_da
 	: ImageProcessBase(str_paras, in_image_data)
 	//, reader(NULL)
 {
-	wnd_mpr1_ = "mpr1";
+	m_wnd_name = "mpr1";
 }
 
 ImageMPRProcess::~ImageMPRProcess()
@@ -458,7 +458,7 @@ bool ImageMPRProcess::Excute(std::string& out_image_data)
 	const std::string path_image_data("C:\\ztest2\\dicom_test");
 
 	std::string::size_type sz;
-	double zoom_scale = std::stod(m_str_paras, &sz);
+	double zoom_scale = std::stod(m_key3_str_paras, &sz);
 
 	if (!reader) {
 		reader = new VtkDcmLoader();
@@ -470,29 +470,29 @@ bool ImageMPRProcess::Excute(std::string& out_image_data)
 
 	if (!is_create_mpr_render) {
 		// 2.create all image control
-		RenderSource::Get()->CreateRenderControl(wnd_mpr1_, RenderControlType::MPR);	// only once
+		RenderSource::Get()->CreateRenderControl(m_wnd_name, RenderControlType::MPR);	// only once
 		RenderFacade::Get()->ChangeSeries("series1");	
 		//RenderFacade::Get()->SetOrientation(wnd_mpr1_, AXIAL);
 		//float pos[3] = { 255.0f, 255.0f, 0};
-		RenderFacade::Get()->SetOrientation(wnd_mpr1_, SAGITTAL);
-		RenderFacade::Get()->RenderControl(wnd_mpr1_);
+		RenderFacade::Get()->SetOrientation(m_wnd_name, SAGITTAL);
+		RenderFacade::Get()->RenderControl(m_wnd_name);
 
 		is_create_mpr_render = true;
 	}
 
-	if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_ZOOM) {
-		RenderFacade::Get()->Zoom(wnd_mpr1_, zoom_scale);
-	} else if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_ROTATE) {
-	} else if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_MOVE) {
+	if (m_key2_str_opertation == JSON_VALUE_IMAGE_OPERATION_ZOOM) {
+		RenderFacade::Get()->Zoom(m_wnd_name, zoom_scale);
+	} else if (m_key2_str_opertation == JSON_VALUE_IMAGE_OPERATION_ROTATE) {
+	} else if (m_key2_str_opertation == JSON_VALUE_IMAGE_OPERATION_MOVE) {
 		static int slice_index = 100;
 		slice_index += zoom_scale * 10;
 		float pos[3] = { slice_index, 255.0f, 189.0f};
-		RenderFacade::Get()->MoveTo(wnd_mpr1_, pos);
-	} else if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_SKIP) {
+		RenderFacade::Get()->MoveTo(m_wnd_name, pos);
+	} else if (m_key2_str_opertation == JSON_VALUE_IMAGE_OPERATION_SKIP) {
 	}
 
 	// 3.get imaging object through builder. then go render and get show buffer through imaging object
-	HBITMAP hBitmap = RenderFacade::Get()->GetImageBuffer(wnd_mpr1_);
+	HBITMAP hBitmap = RenderFacade::Get()->GetImageBuffer(m_wnd_name);
 	BITMAP  bitmap ;
 	GetObject (hBitmap, sizeof (BITMAP), &bitmap);
 
@@ -510,7 +510,7 @@ ImageVRProcess::ImageVRProcess(std::string str_paras, std::string& in_image_data
 	: ImageProcessBase(str_paras, in_image_data)
 	//, reader(NULL)
 {
-	wnd_vr_ = "vr";
+	m_wnd_name = "vr";
 }
 
 ImageVRProcess::~ImageVRProcess()
@@ -528,7 +528,7 @@ bool ImageVRProcess::Excute(std::string& out_image_data)
 	const std::string path_image_data("C:\\ztest2\\dicom_test");
 
 	std::string::size_type sz;
-	double zoom_scale = std::stod(m_str_paras, &sz);
+	double zoom_scale = std::stod(m_key3_str_paras, &sz);
 
 	if (!reader) {
 		reader = new VtkDcmLoader();
@@ -541,32 +541,32 @@ bool ImageVRProcess::Excute(std::string& out_image_data)
 
 	if (!is_create_vr_render) {
 		// 2.create all image control
-		RenderSource::Get()->CreateRenderControl(wnd_vr_, RenderControlType::VR);	// only once
+		RenderSource::Get()->CreateRenderControl(m_wnd_name, RenderControlType::VR);	// only once
 		RenderFacade::Get()->ChangeSeries("series1");	
 		//RenderFacade::Get()->SetOrientation(wnd_mpr1_, AXIAL);
 		//float pos[3] = { 255.0f, 255.0f, 0};
-		RenderFacade::Get()->SetOrientation(wnd_vr_, SAGITTAL);
-		RenderFacade::Get()->RenderControl(wnd_vr_);
+		RenderFacade::Get()->SetOrientation(m_wnd_name, SAGITTAL);
+		RenderFacade::Get()->RenderControl(m_wnd_name);
 
 		is_create_vr_render = true;
 	}
 
-	if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_ZOOM) {
-		RenderFacade::Get()->Zoom(wnd_vr_, zoom_scale);
-	} else if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_ROTATE) {
+	if (m_key2_str_opertation == JSON_VALUE_IMAGE_OPERATION_ZOOM) {
+		RenderFacade::Get()->Zoom(m_wnd_name, zoom_scale);
+	} else if (m_key2_str_opertation == JSON_VALUE_IMAGE_OPERATION_ROTATE) {
 		float f[3] = { 0.0,1.0,0.0 };
 		zoom_scale *= 100;
-		RenderFacade::Get()->Rotate(wnd_vr_, zoom_scale, f);
-	} else if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_MOVE) {
+		RenderFacade::Get()->Rotate(m_wnd_name, zoom_scale, f);
+	} else if (m_key2_str_opertation == JSON_VALUE_IMAGE_OPERATION_MOVE) {
 		static int slice_index = 100;
 		slice_index += zoom_scale * 10;
 		float pos[3] = { slice_index, 255.0f, 189.0f};
-		RenderFacade::Get()->MoveTo(wnd_vr_, pos);
-	} else if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_SKIP) {
+		RenderFacade::Get()->MoveTo(m_wnd_name, pos);
+	} else if (m_key2_str_opertation == JSON_VALUE_IMAGE_OPERATION_SKIP) {
 	}
 
 	// 3.get imaging object through builder. then go render and get show buffer through imaging object
-	HBITMAP hBitmap = RenderFacade::Get()->GetImageBuffer(wnd_vr_);
+	HBITMAP hBitmap = RenderFacade::Get()->GetImageBuffer(m_wnd_name);
 	BITMAP  bitmap ;
 	GetObject (hBitmap, sizeof (BITMAP), &bitmap);
 
