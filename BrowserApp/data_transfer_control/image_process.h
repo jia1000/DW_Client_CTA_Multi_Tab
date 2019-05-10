@@ -23,48 +23,67 @@
 
 #include "io/dcm_reader.h"
 
+#define JSON_KEY_REQUEST_TYPE				"request_type"
+#define JSON_KEY_IMAGE_OPERATION			"image_operation"
+#define JSON_KEY_IMAGE_PARAS				"image_paras"
+#define JSON_KEY_IMAGE_DATA					"image_data"
+
+//  第一级 "请求类型"    的枚举
+#define JSON_VALUE_REQUEST_TYPE_MPR			"mpr"
+#define JSON_VALUE_REQUEST_TYPE_VR			"vr"
+#define JSON_VALUE_REQUEST_TYPE_MIP			"mip"
+#define JSON_VALUE_REQUEST_TYPE_CPR			"cpr"
+
+//  第二级 "操作操作类型"的枚举
+#define JSON_VALUE_IMAGE_OPERATION_ZOOM		"zoom"
+#define JSON_VALUE_IMAGE_OPERATION_ROTATE	"rotate"
+#define JSON_VALUE_IMAGE_OPERATION_MOVE		"move"
+#define JSON_VALUE_IMAGE_OPERATION_SKIP		"skip"
+
 class ImageProcessBase
 {
 public:
-	ImageProcessBase();
-	~ImageProcessBase();
+	ImageProcessBase(std::string str_paras, std::string& in_image_data);
+	virtual ~ImageProcessBase();
+
+	void SetRequestType(std::string str_req_type);
+	void SetImageOperationParas(std::string str_paras);
+	void SetInImageData(std::string& in_image_data) ;
 
 	virtual bool Excute(std::string& out_image_data);
-	virtual bool SaveBitmapToFile(HBITMAP hBitmap, LPCWSTR lpFileName);
 
 protected:	
 	// opencv Mat和base64的互转
-	static std::string base64Decode(const char* Data, int DataByte);
-	static std::string base64Encode(const unsigned char* Data, int DataByte);
+	std::string base64Decode(const char* Data, int DataByte);
+	std::string base64Encode(const unsigned char* Data, int DataByte);
 	std::string Mat2Base64(const cv::Mat &img, std::string imgType);
 	cv::Mat Base2Mat(std::string &base64_data);
+	bool SaveBitmapToFile(HBITMAP hBitmap, LPCWSTR lpFileName);
+
+	int req_type;
+	std::string m_str_req_type;		// 请求类型，如MPR VR CPR等
+	std::string m_in_image_data;	// 图像原始数据，base64编码
+	std::string m_str_paras;		// 不同图像操作类型，参数含义会有不同。具体需要见产品设计
 };
 
 //////////////////////////////////////////////////////////////////////////
 class ImageZoomProcess : public ImageProcessBase
 {
 public:
-	ImageZoomProcess(std::string str_rate, std::string& in_image_data);
+	ImageZoomProcess(std::string str_paras, std::string& in_image_data);
 	~ImageZoomProcess();
 
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
-private:
-	std::string m_str_rate;			// 缩放倍率
-	std::string m_in_image_data;	// 图像原始数据，base64编码
 };
 
 //////////////////////////////////////////////////////////////////////////
 class ImageRotateProcess : public ImageProcessBase
 {
 public:
-	ImageRotateProcess(std::string str_angel, std::string& in_image_data);
+	ImageRotateProcess(std::string str_paras, std::string& in_image_data);
 	~ImageRotateProcess();
 
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
-
-private:
-	std::string m_str_angel;		// 旋转角度
-	std::string m_in_image_data;	// 图像原始数据，base64编码
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -72,14 +91,10 @@ private:
 class ImageMoveProcess1 : public ImageProcessBase
 {
 public:
-	ImageMoveProcess1(std::string str_move_position, std::string& in_image_data);
+	ImageMoveProcess1(std::string str_paras, std::string& in_image_data);
 	~ImageMoveProcess1();
 
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
-
-private:
-	std::string m_str_move_position;// 移动像素点
-	std::string m_in_image_data;	// 图像原始数据，base64编码
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -87,42 +102,43 @@ private:
 class ImageMoveProcess2 : public ImageProcessBase
 {
 public:
-	ImageMoveProcess2(std::string str_move_position, std::string& in_image_data);
+	ImageMoveProcess2(std::string str_paras, std::string& in_image_data);
 	~ImageMoveProcess2();
 
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
 
 private:
-	std::string m_str_move_position;// 移动像素点
-	std::string m_in_image_data;	// 图像原始数据，base64编码
 };
 
 //////////////////////////////////////////////////////////////////////////
 // 平移，但会改变图像大小
-class ImageVRZoomProcess : public ImageProcessBase
+class Image3DZoomProcess : public ImageProcessBase
 {
 public:
-	ImageVRZoomProcess(std::string str_skip_slice_index, std::string& in_image_data);
-	~ImageVRZoomProcess();
+	Image3DZoomProcess(std::string str_paras, std::string& in_image_data);
+	~Image3DZoomProcess();
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
 
-	
-
-	void SetSkipIndex(std::string str_skip_slice_index) 
-	{ 
-		m_str_zoom_scale = str_skip_slice_index; 
-	}
-	void SetInImageData(std::string& in_image_data) 
-	{
-		m_in_image_data = in_image_data;
-	}
-
 private:
-	std::string m_str_zoom_scale;	// 切片slice的索引
-	std::string m_in_image_data;		// 图像原始数据，base64编码
 
 	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;
-	DW::IO::IDicomReader* reader;
+	/// 窗口名称
+	std::string wnd_mpr1_;
+
+	std::string curve_id_;
+};
+
+// 平移，但会改变图像大小
+class Image3DRotateProcess : public ImageProcessBase
+{
+public:
+	Image3DRotateProcess(std::string str_paras, std::string& in_image_data);
+	~Image3DRotateProcess();
+	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
+
+private:
+
+	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;
 	/// 窗口名称
 	std::string wnd_mpr1_;
 

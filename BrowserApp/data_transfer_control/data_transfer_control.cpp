@@ -9,23 +9,6 @@
 #include <fstream> // ifstream, ifstream::in
 #include <io.h>
 
-#define JSON_KEY_REQUEST_TYPE				"request_type"
-#define JSON_KEY_IMAGE_OPERATION			"image_operation"
-#define JSON_KEY_IMAGE_PARAS				"image_paras"
-#define JSON_KEY_IMAGE_DATA					"image_data"
-
-//  第一级 "请求类型"    的枚举
-#define JSON_VALUE_REQUEST_TYPE_MPR			"mpr"
-#define JSON_VALUE_REQUEST_TYPE_VR			"vr"
-#define JSON_VALUE_REQUEST_TYPE_MIP			"mip"
-//  第二级 "操作操作类型"的枚举
-#define JSON_VALUE_IMAGE_OPERATION_ZOOM		"zoom"
-#define JSON_VALUE_IMAGE_OPERATION_ROTATE	"rotate"
-#define JSON_VALUE_IMAGE_OPERATION_MOVE		"move"
-#define JSON_VALUE_IMAGE_OPERATION_SKIP		"skip"
-
-
-
 DataTransferController* DataTransferController::instance = nullptr;
 
 DataTransferController* DataTransferController::GetInstance()
@@ -37,6 +20,7 @@ DataTransferController* DataTransferController::GetInstance()
 
 DataTransferController::DataTransferController()
 {
+	image_process = NULL;
 }
 
 DataTransferController::~DataTransferController()
@@ -79,24 +63,21 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 		key_name4 = root[JSON_KEY_IMAGE_DATA].asString();
 	}
 
+	if(image_process) {
+		delete image_process;
+		image_process = NULL;
+	}
+
 	std::string out_image_data = "";
 
-	if (key_name2 == JSON_VALUE_IMAGE_OPERATION_ZOOM) {
-		if (key_name1 == JSON_VALUE_REQUEST_TYPE_VR) {
-			if (!image_slice_skip) {
-				image_slice_skip = new ImageVRZoomProcess(key_name3, key_name4);
-			} else {
-				image_slice_skip->SetSkipIndex(key_name3);
-				image_slice_skip->SetInImageData(key_name4);
-			}
-			image_slice_skip->Excute(out_image_data);
-		} else {
-			ImageZoomProcess image_zoom(key_name3, key_name4);
-			image_zoom.Excute(out_image_data);
-		}
+	if (key_name2 == JSON_VALUE_IMAGE_OPERATION_ZOOM) {		
+		image_process = new Image3DZoomProcess(key_name3, key_name4);
+		image_process->SetRequestType(key_name1);
+		image_process->Excute(out_image_data);
 	} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_ROTATE) {
-		ImageRotateProcess image_zoom(key_name3, key_name4);
-		image_zoom.Excute(out_image_data);
+		image_process = new Image3DRotateProcess(key_name3, key_name4);
+		image_process->SetRequestType(key_name1);
+		image_process->Excute(out_image_data);
 	} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_MOVE) {
 		static bool test_flag = true;
 		if (test_flag) {

@@ -21,13 +21,40 @@ using namespace DW::IMAGE;
 using namespace DW::Render;
 using namespace DW::IO;
 
-ImageProcessBase::ImageProcessBase()
+// only once
+static DW::IO::IDicomReader* reader = NULL;
+
+
+ImageProcessBase::ImageProcessBase(std::string str_paras, std::string& in_image_data)
+	: m_in_image_data(in_image_data)
+	, m_str_paras(str_paras)
+	, req_type(0)
 {
 }
 
 ImageProcessBase::~ImageProcessBase()
 {
 	
+}
+
+void ImageProcessBase::SetRequestType(std::string str_req_type)
+{
+	if (str_req_type == JSON_VALUE_REQUEST_TYPE_MPR) {
+		req_type = (int)RenderControlType::MPR;
+	} else if (str_req_type == JSON_VALUE_REQUEST_TYPE_VR) {
+		req_type = (int)RenderControlType::VR;
+	} else if (str_req_type == JSON_VALUE_REQUEST_TYPE_CPR) {
+		req_type = (int)RenderControlType::STRAIGHTENED_CPR;
+	}
+}
+
+void ImageProcessBase::SetImageOperationParas(std::string str_paras) 
+{ 
+	m_str_paras = str_paras; 
+}
+void ImageProcessBase::SetInImageData(std::string& in_image_data) 
+{
+	m_in_image_data = in_image_data;
 }
 
 bool ImageProcessBase::Excute(std::string& out_image_data)
@@ -255,22 +282,22 @@ bool ImageProcessBase::SaveBitmapToFile(HBITMAP hBitmap, LPCWSTR lpFileName)
 	return true;
 }
 //////////////////////////////////////////////////////////////////////////
-ImageZoomProcess::ImageZoomProcess(std::string str_rate, std::string& in_image_data)
-	: m_str_rate(str_rate)
-	, m_in_image_data(in_image_data)
+ImageZoomProcess::ImageZoomProcess(std::string str_paras, std::string& in_image_data)
+	: ImageProcessBase(str_paras, in_image_data)
 {
 }
 
 ImageZoomProcess::~ImageZoomProcess()
 {
 }
+
 bool ImageZoomProcess::Excute(std::string& out_image_data)
 {
 	cv::Mat src_image = Base2Mat(m_in_image_data);
 	//cv::imwrite("C:\\ztest2\\a.png", src_image);
 
 	std::string::size_type sz;
-	double rate = std::stod(m_str_rate, &sz);
+	double rate = std::stod(m_str_paras, &sz);
 
 	// 缩放图像
 	cv::Mat dst_image;
@@ -283,9 +310,8 @@ bool ImageZoomProcess::Excute(std::string& out_image_data)
 }
 
 //////////////////////////////////////////////////////////////////////////
-ImageRotateProcess::ImageRotateProcess(std::string str_angel, std::string& in_image_data)
-	: m_str_angel(str_angel)
-	, m_in_image_data(in_image_data)
+ImageRotateProcess::ImageRotateProcess(std::string str_paras, std::string& in_image_data)
+	: ImageProcessBase(str_paras, in_image_data)
 {
 }
 
@@ -297,7 +323,7 @@ bool ImageRotateProcess::Excute(std::string& out_image_data)
 	cv::Mat src_image = Base2Mat(m_in_image_data);
 
 	std::string::size_type sz;
-	double rate = std::stod(m_str_angel, &sz);
+	double rate = std::stod(m_str_paras, &sz);
 	int degree = (int)(rate * 10) % 3;
 
 	// 旋转图像
@@ -311,9 +337,8 @@ bool ImageRotateProcess::Excute(std::string& out_image_data)
 }
 
 //////////////////////////////////////////////////////////////////////////
-ImageMoveProcess1::ImageMoveProcess1(std::string str_move_position, std::string& in_image_data)
-	: m_str_move_position(str_move_position)
-	, m_in_image_data(in_image_data)
+ImageMoveProcess1::ImageMoveProcess1(std::string str_paras, std::string& in_image_data)
+	: ImageProcessBase(str_paras, in_image_data)
 {
 }
 
@@ -325,7 +350,7 @@ bool ImageMoveProcess1::Excute(std::string& out_image_data)
 	cv::Mat src_image = Base2Mat(m_in_image_data);
 
 	std::string::size_type sz;
-	double move_position = std::stod(m_str_move_position, &sz);
+	double move_position = std::stod(m_str_paras, &sz);
 
 	int dx = move_position * 100;
 	int dy = move_position * 100;
@@ -358,9 +383,8 @@ bool ImageMoveProcess1::Excute(std::string& out_image_data)
 }
 
 //////////////////////////////////////////////////////////////////////////
-ImageMoveProcess2::ImageMoveProcess2(std::string str_move_position, std::string& in_image_data)
-: m_str_move_position(str_move_position)
-	, m_in_image_data(in_image_data)
+ImageMoveProcess2::ImageMoveProcess2(std::string str_paras, std::string& in_image_data)
+	: ImageProcessBase(str_paras, in_image_data)
 {
 }
 
@@ -372,7 +396,7 @@ bool ImageMoveProcess2::Excute(std::string& out_image_data)
 	cv::Mat src_image = Base2Mat(m_in_image_data);
 
 	std::string::size_type sz;
-	double move_position = std::stod(m_str_move_position, &sz);
+	double move_position = std::stod(m_str_paras, &sz);
 
 	int dx = move_position * 100;
 	int dy = move_position * 100;
@@ -404,19 +428,18 @@ bool ImageMoveProcess2::Excute(std::string& out_image_data)
 	return false;
 }
 //////////////////////////////////////////////////////////////////////////
-ImageVRZoomProcess::ImageVRZoomProcess(std::string str_zoom_scale, std::string& in_image_data)
-	: m_str_zoom_scale(str_zoom_scale)
-	, m_in_image_data(in_image_data)
-	, reader(NULL)
+Image3DZoomProcess::Image3DZoomProcess(std::string str_paras, std::string& in_image_data)
+	: ImageProcessBase(str_paras, in_image_data)
+	//, reader(NULL)
 {
 	wnd_mpr1_ = "mpr1";
 }
 
-ImageVRZoomProcess::~ImageVRZoomProcess()
+Image3DZoomProcess::~Image3DZoomProcess()
 {
 }
 
-bool ImageVRZoomProcess::Excute(std::string& out_image_data)
+bool Image3DZoomProcess::Excute(std::string& out_image_data)
 {
 	// 暂时，先从本地读取Dicom文件
 	//GNC::GCS::StudyContextMy* my = new GNC::GCS::StudyContextMy();
@@ -427,19 +450,19 @@ bool ImageVRZoomProcess::Excute(std::string& out_image_data)
 	const std::string path_image_data("C:\\ztest2\\dicom_test");
 
 	std::string::size_type sz;
-	double zoom_scale = std::stod(m_str_zoom_scale, &sz);
-
+	double zoom_scale = std::stod(m_str_paras, &sz);
 
 	if (!reader) {
 		reader = new VtkDcmLoader();
-		reader->LoadDirectory(path_image_data.c_str());
+		reader->LoadDirectory(path_image_data.c_str());	// only once
 	
 		VolData* vol_data = reader->GetData();
 		if (vol_data == NULL) return false;
 		ImageDataSource::Get()->AddVolData("series1", vol_data);
 	
 		// 2.create all image control
-		RenderSource::Get()->CreateRenderControl(wnd_mpr1_, RenderControlType::VR);	
+		RenderSource::Get()->CreateRenderControl(wnd_mpr1_, (RenderControlType)req_type);	// only once
+
 		RenderFacade::Get()->ChangeSeries("series1");	
 		RenderFacade::Get()->SetOrientation(wnd_mpr1_, SAGITTAL);
 		RenderFacade::Get()->RenderControl(wnd_mpr1_);
@@ -456,6 +479,61 @@ bool ImageVRZoomProcess::Excute(std::string& out_image_data)
 	std::string  s_screenshot_file = "C:\\ztest2\\haha1111.bmp";
 	SaveBitmapToFile(hBitmap, ws_screenshot_file.c_str());
 	
+	cv::Mat src = cv::imread(s_screenshot_file.c_str());
+	out_image_data = Mat2Base64(src, "bmp");
+
+	return true;
+}
+
+/////////////////////////////////////////////////////////////////////////
+Image3DRotateProcess::Image3DRotateProcess(std::string str_paras, std::string& in_image_data)
+	: ImageProcessBase(str_paras, in_image_data)
+{
+	wnd_mpr1_ = "mpr1";
+}
+
+Image3DRotateProcess::~Image3DRotateProcess()
+{
+}
+
+bool Image3DRotateProcess::Excute(std::string& out_image_data)
+{
+	// 1.read dcm image from directory
+	const std::string path_image_data("C:\\ztest2\\dicom_test");
+
+	std::string::size_type sz;
+	double zoom_scale = std::stod(m_str_paras, &sz);
+
+
+	if (!reader) {
+		reader = new VtkDcmLoader();
+		reader->LoadDirectory(path_image_data.c_str());	// only once
+
+		VolData* vol_data = reader->GetData();
+		if (vol_data == NULL) return false;
+		ImageDataSource::Get()->AddVolData("series1", vol_data);
+
+		// 2.create all image control
+		RenderSource::Get()->CreateRenderControl(wnd_mpr1_, (RenderControlType)req_type);	// only once
+		
+		RenderFacade::Get()->ChangeSeries("series1");	
+		RenderFacade::Get()->SetOrientation(wnd_mpr1_, SAGITTAL);
+		RenderFacade::Get()->RenderControl(wnd_mpr1_);
+	}
+
+	float f[3] = { 0.0,1.0,0.0 };
+	zoom_scale *= 100;
+	RenderFacade::Get()->Rotate(wnd_mpr1_, zoom_scale, f);
+
+	// 3.get imaging object through builder. then go render and get show buffer through imaging object
+	HBITMAP hBitmap = RenderFacade::Get()->GetImageBuffer(wnd_mpr1_);
+	BITMAP  bitmap ;
+	GetObject (hBitmap, sizeof (BITMAP), &bitmap);
+
+	std::wstring ws_screenshot_file = L"C:\\ztest2\\haha1111.bmp";
+	std::string  s_screenshot_file = "C:\\ztest2\\haha1111.bmp";
+	SaveBitmapToFile(hBitmap, ws_screenshot_file.c_str());
+
 	cv::Mat src = cv::imread(s_screenshot_file.c_str());
 	out_image_data = Mat2Base64(src, "bmp");
 

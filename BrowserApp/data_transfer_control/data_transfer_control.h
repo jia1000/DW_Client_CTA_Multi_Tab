@@ -22,7 +22,7 @@
 #include "opencv2/opencv.hpp"
 #include <iostream> 
 
-class ImageVRZoomProcess;
+class ImageProcessBase;
 
 class DataTransferController
 {
@@ -37,5 +37,5 @@ private:
 	DataTransferController();
 	static DataTransferController* instance;
 	
-	ImageVRZoomProcess* image_slice_skip;
+	ImageProcessBase* image_process;
 };
