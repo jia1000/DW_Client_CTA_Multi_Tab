@@ -70,26 +70,31 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 
 	std::string out_image_data = "";
 
-	if (key_name2 == JSON_VALUE_IMAGE_OPERATION_ZOOM) {		
-		image_process = new Image3DZoomProcess(key_name3, key_name4);
-		image_process->SetRequestType(key_name1);
+	if (key_name1 == JSON_VALUE_REQUEST_TYPE_MPR) {
+		image_process = new ImageMPRProcess(key_name3, key_name4);
+		image_process->SetKey2_ImageOperation(key_name2);
 		image_process->Excute(out_image_data);
-	} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_ROTATE) {
-		image_process = new Image3DRotateProcess(key_name3, key_name4);
-		image_process->SetRequestType(key_name1);
+	} else if (key_name1 == JSON_VALUE_REQUEST_TYPE_VR) {
+		image_process = new ImageVRProcess(key_name3, key_name4);
+		image_process->SetKey2_ImageOperation(key_name2);
 		image_process->Excute(out_image_data);
-	} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_MOVE) {
-		static bool test_flag = true;
-		if (test_flag) {
-			ImageMoveProcess1 image_process(key_name3, key_name4);
-			image_process.Excute(out_image_data);
-		} else {
-			ImageMoveProcess2 image_zoom(key_name3, key_name4);
-			image_zoom.Excute(out_image_data);
+	} 
+	else {
+		if (key_name2 == JSON_VALUE_IMAGE_OPERATION_ZOOM) {	
+		} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_ROTATE) {
+		} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_MOVE) {
+			static bool test_flag = true;
+			if (test_flag) {
+				ImageMoveProcess1 image_process(key_name3, key_name4);
+				image_process.Excute(out_image_data);
+			} else {
+				ImageMoveProcess2 image_zoom(key_name3, key_name4);
+				image_zoom.Excute(out_image_data);
+
+			}
+		} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_SKIP) {
 
 		}
-	} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_SKIP) {
-		
 	}
 
 	// 模拟再发送给浏览器

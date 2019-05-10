@@ -46,9 +46,10 @@ public:
 	ImageProcessBase(std::string str_paras, std::string& in_image_data);
 	virtual ~ImageProcessBase();
 
-	void SetRequestType(std::string str_req_type);
-	void SetImageOperationParas(std::string str_paras);
-	void SetInImageData(std::string& in_image_data) ;
+	void SetKey1_RequestType(std::string str_req_type);
+	void SetKey2_ImageOperation(std::string str_opertation);
+	void SetKey3_ImageOperationParas(std::string str_paras);
+	void SetKey4_InImageData(std::string& in_image_data) ;
 
 	virtual bool Excute(std::string& out_image_data);
 
@@ -63,7 +64,8 @@ protected:
 	int req_type;
 	std::string m_str_req_type;		// 请求类型，如MPR VR CPR等
 	std::string m_in_image_data;	// 图像原始数据，base64编码
-	std::string m_str_paras;		// 不同图像操作类型，参数含义会有不同。具体需要见产品设计
+	std::string m_str_opertation;	// 不同图像操作类型，如， zoom rotate move等
+	std::string m_str_paras;		// 不同图像操作类型的参数，参数含义会有不同。具体需要见产品设计
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -111,12 +113,12 @@ private:
 };
 
 //////////////////////////////////////////////////////////////////////////
-// 平移，但会改变图像大小
-class Image3DZoomProcess : public ImageProcessBase
+// MPR 请求类型的处理
+class ImageMPRProcess : public ImageProcessBase
 {
 public:
-	Image3DZoomProcess(std::string str_paras, std::string& in_image_data);
-	~Image3DZoomProcess();
+	ImageMPRProcess(std::string str_paras, std::string& in_image_data);
+	~ImageMPRProcess();
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
 
 private:
@@ -124,23 +126,20 @@ private:
 	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;
 	/// 窗口名称
 	std::string wnd_mpr1_;
-
-	std::string curve_id_;
 };
 
-// 平移，但会改变图像大小
-class Image3DRotateProcess : public ImageProcessBase
+//////////////////////////////////////////////////////////////////////////
+// VR 请求类型的处理
+class ImageVRProcess : public ImageProcessBase
 {
 public:
-	Image3DRotateProcess(std::string str_paras, std::string& in_image_data);
-	~Image3DRotateProcess();
+	ImageVRProcess(std::string str_paras, std::string& in_image_data);
+	~ImageVRProcess();
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
 
 private:
 
 	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;
 	/// 窗口名称
-	std::string wnd_mpr1_;
-
-	std::string curve_id_;
+	std::string wnd_vr_;
 };

@@ -23,6 +23,8 @@ using namespace DW::IO;
 
 // only once
 static DW::IO::IDicomReader* reader = NULL;
+static bool is_create_mpr_render = false;
+static bool is_create_vr_render  = false;
 
 
 ImageProcessBase::ImageProcessBase(std::string str_paras, std::string& in_image_data)
@@ -37,7 +39,7 @@ ImageProcessBase::~ImageProcessBase()
 	
 }
 
-void ImageProcessBase::SetRequestType(std::string str_req_type)
+void ImageProcessBase::SetKey1_RequestType(std::string str_req_type)
 {
 	if (str_req_type == JSON_VALUE_REQUEST_TYPE_MPR) {
 		req_type = (int)RenderControlType::MPR;
@@ -48,11 +50,16 @@ void ImageProcessBase::SetRequestType(std::string str_req_type)
 	}
 }
 
-void ImageProcessBase::SetImageOperationParas(std::string str_paras) 
+void ImageProcessBase::SetKey2_ImageOperation(std::string str_opertation) 
+{ 
+	m_str_opertation = str_opertation; 
+}
+
+void ImageProcessBase::SetKey3_ImageOperationParas(std::string str_paras) 
 { 
 	m_str_paras = str_paras; 
 }
-void ImageProcessBase::SetInImageData(std::string& in_image_data) 
+void ImageProcessBase::SetKey4_InImageData(std::string& in_image_data) 
 {
 	m_in_image_data = in_image_data;
 }
@@ -427,25 +434,26 @@ bool ImageMoveProcess2::Excute(std::string& out_image_data)
 
 	return false;
 }
+
 //////////////////////////////////////////////////////////////////////////
-Image3DZoomProcess::Image3DZoomProcess(std::string str_paras, std::string& in_image_data)
+ImageMPRProcess::ImageMPRProcess(std::string str_paras, std::string& in_image_data)
 	: ImageProcessBase(str_paras, in_image_data)
 	//, reader(NULL)
 {
 	wnd_mpr1_ = "mpr1";
 }
 
-Image3DZoomProcess::~Image3DZoomProcess()
+ImageMPRProcess::~ImageMPRProcess()
 {
 }
 
-bool Image3DZoomProcess::Excute(std::string& out_image_data)
+bool ImageMPRProcess::Excute(std::string& out_image_data)
 {
 	// 暂时，先从本地读取Dicom文件
 	//GNC::GCS::StudyContextMy* my = new GNC::GCS::StudyContextMy();
 	//const std::string path_file(""C:\\ztest2\\dicom_test\\413");
 	//my->ReadDicomFile(path_file);
-	
+
 	// 1.read dcm image from directory
 	const std::string path_image_data("C:\\ztest2\\dicom_test");
 
@@ -455,55 +463,72 @@ bool Image3DZoomProcess::Excute(std::string& out_image_data)
 	if (!reader) {
 		reader = new VtkDcmLoader();
 		reader->LoadDirectory(path_image_data.c_str());	// only once
-	
 		VolData* vol_data = reader->GetData();
 		if (vol_data == NULL) return false;
 		ImageDataSource::Get()->AddVolData("series1", vol_data);
-	
-		// 2.create all image control
-		RenderSource::Get()->CreateRenderControl(wnd_mpr1_, (RenderControlType)req_type);	// only once
+	}
 
+	if (!is_create_mpr_render) {
+		// 2.create all image control
+		RenderSource::Get()->CreateRenderControl(wnd_mpr1_, RenderControlType::MPR);	// only once
 		RenderFacade::Get()->ChangeSeries("series1");	
+		//RenderFacade::Get()->SetOrientation(wnd_mpr1_, AXIAL);
+		//float pos[3] = { 255.0f, 255.0f, 0};
 		RenderFacade::Get()->SetOrientation(wnd_mpr1_, SAGITTAL);
 		RenderFacade::Get()->RenderControl(wnd_mpr1_);
+
+		is_create_mpr_render = true;
 	}
-	
-	RenderFacade::Get()->Zoom(wnd_mpr1_, zoom_scale);
+
+	if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_ZOOM) {
+		RenderFacade::Get()->Zoom(wnd_mpr1_, zoom_scale);
+	} else if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_ROTATE) {
+	} else if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_MOVE) {
+		static int slice_index = 100;
+		slice_index += zoom_scale * 10;
+		float pos[3] = { slice_index, 255.0f, 189.0f};
+		RenderFacade::Get()->MoveTo(wnd_mpr1_, pos);
+	} else if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_SKIP) {
+	}
 
 	// 3.get imaging object through builder. then go render and get show buffer through imaging object
 	HBITMAP hBitmap = RenderFacade::Get()->GetImageBuffer(wnd_mpr1_);
 	BITMAP  bitmap ;
 	GetObject (hBitmap, sizeof (BITMAP), &bitmap);
-	
+
 	std::wstring ws_screenshot_file = L"C:\\ztest2\\haha1111.bmp";
 	std::string  s_screenshot_file = "C:\\ztest2\\haha1111.bmp";
 	SaveBitmapToFile(hBitmap, ws_screenshot_file.c_str());
-	
+
 	cv::Mat src = cv::imread(s_screenshot_file.c_str());
 	out_image_data = Mat2Base64(src, "bmp");
 
 	return true;
 }
-
-/////////////////////////////////////////////////////////////////////////
-Image3DRotateProcess::Image3DRotateProcess(std::string str_paras, std::string& in_image_data)
+//////////////////////////////////////////////////////////////////////////
+ImageVRProcess::ImageVRProcess(std::string str_paras, std::string& in_image_data)
 	: ImageProcessBase(str_paras, in_image_data)
+	//, reader(NULL)
 {
-	wnd_mpr1_ = "mpr1";
+	wnd_vr_ = "vr";
 }
 
-Image3DRotateProcess::~Image3DRotateProcess()
+ImageVRProcess::~ImageVRProcess()
 {
 }
 
-bool Image3DRotateProcess::Excute(std::string& out_image_data)
+bool ImageVRProcess::Excute(std::string& out_image_data)
 {
+	// 暂时，先从本地读取Dicom文件
+	//GNC::GCS::StudyContextMy* my = new GNC::GCS::StudyContextMy();
+	//const std::string path_file(""C:\\ztest2\\dicom_test\\413");
+	//my->ReadDicomFile(path_file);
+
 	// 1.read dcm image from directory
 	const std::string path_image_data("C:\\ztest2\\dicom_test");
 
 	std::string::size_type sz;
 	double zoom_scale = std::stod(m_str_paras, &sz);
-
 
 	if (!reader) {
 		reader = new VtkDcmLoader();
@@ -512,21 +537,36 @@ bool Image3DRotateProcess::Excute(std::string& out_image_data)
 		VolData* vol_data = reader->GetData();
 		if (vol_data == NULL) return false;
 		ImageDataSource::Get()->AddVolData("series1", vol_data);
-
-		// 2.create all image control
-		RenderSource::Get()->CreateRenderControl(wnd_mpr1_, (RenderControlType)req_type);	// only once
-		
-		RenderFacade::Get()->ChangeSeries("series1");	
-		RenderFacade::Get()->SetOrientation(wnd_mpr1_, SAGITTAL);
-		RenderFacade::Get()->RenderControl(wnd_mpr1_);
 	}
 
-	float f[3] = { 0.0,1.0,0.0 };
-	zoom_scale *= 100;
-	RenderFacade::Get()->Rotate(wnd_mpr1_, zoom_scale, f);
+	if (!is_create_vr_render) {
+		// 2.create all image control
+		RenderSource::Get()->CreateRenderControl(wnd_vr_, RenderControlType::VR);	// only once
+		RenderFacade::Get()->ChangeSeries("series1");	
+		//RenderFacade::Get()->SetOrientation(wnd_mpr1_, AXIAL);
+		//float pos[3] = { 255.0f, 255.0f, 0};
+		RenderFacade::Get()->SetOrientation(wnd_vr_, SAGITTAL);
+		RenderFacade::Get()->RenderControl(wnd_vr_);
+
+		is_create_vr_render = true;
+	}
+
+	if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_ZOOM) {
+		RenderFacade::Get()->Zoom(wnd_vr_, zoom_scale);
+	} else if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_ROTATE) {
+		float f[3] = { 0.0,1.0,0.0 };
+		zoom_scale *= 100;
+		RenderFacade::Get()->Rotate(wnd_vr_, zoom_scale, f);
+	} else if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_MOVE) {
+		static int slice_index = 100;
+		slice_index += zoom_scale * 10;
+		float pos[3] = { slice_index, 255.0f, 189.0f};
+		RenderFacade::Get()->MoveTo(wnd_vr_, pos);
+	} else if (m_str_opertation == JSON_VALUE_IMAGE_OPERATION_SKIP) {
+	}
 
 	// 3.get imaging object through builder. then go render and get show buffer through imaging object
-	HBITMAP hBitmap = RenderFacade::Get()->GetImageBuffer(wnd_mpr1_);
+	HBITMAP hBitmap = RenderFacade::Get()->GetImageBuffer(wnd_vr_);
 	BITMAP  bitmap ;
 	GetObject (hBitmap, sizeof (BITMAP), &bitmap);
 
