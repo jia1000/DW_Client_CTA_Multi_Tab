@@ -71,50 +71,6 @@ protected:
 };
 
 //////////////////////////////////////////////////////////////////////////
-class ImageZoomProcess : public ImageProcessBase
-{
-public:
-	ImageZoomProcess(std::string str_paras, std::string& in_image_data);
-	~ImageZoomProcess();
-
-	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
-};
-
-//////////////////////////////////////////////////////////////////////////
-class ImageRotateProcess : public ImageProcessBase
-{
-public:
-	ImageRotateProcess(std::string str_paras, std::string& in_image_data);
-	~ImageRotateProcess();
-
-	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
-};
-
-//////////////////////////////////////////////////////////////////////////
-// 平移，大小不变
-class ImageMoveProcess1 : public ImageProcessBase
-{
-public:
-	ImageMoveProcess1(std::string str_paras, std::string& in_image_data);
-	~ImageMoveProcess1();
-
-	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
-};
-
-//////////////////////////////////////////////////////////////////////////
-// 平移，但会改变图像大小
-class ImageMoveProcess2 : public ImageProcessBase
-{
-public:
-	ImageMoveProcess2(std::string str_paras, std::string& in_image_data);
-	~ImageMoveProcess2();
-
-	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
-
-private:
-};
-
-//////////////////////////////////////////////////////////////////////////
 // MPR 请求类型的处理
 class ImageMPRProcess : public ImageProcessBase
 {

@@ -80,21 +80,7 @@ bool DataTransferController::ParseImageOperationData(std::string json_data, std:
 		image_process->Excute(out_image_data);
 	} 
 	else {
-		if (key_name2 == JSON_VALUE_IMAGE_OPERATION_ZOOM) {	
-		} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_ROTATE) {
-		} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_MOVE) {
-			static bool test_flag = true;
-			if (test_flag) {
-				ImageMoveProcess1 image_process(key_name3, key_name4);
-				image_process.Excute(out_image_data);
-			} else {
-				ImageMoveProcess2 image_zoom(key_name3, key_name4);
-				image_zoom.Excute(out_image_data);
-
-			}
-		} else if (key_name2 == JSON_VALUE_IMAGE_OPERATION_SKIP) {
-
-		}
+		
 	}
 
 	// 模拟再发送给浏览器
