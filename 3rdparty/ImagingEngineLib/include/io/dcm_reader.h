@@ -24,8 +24,10 @@ namespace DW {
 		public:
 			virtual bool LoadDirectory(const char* dir) = 0;
 			virtual bool LoadFiles(vector<const char*> files) = 0;
+			virtual bool LoadVolumeMask(const char* file) = 0;
 			virtual VolData* GetData() = 0;
 			virtual void Close() = 0;
 		};
+		
 	}
 }

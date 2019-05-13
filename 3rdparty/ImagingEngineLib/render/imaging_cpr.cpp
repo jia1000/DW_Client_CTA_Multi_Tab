@@ -202,6 +202,8 @@ void CPRImaging::Rotate3D(Vector3f /*axis*/, float angle)
 			param->SetAngle(rotation_angle_);
 			//}
 			renderer_->Render();
+
+			ConvertToHBITMAP();
 		}
 	}
 }

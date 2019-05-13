@@ -33,6 +33,7 @@
 #include <vtkVolumeProperty.h>
 #include <vtkDICOMImageReader.h>
 #include <vtkCallbackCommand.h>
+#include "tools/vtk_image_data_creator.h"
 
 using namespace DW::Render;
 
@@ -144,10 +145,82 @@ ShowBuffer* VolumeRenderer::GetShowBuffer()
 void VolumeRenderer::SetData(VolData* data)
 {
 	volume_data_ = data;
-	/// Workaround for vtkSmartVolumeMapper bug (https://gitlab.kitware.com/vtk/vtk/issues/17328)
+	// Workaround for vtkSmartVolumeMapper bug (https://gitlab.kitware.com/vtk/vtk/issues/17328)
 	volume_data_->GetPixelData()->GetVtkImageData()->Modified();
+	vtkImageData *image_data = volume_data_->GetPixelData()->GetVtkImageData();
+	// 在此处将mask转换为vtkImageData格式
+	UNITMARK3D *mark = volume_data_->GetMark();
+
+	// 输入到Mapper里的vtkImageData
+	vtkImageData *mapper_input_data = vtkImageData::New();
+	if (mark){
+
+		if (vtk_mask_filter_){
+			vtk_mask_filter_->Delete();
+		}
+		vtk_mask_filter_ = vtkSmartPointer<vtkImageMask>::New();
+
+		int dims[3];
+		volume_data_->GetPixelData()->GetDimensions(dims);
+		double spacings[3];
+		volume_data_->GetPixelData()->GetSpacing(spacings);
+
+		//////////////////////////////////////////////////////////////////////////
+		/// Using Creator to generate vtkImageData
+		//double origins[3] = {0.0, 0.0, 0.0};
+		//VtkImageDataCreator imageDataCreator;
+		//imageDataCreator.SetOrigin(origins);
+		//imageDataCreator.SetSpacing(spacings);
+		//imageDataCreator.SetDimensions(dims);
+		//imageDataCreator.SetNumberOfComponents(1);
+		//input_mark_data_ = imageDataCreator.Create(mark);
+		//
+		//vtk_mask_filter_->SetInputData(0, image_data);
+		//vtk_mask_filter_->SetInputData(1, input_mark_data_);
+		//vtk_mask_filter_->SetMaskedOutputValue(-1024, -1024, -1024);
+		//vtk_mask_filter_->Update();
+		//
+		////// Input image data is useless now
+		////image_data->Delete();
+		////image_data = NULL;
+		//
+		//mapper_input_data->DeepCopy(vtk_mask_filter_->GetOutput());
+		//
+		//vtk_mask_filter_->Delete();
+		/// END
+		//////////////////////////////////////////////////////////////////////////
+
+		//////////////////////////////////////////////////////////////////////////
+		// Set volume mask data
+		vtkSmartPointer<vtkImageImport> image_import = vtkSmartPointer<vtkImageImport>::New();
+		image_import->SetDataSpacing(spacings);
+		image_import->SetDataOrigin(0, 0, 0);
+		image_import->SetWholeExtent(0, dims[0] - 1, 0, dims[1] - 1, 0, dims[2] - 1);
+		image_import->SetDataExtentToWholeExtent();
+		image_import->SetDataScalarTypeToUnsignedChar();
+		image_import->SetNumberOfScalarComponents(1);
+		image_import->SetImportVoidPointer(mark, 1);
+		image_import->Update();
+		input_mark_data_ = image_import->GetOutput();
+
+		int extent[6];
+		input_mark_data_->GetExtent(extent);
+		
+		vtk_mask_filter_->SetInputData(0, image_data);
+		vtk_mask_filter_->SetInputData(1, input_mark_data_);
+		vtk_mask_filter_->SetMaskedOutputValue(-1024, -1024, -1024);
+		vtk_mask_filter_->Update();
+
+		mapper_input_data->ShallowCopy(vtk_mask_filter_->GetOutput());
+		//////////////////////////////////////////////////////////////////////////
+	}
+	else{
+		mapper_input_data->ShallowCopy(image_data);
+	}
+	
+
 #if VTK_MAJOR_VERSION > 5
-	vtk_volume_mapper_->SetInputData(volume_data_->GetPixelData()->GetVtkImageData());
+	vtk_volume_mapper_->SetInputData(mapper_input_data);
 	/// force the mapper to compute a sample distance based on data spacing
 	vtk_volume_mapper_->SetSampleDistance(-1.0);
 #else

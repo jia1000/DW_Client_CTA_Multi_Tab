@@ -36,6 +36,8 @@ namespace DW {
 			void SetBitsStored(BYTE bits);
 			void SetData(UNITDATA3D* data);
 			void SetMark(UNITMARK3D* mark);
+			UNITMARK3D *GetMark() { return series_mark_; }
+
 			int GetSliceWidth() { return slice_width_; }
 			void SetSliceWidth(int width);
 			int GetSliceHeight() { return slice_height_; }
@@ -69,6 +71,7 @@ namespace DW {
 			//UNITDATA3D* series_data_;			//3d pixel data of the series
 			UNITMARK3D* series_mark_;			//3d mark data of the series
 			//vtkImageData* vtk_series_data;	//3d data with vtkImageData format 
+			vtkSmartPointer<vtkImageData> vtk_series_mark_;
 			int slice_width_;					//value stored in tag Columns(0028,0011)
 			int slice_height_;					//value stored in tag Rows(0028,0010)
 			int slice_count_;					//slice count in the series

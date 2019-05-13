@@ -190,6 +190,7 @@
     <ClCompile Include="data_source.cpp" />
     <ClCompile Include="filter\frenet_serret_frame.cpp" />
     <ClCompile Include="filter\spline_driven_image_slicer.cpp" />
+    <ClCompile Include="io\nii_loader.cpp" />
     <ClCompile Include="processing\image_process.cpp" />
     <ClCompile Include="render\imaging_cpr.cpp" />
     <ClCompile Include="render\imaging_mpr.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="include\filter\frenet_serret_frame.h" />
     <ClInclude Include="include\filter\spline_driven_image_slicer.h" />
     <ClInclude Include="include\annotation_facade.h" />
+    <ClInclude Include="include\io\nii_loader.h" />
     <ClInclude Include="include\processing\image_process.h" />
     <ClInclude Include="include\render_source.h" />
     <ClInclude Include="include\io\dcm_reader.h" />

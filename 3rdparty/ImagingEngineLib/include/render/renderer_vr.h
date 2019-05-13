@@ -79,7 +79,12 @@ namespace DW {
 
 		protected:
 			bool is_off_screen_rendering_;
+			/// 输出图像的vtkImageData格式
 			vtkSmartPointer<vtkImageData> vtk_image_data_;
+			/// 输入MASK的vtkImageData格式
+			vtkSmartPointer<vtkImageData> input_mark_data_;
+			/// vtkImageMask
+			vtkSmartPointer<vtkImageMask> vtk_mask_filter_;
 			vtkSmartPointer<vtkRenderWindow> vtk_render_window_;
 			vtkSmartPointer<vtkRenderer> vtk_renderer_;
 			/// The main mapper for volume rendering.
