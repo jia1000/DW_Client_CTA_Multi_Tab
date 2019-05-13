@@ -433,3 +433,19 @@ bool ImageVRProcess::Excute(std::string& out_image_data)
 
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
+ImageCPRProcess::ImageCPRProcess(std::string str_paras, std::string& in_image_data)
+	: ImageProcessBase(str_paras, in_image_data)
+{
+	m_wnd_name = "cpr";
+}
+
+ImageCPRProcess::~ImageCPRProcess()
+{
+}
+
+bool ImageCPRProcess::Excute(std::string& out_image_data)
+{	
+	return true;
+}

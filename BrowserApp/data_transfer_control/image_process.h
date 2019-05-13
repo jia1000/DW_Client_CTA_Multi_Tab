@@ -80,9 +80,7 @@ public:
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
 
 private:
-
-	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;
-	
+	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;	
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -95,6 +93,17 @@ public:
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
 
 private:
-
 	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;	
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CPR 请求类型的处理
+class ImageCPRProcess : public ImageProcessBase
+{
+public:
+	ImageCPRProcess(std::string str_paras, std::string& in_image_data);
+	~ImageCPRProcess();
+	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
+
+private:
 };
