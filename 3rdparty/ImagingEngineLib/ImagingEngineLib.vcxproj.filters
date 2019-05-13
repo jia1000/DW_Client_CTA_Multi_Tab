@@ -197,6 +197,9 @@
     <ClCompile Include="processing\image_process.cpp">
       <Filter>processing</Filter>
     </ClCompile>
+    <ClCompile Include="io\nii_loader.cpp">
+      <Filter>io</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\data\data_definition.h">
@@ -441,6 +444,9 @@
     </ClInclude>
     <ClInclude Include="include\processing\image_process.h">
       <Filter>__include\processing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\io\nii_loader.h">
+      <Filter>__include\io</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

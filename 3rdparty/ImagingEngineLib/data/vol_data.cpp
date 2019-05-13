@@ -1,5 +1,6 @@
 
 #include "vol_data.h"
+#include "tools/vtk_image_data_creator.h"
 
 using namespace DW::IMAGE;
 
@@ -37,6 +38,38 @@ void VolData::SetBitsStored(BYTE bits)
 void VolData::SetMark(UNITMARK3D* mark)
 {
 	series_mark_ = mark;
+
+	//if (series_mark_){
+	//	int dims[3];
+	//	pixel_data_->GetDimensions(dims);
+	//	double spacings[3];
+	//	pixel_data_->GetSpacing(spacings);
+
+	//	// Set volume mask data
+	//	//vtkSmartPointer<vtkImageImport> image_import = vtkSmartPointer<vtkImageImport>::New();
+	//	//image_import->SetDataSpacing(spacings);
+	//	//image_import->SetDataOrigin(0, 0, 0);
+	//	//image_import->SetWholeExtent(0, dims[0], 0, dims[1], 0, dims[2]);
+	//	//image_import->SetDataExtentToWholeExtent();
+	//	//image_import->SetDataScalarTypeToUnsignedChar();
+	//	//image_import->SetNumberOfScalarComponents(1);
+	//	//image_import->SetImportVoidPointer(mark);
+	//	//image_import->Update();
+	//	//vtk_series_mark_ = image_import->GetOutput();
+
+
+	//	double origins[3] = {0.0, 0.0, 0.0};
+	//	VtkImageDataCreator imageDataCreator;
+	//	imageDataCreator.SetOrigin(origins);
+	//	imageDataCreator.SetSpacing(spacings);
+	//	imageDataCreator.SetDimensions(dims);
+	//	imageDataCreator.SetNumberOfComponents(1);
+	//	vtk_series_mark_ = imageDataCreator.Create(mark);
+
+	//	delete series_mark_;
+	//	series_mark_ = NULL;
+
+	//}
 }
 
 void VolData::SetSliceWidth(int width)

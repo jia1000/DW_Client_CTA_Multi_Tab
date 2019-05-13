@@ -73,3 +73,5 @@
 #include <vtkImageSlabReslice.h>
 #include <vtkJPEGWriter.h>
 #include <vtkBMPWriter.h>
+#include <vtkImageImport.h>
+#include <vtkImageMask.h>

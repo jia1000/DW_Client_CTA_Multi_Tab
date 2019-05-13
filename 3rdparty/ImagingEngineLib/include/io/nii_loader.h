@@ -1,9 +1,9 @@
 /*=========================================================================
 
   Program:   ImagingEngine
-  Module:    data_loader.h
+  Module:    nii_loader.h
   author: 	 zhangjian
-  Brief:	 ”√vtkDICOMImageReader¿¥∂¡»°dicomÕºœÒ
+  Brief:	 
 
 =========================================================================*/
 #pragma once
@@ -13,30 +13,41 @@
 #include "vol_data.h"
 #include "io/dcm_reader.h"
 
-using namespace DW::IMAGE;
 using namespace std;
 
 namespace DW {
-	namespace IO{
+	namespace IO {
 
-		class VtkDcmLoader : public IDicomReader
+		class NiiImageLoader : public IDicomReader
 		{
 		public:
-			VtkDcmLoader();
-			~VtkDcmLoader();
+			NiiImageLoader();
+			virtual ~NiiImageLoader();
+
+			/// IDicomReader implementation
 			bool LoadDirectory(const char* dir) override;
 			bool LoadFiles(vector<const char*> files) override;
-			bool LoadVolumeMask(const char* file) override { return false; }
+			bool LoadVolumeMask(const char* file) override;
 			VolData* GetData() override;
 			void Close() override;
-		protected: 
-			UNITDATA3D* buffer_data_;			//pixel data for display
 
-		private:
+		protected: 
 			DataConvertUtil* data_convret_;
 			VolData* volume_data_;
 			vtkSmartPointer<vtkImageData> vtk_image_data_;
 			vtkSmartPointer<vtkDICOMImageReader> vtk_image_reader_;
+
 		};
+
+		class NiiImageLoader2 : NiiImageLoader
+		{
+		public:
+			NiiImageLoader2();
+			~NiiImageLoader2();
+
+			bool LoadFiles(vector<const char*> files) override;
+			
+		};
+
 	}
 }
