@@ -34,11 +34,14 @@
 #include <vtkDICOMImageReader.h>
 #include <vtkCallbackCommand.h>
 #include "tools/vtk_image_data_creator.h"
+#include "tools/timer.h"
+#include "tools/logger.h"
 
 using namespace DW::Render;
 
 VolumeRenderer::VolumeRenderer()
 {
+	camera_ = new Camera();
 	render_mode_ = RenderMode::RAYCASTING;
 	show_buffer_ = new ShowBuffer();
 	is_off_screen_rendering_ = true;
@@ -101,6 +104,8 @@ VolumeRenderer::VolumeRenderer()
 	vtk_render_window_->AddRenderer(vtk_renderer_);
 	vtk_renderer_->ResetCamera();
 
+	camera_->SetVtkCamera(vtk_renderer_->GetActiveCamera());
+
 	SetOffScreenRendering(true);
 }
 
@@ -113,11 +118,11 @@ void VolumeRenderer::SetRenderParam(RenderParam* param)
 {
 	render_param_ = param;
 
-	render_param_->GetCamera()->SetVtkCamera(vtk_renderer_->GetActiveCamera());
+	//render_param_->GetCamera()->SetVtkCamera(vtk_renderer_->GetActiveCamera());
 
-	/// Set default display position: Coronal
-	vtk_renderer_->GetActiveCamera()->SetViewUp(0, -1, 0);
-	vtk_renderer_->GetActiveCamera()->Elevation(-90);
+	///// Set default display position: Coronal
+	//vtk_renderer_->GetActiveCamera()->SetViewUp(0, -1, 0);
+	//vtk_renderer_->GetActiveCamera()->Elevation(-90);
 }
 
 ShowBuffer* VolumeRenderer::GetShowBuffer()
@@ -144,6 +149,8 @@ ShowBuffer* VolumeRenderer::GetShowBuffer()
 
 void VolumeRenderer::SetData(VolData* data)
 {
+	Timer::begin("VolumeRenderer::SetData");
+
 	volume_data_ = data;
 	// Workaround for vtkSmartVolumeMapper bug (https://gitlab.kitware.com/vtk/vtk/issues/17328)
 	volume_data_->GetPixelData()->GetVtkImageData()->Modified();
@@ -227,6 +234,9 @@ void VolumeRenderer::SetData(VolData* data)
 	vtk_volume_mapper_->SetInput(volume_data_->GetPixelData()->GetVtkImageData());
 #endif
 	is_first_render_ = true;
+
+	Timer::end("VolumeRenderer::SetData");
+	CGLogger::Info(Timer::summery());
 }
 
 void VolumeRenderer::SetVolumeTransformation()
@@ -272,7 +282,12 @@ void VolumeRenderer::Render()
 {
 	if (volume_data_ == NULL) return;
 
+	Timer::begin("VolumeRenderer::Render");
+
 	DoRender(volume_data_->GetPixelData()->GetVtkImageData());
+
+	Timer::end("VolumeRenderer::Render");
+	CGLogger::Info(Timer::summery());
 }
 
 //此版本从dr.wise客户端修改而来
@@ -280,8 +295,8 @@ void VolumeRenderer::DoRender(vtkSmartPointer<vtkImageData> imagedata)
 {
 	if (render_param_ == NULL) return;
 	VRRenderParam* param_imp = (VRRenderParam *)render_param_;
-	/// 深拷贝参数？
-	camera_ = param_imp->GetCamera();
+	///// 深拷贝参数？
+	//camera_ = param_imp->GetCamera();
 	// get render parameters
 	int width = param_imp->GetWidth();
 	int height = param_imp->GetHeight();
@@ -313,6 +328,7 @@ void VolumeRenderer::DoRender(vtkSmartPointer<vtkImageData> imagedata)
 		vtk_renderer_->ResetCamera();
 	}
 
+	//TODO needs 5 seconds to render mask data for the first time...
 	vtk_render_window_->Render();
 
 	/// get screenshot from render window  

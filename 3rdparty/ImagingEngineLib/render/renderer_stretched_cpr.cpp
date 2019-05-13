@@ -58,8 +58,6 @@ void StretchedCPRRenderer::DoRender()
 	int image_height = volume_data_->GetSliceHeight();
 	int image_count = volume_data_->GetSliceCount();
 
-	// Éî¿½±´²ÎÊý£¿
-	camera_ = param_imp->GetCamera();
 	float direction[3];
 	param_imp->GetDirection(direction[0], direction[1], direction[2]);
 	float left_distance = 0.0f, right_distance = 0.0f;
