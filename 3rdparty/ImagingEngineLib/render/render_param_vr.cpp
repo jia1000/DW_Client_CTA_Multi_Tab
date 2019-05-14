@@ -9,8 +9,8 @@ VRRenderParam::VRRenderParam()
 	width_ = 512;
 	height_ = 512;
 	scale_factor_ = 1.0f;
-	// camera
-	camera_ = new Camera();
+	//// camera
+	//camera_ = new Camera();
 	//// light
 	//light_ = new Light();
 	// set default desired update rate

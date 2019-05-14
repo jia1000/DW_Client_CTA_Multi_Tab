@@ -52,14 +52,14 @@ namespace DW {
 			{
 				height_ =h;
 			}
-			virtual Camera* GetCamera()
-			{
-				return camera_;
-			}
-			virtual void SetCamera(Camera* camera)
-			{
-				camera_ = camera;
-			}
+			//virtual Camera* GetCamera()
+			//{
+			//	return camera_;
+			//}
+			//virtual void SetCamera(Camera* camera)
+			//{
+			//	camera_ = camera;
+			//}
 
 
 			/// …Ë÷√¥∞øÌ¥∞Œª

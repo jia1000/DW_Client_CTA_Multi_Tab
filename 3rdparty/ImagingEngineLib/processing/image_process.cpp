@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <fstream>
 #include <io.h>
+#include "tools/math.h"
 
 using namespace DW::CV;
 
@@ -164,15 +165,54 @@ ImageRotateProcess::~ImageRotateProcess()
 
 bool ImageRotateProcess::Excute(HBITMAP& out_image_data)
 {
+	// 扩充图像边缘full
+	int padding_val = 0;
 	cv::Mat src_image;
 	HBitmapToMat(in_image_data_, src_image);
-
-	int degree = (int)(angle_ * 10) % 3;
 
 	// 旋转图像
 	double m[6];
 	cv::Mat dst_image;
-	cv::rotate(src_image, dst_image, degree);
+	//cv::rotate(src_image, dst_image, angle_);
+
+	//// warpAffine默认的旋转方向是逆时针，所以加负号表示转化为顺时针
+	//angle_ = -angle_;
+	// 转换为弧度  
+	double angle_radian = MathTool::DegreesToRadians(angle_);
+	double a = sin(angle_radian), b = cos(angle_radian);
+	int width = src_image.cols;
+	int height = src_image.rows;
+	int width_rotate = int(width * fabs(b) + height * fabs(a));
+	int height_rotate = int(height * fabs(b) + width * fabs(a));
+
+	if(width_rotate <= 20 || height_rotate <= 20){
+		width_rotate = 20;
+		height_rotate = 20;
+	}
+
+	// 旋转数组map
+	// [ m0  m1  m2 ] ===>  [ A11  A12   b1 ]
+	// [ m3  m4  m5 ] ===>  [ A21  A22   b2 ]
+	float map[6];
+	cv::Mat map_matrix = cv::Mat(2, 3, CV_32F, map);
+	// 旋转中心
+	CvPoint2D32f center = cvPoint2D32f(width / 2, height / 2);
+	CvMat map_matrix2 = map_matrix;
+	// 计算二维旋转的仿射变换矩阵
+	cv2DRotationMatrix(center, angle_, 1.0, &map_matrix2);
+	map[2] += (width_rotate - width) / 2;
+	map[5] += (height_rotate - height) / 2;
+
+	// Mat img_rotate;
+	// 对图像做仿射变换
+	// CV_WARP_FILL_OUTLIERS - 填充所有输出图像的象素。
+	// 如果部分象素落在输入图像的边界外，那么它们的值设定为 fillval.
+	// CV_WARP_INVERSE_MAP - 指定 map_matrix 是输出图像到输入图像的反变换，
+	int chnnel = src_image.channels();
+	if(chnnel == 3)
+		warpAffine(src_image, dst_image, map_matrix, cv::Size(width_rotate, height_rotate), 1, 0, cv::Scalar(padding_val,padding_val,padding_val));
+	else
+		warpAffine(src_image, dst_image, map_matrix, cv::Size(width_rotate, height_rotate), 1, 0, padding_val);
 
 	MatToHBitmap(dst_image, out_image_data);
 

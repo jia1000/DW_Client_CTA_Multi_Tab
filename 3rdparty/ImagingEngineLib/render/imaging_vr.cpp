@@ -133,7 +133,7 @@ void VRImaging::ZoomToFitWindow()
 	double factor = ratio * (1.0 - margin_rate);
 
 	/// Update zoom factor to camera
-	renderer_->GetRenderParam()->GetCamera()->Zoom(factor);
+	renderer_->GetCamera()->Zoom(factor);
 	/// Call render
 	renderer_->Render();
 
