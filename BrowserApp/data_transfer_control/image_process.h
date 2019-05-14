@@ -27,12 +27,18 @@
 #define JSON_KEY_IMAGE_OPERATION			"image_operation"
 #define JSON_KEY_IMAGE_PARAS				"image_paras"
 #define JSON_KEY_IMAGE_DATA					"image_data"
+#define JSON_KEY_IMAGE_SEQUENCE				"image_sequence"
+#define JSON_KEY_IMAGE_MAX					"image_max"
+
+
 
 //  第一级 "请求类型"    的枚举
 #define JSON_VALUE_REQUEST_TYPE_MPR			"mpr"
 #define JSON_VALUE_REQUEST_TYPE_VR			"vr"
 #define JSON_VALUE_REQUEST_TYPE_MIP			"mip"
 #define JSON_VALUE_REQUEST_TYPE_CPR			"cpr"
+#define JSON_VALUE_REQUEST_TYPE_TIME		"time"
+
 
 //  第二级 "操作操作类型"的枚举
 #define JSON_VALUE_IMAGE_OPERATION_ZOOM		"zoom"

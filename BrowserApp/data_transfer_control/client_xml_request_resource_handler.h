@@ -28,10 +28,18 @@ using namespace std;
 #define HANDLER_LOCAL_IMAGE_NAME	"local_image"
 
 #define URL_IMAGE_OPERATION			"http://image_operation"
-#define URL_POST_DATA				"http://postdata/"
-#define URL_BUFFER_IMAGE			"http://buffer_image/"
-#define JSON_KEY_REQUEST_TYPE		"func_name"
-#define JSON_KEY_IMAGE_OPERATION	"paras_name"
+#define URL_POST_DATA2				"http://postdata/"
+#define URL_BUFFER_IMAGE2			"http://buffer_image/"
+#define JSON_KEY_FUNC_NAME		"func_name"
+#define JSON_KEY_PARAS_NAME	"paras_name"
+
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/document.h"
+#include "rapidjson/reader.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+
+using namespace rapidjson;
 
 // Implementation of the schema handler for client:// requests.
 class ClientXMLRequestResourceHandler : public CefResourceHandler {
@@ -51,9 +59,9 @@ public:
 
 			std::string url = request->GetURL();
 
-			if (url == URL_POST_DATA) {
+			if (url == URL_POST_DATA2) {
 				ParsePostData(request);
-			} else if(url.find(URL_BUFFER_IMAGE) == 0) {
+			} else if(url.find(URL_BUFFER_IMAGE2) == 0) {
 				if (LoadBinaryResourceWithJSBuffer(request, data_)) {
 					//读取图像成功后，需要设置handled，致使返回为true
 					handled = true;
@@ -90,13 +98,14 @@ public:
 				if (data->GetType() == PDE_TYPE_BYTES) {
 					const unsigned int length = data->GetBytesCount();
 					if (length > 0) {
-						char *arraybuffer = new char[length];
+						char *arraybuffer = new char[length + 1];
 						if (arraybuffer) {
-							memset(arraybuffer, 0, length);
+							memset(arraybuffer, 0, length + 1);
 							data->GetBytes(length, arraybuffer);
-
-							if (DataTransferController::GetInstance()->ParseImageOperationData(arraybuffer, resource_data)) {
-								return true;
+							
+							if (DataTransferController::GetInstance()->ParseImageOperationData(
+								arraybuffer, resource_data)) {
+									return true;
 							}
 						}
 					}
@@ -135,18 +144,18 @@ public:
 							// 获得关键性的参数
 							std::string key_name1("");
 							std::string key_name2("");
-							if (root[JSON_KEY_REQUEST_TYPE].isString()) {
-								key_name1 = root[JSON_KEY_REQUEST_TYPE].asString();
+							if (root[JSON_KEY_FUNC_NAME].isString()) {
+								key_name1 = root[JSON_KEY_FUNC_NAME].asString();
 							}
-							if (root[JSON_KEY_IMAGE_OPERATION].isString()) {
-								key_name2 = root[JSON_KEY_IMAGE_OPERATION].asString();
+							if (root[JSON_KEY_PARAS_NAME].isString()) {
+								key_name2 = root[JSON_KEY_PARAS_NAME].asString();
 							}
 
 							// 模拟再发送给浏览器
 							Json::FastWriter writer;
 							Json::Value inputjson;
-							inputjson[JSON_KEY_REQUEST_TYPE] = key_name1;
-							inputjson[JSON_KEY_IMAGE_OPERATION] = key_name2;
+							inputjson[JSON_KEY_FUNC_NAME] = key_name1;
+							inputjson[JSON_KEY_PARAS_NAME] = key_name2;
 
 							std::string jsonstr = writer.write(inputjson);
 
@@ -184,6 +193,8 @@ public:
 							memset(arraybuffer, 0, length);
 							data->GetBytes(length, arraybuffer);
 
+							resource_data = "";
+							return true;
 							
 							// 保存为文件
 							{
@@ -231,7 +242,7 @@ public:
 		CefString& redirectUrl) OVERRIDE {
 			CEF_REQUIRE_IO_THREAD();
 
-			DCHECK(!data_.empty());
+			//DCHECK(!data_.empty());
 
 			response->SetMimeType(mime_type_);
 			response->SetStatus(200);
@@ -260,7 +271,7 @@ public:
 		bool has_data = false;
   		bytes_read = 0;
   
-  		if (offset_ < data_.length()) {
+  		if (data_.length() > 0 && offset_ < data_.length()) {
   			// Copy the next block of data into the buffer.
 			int transfer_size = std::min<int>(bytes_to_read, static_cast<int>(data_.length() - offset_));
   			memcpy(data_out, data_.c_str() + offset_, transfer_size);
