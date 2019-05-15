@@ -92,12 +92,13 @@ bool DataTransferController::ParseImageOperationData(char* json_data, std::strin
 
 	// 模拟再发送给浏览器
 	Json::FastWriter writer;
-	Json::Value inputjson;
-	inputjson[JSON_KEY_REQUEST_TYPE]	= key_name1;
-	inputjson[JSON_KEY_IMAGE_OPERATION] = key_name2;
-	inputjson[JSON_KEY_IMAGE_PARAS]		= key_name3;
-	inputjson[JSON_KEY_IMAGE_DATA]		= out_image_data;
-	std::string jsonstr = writer.write(inputjson);
+	// 只修改客户端关心的key
+	//Json::Value inputjson;
+	//root[JSON_KEY_REQUEST_TYPE]	= key_name1;
+	//root[JSON_KEY_IMAGE_OPERATION] = key_name2;
+	//root[JSON_KEY_IMAGE_PARAS]		= key_name3;
+	root[JSON_KEY_IMAGE_DATA]		= out_image_data;
+	std::string jsonstr = writer.write(root);
 	// 有换行符的json字符串， JS不能处理。
 	if (*jsonstr.rbegin() == '\n') {
 		jsonstr.erase(jsonstr.end() - 1);
