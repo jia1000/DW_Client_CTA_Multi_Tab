@@ -145,9 +145,9 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeader>Create</PrecompiledHeader>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_UT;UILIB_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_UT;UILIB_STATIC;_CRT_SECURE_NO_WARNINGS;vtkRenderingCore_INCLUDE="./vtk_about/vtkRenderingCore_AUTOINIT_vtkInteractionStyle_vtkRenderingOpenGL2.h";vtkRenderingVolume_AUTOINIT=1(vtkRenderingVolumeOpenGL2);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\opencv\include;$(SolutionDir)3rdparty/jsoncpp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\VTK-7.1.0\include;$(SolutionDir)..\opencv\include;$(SolutionDir)3rdparty/jsoncpp;$(SolutionDir)3rdparty/DicomEngine;$(SolutionDir)3rdparty/ImagingEngineLib/include;$(SolutionDir)3rdparty/ImagingEngineLib/include/render;$(SolutionDir)3rdparty/ImagingEngineLib/include/data</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -155,7 +155,7 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\opencv\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\opencv\lib\Release;..\..\InsightToolkit-3.20.1\bin\Release;..\..\dcmtk-3.6.0\ReleaseWin32Lib;..\..\GDCM\bin\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Wldap32.lib;IlmImf.lib;libjasper.lib;libjpeg.lib;libpng.lib;libtiff.lib;libwebp.lib;opencv_calib3d320.lib;opencv_core320.lib;opencv_features2d320.lib;opencv_flann320.lib;opencv_highgui320.lib;opencv_imgcodecs320.lib;opencv_imgproc320.lib;opencv_ml320.lib;opencv_objdetect320.lib;opencv_photo320.lib;opencv_shape320.lib;opencv_stitching320.lib;opencv_superres320.lib;opencv_ts320.lib;opencv_video320.lib;opencv_videoio320.lib;opencv_videostab320.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
