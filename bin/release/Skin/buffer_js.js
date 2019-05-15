@@ -309,13 +309,24 @@
             t.value = text_paras;
 
             // display the image
-            showImageByArrayBuffer(text4);
+            showImageByArrayBuffer(text1, text4);
         }
 
         // 通过arraybuffer显示图像
-        function showImageByArrayBuffer(data) {
-            // display the image
-            $('#imgtag').attr("src", "data:image/png;base64," + data);
+        function showImageByArrayBuffer(request_type, data) {
+            if(request_type === "mpr") {
+                // display the image
+                $('#imgtag_mpr').attr("src", "data:image/png;base64," + data);
+            } else if(request_type === "vr") {
+                // display the image
+                $('#imgtag_vr').attr("src", "data:image/png;base64," + data);
+            } else if(request_type === "cpr") {
+                // display the image
+                $('#imgtag_cpr').attr("src", "data:image/png;base64," + data);
+            } else if(request_type === "mip") {
+                // display the image
+                $('#imgtag_mip').attr("src", "data:image/png;base64," + data);
+            }
         }
         // arraybuffer 转为base64
         function arraybuffer2base64(data) {
