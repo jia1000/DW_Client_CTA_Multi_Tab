@@ -33,14 +33,6 @@ using namespace std;
 #define JSON_KEY_FUNC_NAME		"func_name"
 #define JSON_KEY_PARAS_NAME	"paras_name"
 
-#include "rapidjson/rapidjson.h"
-#include "rapidjson/document.h"
-#include "rapidjson/reader.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
-
-using namespace rapidjson;
-
 // Implementation of the schema handler for client:// requests.
 class ClientXMLRequestResourceHandler : public CefResourceHandler {
 public:
