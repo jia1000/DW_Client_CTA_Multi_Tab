@@ -70,7 +70,9 @@
             <option>CPR</option>
         </select>
         <select id="cpr_image_operation" title="operation" >
-            <option>Null</option>
+            <option>Zoom</option>
+            <option>Rotate</option>
+            <option>Move</option>
         </select>
         <select id="cpr_image_paras" title="paras" >
             <option>1.0</option>
@@ -115,21 +117,19 @@
 
     <!-- display image -->
     <div>
-        <table border="1" background="/i/eg_bg_07.gif">
+        <table border="1"  width="1200">
             <tr>
                 <td>
-                    <img src="#" id="imgtag_mpr" title="load image through http request..." />
+                    <img src="#" id="imgtag_mpr" title="mpr" width="300"/>
                 </td>
                 <td>
-                    <img src="#" id="imgtag_vr" title="load image through http request..." />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="#" id="imgtag_cpr" title="load image through http request..." />
+                    <img src="#" id="imgtag_vr" title="vr" width="300" />
                 </td>
                 <td>
-                    <img src="#" id="imgtag_mip" title="load image through http request..." />
+                    <img src="#" id="imgtag_cpr" title="cpr" width="300" />
+                </td>
+                <td>
+                    <img src="#" id="imgtag_mip" title="mip" width="300" />
                 </td>
             </tr>
         </table>
