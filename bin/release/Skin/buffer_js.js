@@ -221,6 +221,73 @@
             }
         }
 
+         function doMprPostStringUesJson() {
+             clearTime("#begintime",     "begintime : ");
+             clearTime("#middletime",   "middletime : ");
+             clearTime("#endtime",       "endtime   : ");
+
+             writeTime("#begintime", " - begintime");
+
+             var text1 = "mpr";
+             var text2 = $("#mpr_image_operation").val();
+             var text3 = $("#mpr_image_paras").val();
+
+             doRequestImageHandle(text1, text2, text3);
+        }
+
+         function doCprPostStringUesJson() {
+             clearTime("#begintime",     "begintime : ");
+             clearTime("#middletime",   "middletime : ");
+             clearTime("#endtime",       "endtime   : ");
+
+             writeTime("#begintime", " - begintime");
+
+             var text1 = "cpr";
+             var text2 = $("#cpr_image_operation").val();
+             var text3 = $("#cpr_image_paras").val();
+
+             doRequestImageHandle(text1, text2, text3);
+         }
+         function doVrPostStringUesJson() {
+             clearTime("#begintime",     "begintime : ");
+             clearTime("#middletime",   "middletime : ");
+             clearTime("#endtime",       "endtime   : ");
+
+             writeTime("#begintime", " - begintime");
+
+             var text1 = "vr";
+             var text2 = $("#vr_image_operation").val();
+             var text3 = $("#vr_image_paras").val();
+
+             doRequestImageHandle(text1, text2, text3);
+         }
+        function doRequestImageHandle(request_type, image_operation, image_paras) {
+            var json_data = {};
+            json_data.request_type      = request_type;
+            json_data.image_operation   = image_operation;
+            json_data.image_paras       = image_paras;
+            // json_data.image_data = arraybuffer2base64(fileString);
+            // json_data.file_index = 4;
+
+            var json_str = JSON.stringify(json_data);
+            var url = 'http://image_controller/';
+
+            var xhr = new XMLHttpRequest();
+            //  第3个参数async为true，表示为异步，否则为同步
+            xhr.open('POST', url, true);
+            xhr.responseType = "text";//"arraybuffer";
+
+            // 请求成功回调函数
+            xhr.onload = function (oEvent) {
+                var arrayBuffer = xhr.response;
+                if (arrayBuffer) {
+                    displayContent(xhr.response, true);
+
+                    writeTime("#endtime", " - endtime");
+                }
+            };
+            xhr.send(json_str);
+        }
         ///显示图像和信息
         function displayContent(text, finished) {
             // 解析json数据

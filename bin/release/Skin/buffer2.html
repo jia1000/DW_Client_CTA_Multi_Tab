@@ -17,20 +17,14 @@
     <div style="margin-bottom:20px;">
 
 
-        <select id="request_type" text="operation" title="request_type" >
-            <option>Time</option>
-            <option>CPR</option>
-            <option>VR</option>
+        <select title="request_type" >
             <option>MPR</option>
         </select>
-        <select id="image_operation" text="operation" title="operation" >
+        <select id="mpr_image_operation" title="operation" >
             <option>Zoom</option>
-            <option>Skip</option>
-            <option>Rotate</option>
             <option>Move</option>
-            <option>WL</option>
         </select>
-        <select id="image_paras" text="paras" title="paras" >
+        <select id="mpr_image_paras" text="paras" title="paras" >
             <option>1.0</option>
             <option>0.1</option>
             <option>0.2</option>
@@ -44,6 +38,55 @@
             <option>2.0</option>
             <option>3.0</option>
         </select>
+        <button onclick="doMprPostStringUesJson();" >发送数据</button>
+        <br />
+
+        <select id="vr_request_type" title="request_type" >
+            <option>VR</option>
+        </select>
+        <select id="vr_image_operation"  title="operation" >
+            <option>Zoom</option>
+            <option>Rotate</option>
+            <option>Move</option>
+        </select>
+        <select id="vr_image_paras" title="paras" >
+            <option>1.0</option>
+            <option>0.1</option>
+            <option>0.2</option>
+            <option>0.3</option>
+            <option>0.4</option>
+            <option>0.5</option>
+            <option>0.6</option>
+            <option>0.7</option>
+            <option>0.8</option>
+            <option>0.9</option>
+            <option>2.0</option>
+            <option>3.0</option>
+        </select>
+        <button onclick="doVrPostStringUesJson();" >发送数据</button>
+        <br />
+
+        <select title="request_type" >
+            <option>CPR</option>
+        </select>
+        <select id="cpr_image_operation" title="operation" >
+            <option>Null</option>
+        </select>
+        <select id="cpr_image_paras" title="paras" >
+            <option>1.0</option>
+            <option>0.1</option>
+            <option>0.2</option>
+            <option>0.3</option>
+            <option>0.4</option>
+            <option>0.5</option>
+            <option>0.6</option>
+            <option>0.7</option>
+            <option>0.8</option>
+            <option>0.9</option>
+            <option>2.0</option>
+            <option>3.0</option>
+        </select>
+        <button onclick="doCprPostStringUesJson();" >发送数据</button>
         <br />
 
         <input type="file" id="postFile" onchange="jsReadFiles(this.files)" title="选择图像文件" />
