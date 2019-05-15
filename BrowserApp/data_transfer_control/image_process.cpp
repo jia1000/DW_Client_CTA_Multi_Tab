@@ -1,6 +1,8 @@
 #include "stdafx.h"
 
 #include "image_process.h"
+#include "io/txt_reader.h"
+#include "tools/string_util.h"
 
 #include <algorithm>
 #include "json/json.h"
@@ -441,5 +443,84 @@ ImageCPRProcess::~ImageCPRProcess()
 
 bool ImageCPRProcess::Excute(std::string& out_image_data)
 {	
+	// 1.read dcm image from directory
+	const std::string path_image_data("C:\\ztest2\\dicom_test");
+
+	std::string::size_type sz;
+	double zoom_scale = std::stod(m_key3_str_paras, &sz);
+
+	if (!reader) {
+		reader = new VtkDcmLoader();
+		reader->LoadDirectory(path_image_data.c_str());	// only once
+
+		VolData* vol_data = reader->GetData();
+		if (vol_data == NULL) return false;
+		ImageDataSource::Get()->AddVolData("series1", vol_data);
+	}
+
+	if (!is_create_vr_render) {
+		// 2.create all image control
+		RenderSource::Get()->CreateRenderControl(m_wnd_name, RenderControlType::STRETECHED_CPR);	// only once
+		//////////////////////////////////////////////////////////////////////////
+		// move mpr to specified locations
+		std::string path = "C:\\ztest2\\curve_data.txt";
+		vector<string> curve_data = ReadTxt(path.c_str());
+		vector<Point3f> points;
+		auto it = curve_data.begin();
+		while (it != curve_data.end()){
+			vector<string> arr_data = Split(*it, ",");
+			if (arr_data.size() >= 3){
+				Point3f pnt;
+				pnt.x = atoi(arr_data[0].c_str());
+				pnt.y = atoi(arr_data[1].c_str());
+				pnt.z = atoi(arr_data[2].c_str()) - 1;
+
+				points.push_back(pnt);
+			}
+			++it;
+		}
+		curve_id_ = CurveSource::Get()->CreateCurve("series1", points);
+		//curve_ = CurveSource::Get()->GetCurve("series1", curve_id_);
+
+		Vector3f vx, vy;
+		float ix, iy, iz;
+		//int number_of_poinst = curve_->GetNumberOfSamplePoint();
+		//int center_pos = number_of_poinst / 2;
+		//////////////////////////////////////////////////////////////////////////
+		RenderFacade::Get()->ChangeSeries("series1");	
+		//RenderFacade::Get()->SetOrientation(wnd_mpr1_, AXIAL);
+		//float pos[3] = { 255.0f, 255.0f, 0};
+		//RenderFacade::Get()->SetOrientation(m_wnd_name, SAGITTAL);
+		RenderFacade::Get()->SetCPRCurveID(m_wnd_name, curve_id_);
+		RenderFacade::Get()->RenderControl(m_wnd_name);
+
+		is_create_vr_render = true;
+	}
+
+	if (m_key2_str_opertation == JSON_VALUE_IMAGE_OPERATION_ZOOM) {
+		RenderFacade::Get()->Zoom(m_wnd_name, zoom_scale);
+	} else if (m_key2_str_opertation == JSON_VALUE_IMAGE_OPERATION_ROTATE) {
+		float f[3] = { 0.0,1.0,0.0 };
+		zoom_scale *= 100;
+		RenderFacade::Get()->Rotate(m_wnd_name, zoom_scale, f);
+	} else if (m_key2_str_opertation == JSON_VALUE_IMAGE_OPERATION_MOVE) {
+		static int slice_index = 100;
+		slice_index += zoom_scale * 10;
+		float pos[3] = { slice_index, 255.0f, 189.0f};
+		RenderFacade::Get()->MoveTo(m_wnd_name, pos);
+	} else if (m_key2_str_opertation == JSON_VALUE_IMAGE_OPERATION_SKIP) {
+	}
+
+	// 3.get imaging object through builder. then go render and get show buffer through imaging object
+	HBITMAP hBitmap = RenderFacade::Get()->GetImageBuffer(m_wnd_name);
+	BITMAP  bitmap ;
+	GetObject (hBitmap, sizeof (BITMAP), &bitmap);
+
+	std::wstring ws_screenshot_file = L"C:\\ztest2\\haha1111.bmp";
+	std::string  s_screenshot_file = "C:\\ztest2\\haha1111.bmp";
+	SaveBitmapToFile(hBitmap, ws_screenshot_file.c_str());
+
+	cv::Mat src = cv::imread(s_screenshot_file.c_str());
+	out_image_data = Mat2Base64(src, "bmp");
 	return true;
 }

@@ -85,7 +85,10 @@ bool DataTransferController::ParseImageOperationData(char* json_data, std::strin
 		image_process = new ImageVRProcess(key_name3);
 		image_process->SetKey2_ImageOperation(key_name2);
 		image_process->Excute(out_image_data);
-	} else if (key_name1 == JSON_VALUE_REQUEST_TYPE_CPR) {		
+	} else if (key_name1 == JSON_VALUE_REQUEST_TYPE_CPR) {	
+		image_process = new ImageCPRProcess(key_name3);
+		image_process->SetKey2_ImageOperation(key_name2);
+		image_process->Excute(out_image_data);
 	} else if (key_name1 == JSON_VALUE_REQUEST_TYPE_TIME) {		
 		return true;
 	}

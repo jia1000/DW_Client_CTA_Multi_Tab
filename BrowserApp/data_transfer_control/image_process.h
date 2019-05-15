@@ -110,4 +110,5 @@ public:
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
 
 private:
+	std::string curve_id_;
 };
