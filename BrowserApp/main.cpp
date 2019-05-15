@@ -16,6 +16,7 @@
 #define SINGLE_INSTANCE		_T("DR. WISE CLIENT BROWSER")
 //#define RENDERER_DEBUG
 
+
 typedef struct tagWNDINFO
 {
 	DWORD dwProcessId;
@@ -76,11 +77,12 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	
 	// 使用XMLHttpRequest进行交互：第1步：注册Scheme
 	CefRegisterSchemeHandlerFactory("http", HANDLER_POSTDATA_NAME,		new ClientSchemeHandlerFactory);
-	CefRegisterSchemeHandlerFactory("http", HANDLER_LOCAL_IMAGE_NAME,	new ClientSchemeHandlerFactory);
+	//CefRegisterSchemeHandlerFactory("http", HANDLER_LOCAL_IMAGE_NAME,	new ClientSchemeHandlerFactory);
 	//CefRegisterSchemeHandlerFactory("http", HANDLER_BUFFER_IMAGE_NAME,	new ClientSchemeHandlerFactory);
-	CefRegisterSchemeHandlerFactory("http", HANDLER_BUFFER_IMAGE_NAME,	new ClientXMLRequestSchemeHandlerFactory);
-	CefRegisterSchemeHandlerFactory("http", HANDLER_IAMGE_OPERATION,	new ClientXMLRequestSchemeHandlerFactory);
-
+	//CefRegisterSchemeHandlerFactory("http", HANDLER_BUFFER_IMAGE_NAME,	new ClientXMLRequestSchemeHandlerFactory);
+	//CefRegisterSchemeHandlerFactory("http", HANDLER_IAMGE_OPERATION,	new ClientXMLRequestSchemeHandlerFactory);
+	CefRegisterSchemeHandlerFactory("http", HANDLER_IAMGE_CONTROLLER,				new ClientXMLRequestSchemeHandlerFactory);
+	CefRegisterSchemeHandlerFactory("http", HANDLER_IAMGE_ARRAY_BUFFER_TRANSFER,	new ClientXMLRequestSchemeHandlerFactory);
 
 
 

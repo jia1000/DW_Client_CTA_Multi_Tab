@@ -20,18 +20,22 @@
 
 using namespace std;
 
-#define HANDLER_SCHEME_NAME			"client"
-#define HANDLER_DOMAIN_NAME			"resources"
+//#define HANDLER_SCHEME_NAME			"client"
+//#define HANDLER_DOMAIN_NAME			"resources"
 #define HANDLER_IAMGE_OPERATION		"image_operation"
-#define HANDLER_POSTDATA_NAME		"postdata"
+//#define HANDLER_POSTDATA_NAME		"postdata"
 #define HANDLER_BUFFER_IMAGE_NAME	"buffer_image"
-#define HANDLER_LOCAL_IMAGE_NAME	"local_image"
+//#define HANDLER_LOCAL_IMAGE_NAME	"local_image"
 
 #define URL_IMAGE_OPERATION			"http://image_operation"
-#define URL_POST_DATA2				"http://postdata/"
+//#define URL_POST_DATA2				"http://postdata/"
 #define URL_BUFFER_IMAGE2			"http://buffer_image/"
-#define JSON_KEY_FUNC_NAME		"func_name"
-#define JSON_KEY_PARAS_NAME	"paras_name"
+//#define JSON_KEY_FUNC_NAME		"func_name"
+//#define JSON_KEY_PARAS_NAME	"paras_name"
+
+
+#define HANDLER_IAMGE_CONTROLLER				"image_controller"
+#define HANDLER_IAMGE_ARRAY_BUFFER_TRANSFER		"image_buffer_transfer"
 
 // Implementation of the schema handler for client:// requests.
 class ClientXMLRequestResourceHandler : public CefResourceHandler {
@@ -51,23 +55,27 @@ public:
 
 			std::string url = request->GetURL();
 
-			if (url == URL_POST_DATA2) {
-				ParsePostData(request);
-			} else if(url.find(URL_BUFFER_IMAGE2) == 0) {
-				if (LoadBinaryResourceWithJSBuffer(request, data_)) {
-					//读取图像成功后，需要设置handled，致使返回为true
-					handled = true;
-					// Set the resulting mime type
-					mime_type_ = "image/jpg";//"arraybuffer";//
-				}
-			} else if(url.find(URL_IMAGE_OPERATION) == 0) {
+			std::string http_image_controller("http://");
+			http_image_controller += HANDLER_IAMGE_CONTROLLER;
+			std::string http_image_buffer_transfer("http://");
+			http_image_buffer_transfer += HANDLER_IAMGE_ARRAY_BUFFER_TRANSFER;
+
+
+			if(url.find(http_image_controller) == 0) {
 				if (ParseImageOperationPostData(request, data_)) {
 					//读取图像成功后，需要设置handled，致使返回为true
 					handled = true;
 					// Set the resulting mime type
-					mime_type_ = "text";//"image/jpg";//"arraybuffer";//
+					mime_type_ = "text";//"image/jpg";
 				}
-			}
+			} else if(url.find(http_image_buffer_transfer) == 0) {
+				if (LoadBinaryResourceWithJSBuffer(request, data_)) {
+					//读取图像成功后，需要设置handled，致使返回为true
+					handled = true;
+					// Set the resulting mime type
+					mime_type_ = "arraybuffer";
+				}
+			}  
 
 			if (handled) {
 				// Indicate the headers are available.
@@ -108,65 +116,59 @@ public:
 		return false;
 	}
 
-	void ParsePostData(CefRefPtr<CefRequest> request)
-	{
-		CefRefPtr<CefPostData> postData = request->GetPostData();
-		if (postData) {
-			CefPostData::ElementVector elements;
-			postData->GetElements(elements);
-
-			if (elements.size() > 0) {
-				std::wstring queryString;
-				CefRefPtr<CefPostDataElement> data = elements[0];
-				if (data->GetType() == PDE_TYPE_BYTES) {
-					const unsigned int length = data->GetBytesCount();
-					if (length > 0) {
-						char *arraybuffer = new char[length];
-						if (arraybuffer) {
-							memset(arraybuffer, 0, length);
-							data->GetBytes(length, arraybuffer);
-
-							// 解析从浏览器发送过来的Json数据
-							Json::Reader reader;
-							Json::Value root;
-							bool ret = reader.parse(arraybuffer, root, false);
-							if (!ret) {
-								return ;
-							}
-							// 获得关键性的参数
-							std::string key_name1("");
-							std::string key_name2("");
-							if (root[JSON_KEY_FUNC_NAME].isString()) {
-								key_name1 = root[JSON_KEY_FUNC_NAME].asString();
-							}
-							if (root[JSON_KEY_PARAS_NAME].isString()) {
-								key_name2 = root[JSON_KEY_PARAS_NAME].asString();
-							}
-
-							// 模拟再发送给浏览器
-							Json::FastWriter writer;
-							Json::Value inputjson;
-							inputjson[JSON_KEY_FUNC_NAME] = key_name1;
-							inputjson[JSON_KEY_PARAS_NAME] = key_name2;
-
-							std::string jsonstr = writer.write(inputjson);
-
-							// 有换行符的json字符串， JS不能处理。
-							if (*jsonstr.rbegin() == '\n') {
-								jsonstr.erase(jsonstr.end() - 1);
-							}
-
-							std::string text("jsSendCount('");
-							std::string postfix("')");
-							text += jsonstr;
-							text += postfix;
-							frame_->ExecuteJavaScript(text.c_str(), "", 0);
-						}
-					}
-				}
-			}
-		}
-	}
+	//void ParsePostData(CefRefPtr<CefRequest> request)
+	//{
+	//	CefRefPtr<CefPostData> postData = request->GetPostData();
+	//	if (postData) {
+	//		CefPostData::ElementVector elements;
+	//		postData->GetElements(elements);
+	//		if (elements.size() > 0) {
+	//			std::wstring queryString;
+	//			CefRefPtr<CefPostDataElement> data = elements[0];
+	//			if (data->GetType() == PDE_TYPE_BYTES) {
+	//				const unsigned int length = data->GetBytesCount();
+	//				if (length > 0) {
+	//					char *arraybuffer = new char[length];
+	//					if (arraybuffer) {
+	//						memset(arraybuffer, 0, length);
+	//						data->GetBytes(length, arraybuffer);
+	//						// 解析从浏览器发送过来的Json数据
+	//						Json::Reader reader;
+	//						Json::Value root;
+	//						bool ret = reader.parse(arraybuffer, root, false);
+	//						if (!ret) {
+	//							return ;
+	//						}
+	//						// 获得关键性的参数
+	//						std::string key_name1("");
+	//						std::string key_name2("");
+	//						if (root[JSON_KEY_FUNC_NAME].isString()) {
+	//							key_name1 = root[JSON_KEY_FUNC_NAME].asString();
+	//						}
+	//						if (root[JSON_KEY_PARAS_NAME].isString()) {
+	//							key_name2 = root[JSON_KEY_PARAS_NAME].asString();
+	//						}
+	//						// 模拟再发送给浏览器
+	//						Json::FastWriter writer;
+	//						Json::Value inputjson;
+	//						inputjson[JSON_KEY_FUNC_NAME] = key_name1;
+	//						inputjson[JSON_KEY_PARAS_NAME] = key_name2;
+	//						std::string jsonstr = writer.write(inputjson);
+	//						// 有换行符的json字符串， JS不能处理。
+	//						if (*jsonstr.rbegin() == '\n') {
+	//							jsonstr.erase(jsonstr.end() - 1);
+	//						}
+	//						std::string text("jsSendCount('");
+	//						std::string postfix("')");
+	//						text += jsonstr;
+	//						text += postfix;
+	//						frame_->ExecuteJavaScript(text.c_str(), "", 0);
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 
 	bool LoadBinaryResourceWithJSBuffer(CefRefPtr<CefRequest> request, std::string& resource_data) { 
 		CefRefPtr<CefPostData> postData = request->GetPostData();
