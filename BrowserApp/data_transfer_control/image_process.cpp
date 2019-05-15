@@ -27,10 +27,9 @@ static bool is_create_mpr_render = false;
 static bool is_create_vr_render  = false;
 
 
-ImageProcessBase::ImageProcessBase(std::string str_paras, std::string& in_image_data)
-	: m_key4_in_image_data(in_image_data)
-	, m_key3_str_paras(str_paras)
-	, req_type(0)
+ImageProcessBase::ImageProcessBase(std::string str_paras)
+	: m_key3_str_paras(str_paras)
+	//, req_type(0)
 {
 }
 
@@ -39,16 +38,16 @@ ImageProcessBase::~ImageProcessBase()
 	
 }
 
-void ImageProcessBase::SetKey1_RequestType(std::string str_req_type)
-{
-	if (str_req_type == JSON_VALUE_REQUEST_TYPE_MPR) {
-		req_type = (int)RenderControlType::MPR;
-	} else if (str_req_type == JSON_VALUE_REQUEST_TYPE_VR) {
-		req_type = (int)RenderControlType::VR;
-	} else if (str_req_type == JSON_VALUE_REQUEST_TYPE_CPR) {
-		req_type = (int)RenderControlType::STRAIGHTENED_CPR;
-	}
-}
+//void ImageProcessBase::SetKey1_RequestType(std::string str_req_type)
+//{
+//	if (str_req_type == JSON_VALUE_REQUEST_TYPE_MPR) {
+//		req_type = (int)RenderControlType::MPR;
+//	} else if (str_req_type == JSON_VALUE_REQUEST_TYPE_VR) {
+//		req_type = (int)RenderControlType::VR;
+//	} else if (str_req_type == JSON_VALUE_REQUEST_TYPE_CPR) {
+//		req_type = (int)RenderControlType::STRAIGHTENED_CPR;
+//	}
+//}
 
 void ImageProcessBase::SetKey2_ImageOperation(std::string str_opertation) 
 { 
@@ -58,10 +57,6 @@ void ImageProcessBase::SetKey2_ImageOperation(std::string str_opertation)
 void ImageProcessBase::SetKey3_ImageOperationParas(std::string str_paras) 
 { 
 	m_key3_str_paras = str_paras; 
-}
-void ImageProcessBase::SetKey4_InImageData(std::string& in_image_data) 
-{
-	m_key4_in_image_data = in_image_data;
 }
 
 bool ImageProcessBase::Excute(std::string& out_image_data)
@@ -290,9 +285,8 @@ bool ImageProcessBase::SaveBitmapToFile(HBITMAP hBitmap, LPCWSTR lpFileName)
 }
 
 //////////////////////////////////////////////////////////////////////////
-ImageMPRProcess::ImageMPRProcess(std::string str_paras, std::string& in_image_data)
-	: ImageProcessBase(str_paras, in_image_data)
-	//, reader(NULL)
+ImageMPRProcess::ImageMPRProcess(std::string str_paras)
+	: ImageProcessBase(str_paras)
 {
 	m_wnd_name = "mpr1";
 }
@@ -360,8 +354,8 @@ bool ImageMPRProcess::Excute(std::string& out_image_data)
 	return true;
 }
 //////////////////////////////////////////////////////////////////////////
-ImageVRProcess::ImageVRProcess(std::string str_paras, std::string& in_image_data)
-	: ImageProcessBase(str_paras, in_image_data)
+ImageVRProcess::ImageVRProcess(std::string str_paras)
+	: ImageProcessBase(str_paras)
 	//, reader(NULL)
 {
 	m_wnd_name = "vr";
@@ -435,8 +429,8 @@ bool ImageVRProcess::Excute(std::string& out_image_data)
 }
 
 //////////////////////////////////////////////////////////////////////////
-ImageCPRProcess::ImageCPRProcess(std::string str_paras, std::string& in_image_data)
-	: ImageProcessBase(str_paras, in_image_data)
+ImageCPRProcess::ImageCPRProcess(std::string str_paras)
+	: ImageProcessBase(str_paras)
 {
 	m_wnd_name = "cpr";
 }

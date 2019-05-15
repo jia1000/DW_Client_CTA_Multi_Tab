@@ -40,9 +40,7 @@ DataTransferController::~DataTransferController()
 }
 
 bool DataTransferController::ParseImageOperationData(char* json_data, std::string& js_data)
-//bool DataTransferController::ParseImageOperationData(std::string& json_data, std::string& js_data)
 {
-	std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
 	// 解析从浏览器发送过来的Json数据
 	Json::Reader reader;
 	Json::Value root;
@@ -50,19 +48,11 @@ bool DataTransferController::ParseImageOperationData(char* json_data, std::strin
  	if (!ret) {
 		return false;
 	}
-	std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
-
-	std::chrono::duration<double> span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
-	static std::chrono::duration<double> total_diff = std::chrono::duration<double>(0);;
-	total_diff += span;
 
 	// 获得关键性的参数
 	std::string key_name1("");
 	std::string key_name2("");
 	std::string key_name3("");
-	std::string key_name4("");
-	int key_name5 = 0;
-	int key_name6 = 0;
 	
 	if (root[JSON_KEY_REQUEST_TYPE].isString()) {
 		key_name1 = root[JSON_KEY_REQUEST_TYPE].asString();
@@ -78,24 +68,7 @@ bool DataTransferController::ParseImageOperationData(char* json_data, std::strin
 		key_name3 = root[JSON_KEY_IMAGE_PARAS].asString();
 		// 都转为小写字符
 		std::transform(key_name3.begin(), key_name3.end(), key_name3.begin(), ::tolower);
-	}
-	if (root[JSON_KEY_IMAGE_DATA].isString()) {
-		key_name4 = root[JSON_KEY_IMAGE_DATA].asString();
-	}
-
-	if (root[JSON_KEY_IMAGE_SEQUENCE].isString()) {
-		std::string key = root[JSON_KEY_IMAGE_SEQUENCE].asString();
-		key_name5 = atoi(key.c_str());
-	} else if (root[JSON_KEY_IMAGE_SEQUENCE].isInt()) {
-		key_name5 = root[JSON_KEY_IMAGE_SEQUENCE].asInt();
-	}
-
-	if (root[JSON_KEY_IMAGE_MAX].isString()) {
-		std::string key = root[JSON_KEY_IMAGE_MAX].asString();
-		key_name6 = atoi(key.c_str());
-	} else if (root[JSON_KEY_IMAGE_MAX].isInt()) {
-		key_name6 = root[JSON_KEY_IMAGE_MAX].asInt();
-	}
+	}	
 
 	if(image_process) {
 		delete image_process;
@@ -105,34 +78,16 @@ bool DataTransferController::ParseImageOperationData(char* json_data, std::strin
 	std::string out_image_data = "";
 
 	if (key_name1 == JSON_VALUE_REQUEST_TYPE_MPR) {
-		CGLogger::Debug("Debug_CTA:MPR---begin");
-		image_process = new ImageMPRProcess(key_name3, key_name4);
+		image_process = new ImageMPRProcess(key_name3);
 		image_process->SetKey2_ImageOperation(key_name2);
 		image_process->Excute(out_image_data);
-		CGLogger::Debug("Debug_CTA:MPR---");
 	} else if (key_name1 == JSON_VALUE_REQUEST_TYPE_VR) {
-		CGLogger::Debug("Debug_CTA:VR---begin");
-		image_process = new ImageVRProcess(key_name3, key_name4);
+		image_process = new ImageVRProcess(key_name3);
 		image_process->SetKey2_ImageOperation(key_name2);
 		image_process->Excute(out_image_data);
-		CGLogger::Debug("Debug_CTA:VR---");
 	} else if (key_name1 == JSON_VALUE_REQUEST_TYPE_CPR) {		
-	} else if (key_name1 == JSON_VALUE_REQUEST_TYPE_TIME) {
-		if (0 == key_name5) {
-			total_diff = std::chrono::duration<double>(0);
-			CGLogger::Debug("Debug_CTA:TIME_TEST_TOTAL ------------------begin");
-		}
-		if (key_name5 == key_name6 - 1) {
-			CGLogger::Debug("Debug_CTA:TIME_TEST_TOTAL -------------------end");
-			std::stringstream ss; 
-			ss << "Debug_CTA:TIME_TEST_TOTAL -------------------diff :";
-			ss << total_diff.count();
-			CGLogger::Debug(ss.str().c_str());
-		}
-
-		CGLogger::Debug("Debug_CTA:TIME_TEST---");
+	} else if (key_name1 == JSON_VALUE_REQUEST_TYPE_TIME) {		
 		return true;
-	} else {		
 	}
 
 	// 模拟再发送给浏览器

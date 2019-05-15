@@ -49,13 +49,12 @@
 class ImageProcessBase
 {
 public:
-	ImageProcessBase(std::string str_paras, std::string& in_image_data);
+	ImageProcessBase(std::string str_paras);
 	virtual ~ImageProcessBase();
 
-	void SetKey1_RequestType(std::string str_req_type);
+	//void SetKey1_RequestType(std::string str_req_type);
 	void SetKey2_ImageOperation(std::string str_opertation);
 	void SetKey3_ImageOperationParas(std::string str_paras);
-	void SetKey4_InImageData(std::string& in_image_data) ;
 
 	virtual bool Excute(std::string& out_image_data);
 
@@ -67,11 +66,10 @@ protected:
 	cv::Mat Base2Mat(std::string &base64_data);
 	bool SaveBitmapToFile(HBITMAP hBitmap, LPCWSTR lpFileName);
 
-	int req_type;
+	//int req_type;
 	std::string m_key1_str_req_type;	// 请求类型，如MPR VR CPR等
 	std::string m_key2_str_opertation;	// 不同图像操作类型，如， zoom rotate move等
 	std::string m_key3_str_paras;		// 不同图像操作类型的参数，参数含义会有不同。具体需要见产品设计
-	std::string m_key4_in_image_data;	// 图像原始数据，base64编码
 	/// 窗口名称
 	std::string m_wnd_name;
 };
@@ -81,7 +79,7 @@ protected:
 class ImageMPRProcess : public ImageProcessBase
 {
 public:
-	ImageMPRProcess(std::string str_paras, std::string& in_image_data);
+	ImageMPRProcess(std::string str_paras);
 	~ImageMPRProcess();
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
 
@@ -94,7 +92,7 @@ private:
 class ImageVRProcess : public ImageProcessBase
 {
 public:
-	ImageVRProcess(std::string str_paras, std::string& in_image_data);
+	ImageVRProcess(std::string str_paras);
 	~ImageVRProcess();
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
 
@@ -107,7 +105,7 @@ private:
 class ImageCPRProcess : public ImageProcessBase
 {
 public:
-	ImageCPRProcess(std::string str_paras, std::string& in_image_data);
+	ImageCPRProcess(std::string str_paras);
 	~ImageCPRProcess();
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
 

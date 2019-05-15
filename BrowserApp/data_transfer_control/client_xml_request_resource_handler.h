@@ -13,29 +13,11 @@
 #include "include/wrapper/cef_helpers.h"
 #include "data_transfer_control/data_transfer_control.h"
 
-#include "json/json.h"
-#include <fstream> // ifstream, ifstream::in
-#include <io.h>
-#include <string>
-
-using namespace std;
-
-//#define HANDLER_SCHEME_NAME			"client"
-//#define HANDLER_DOMAIN_NAME			"resources"
-#define HANDLER_IAMGE_OPERATION		"image_operation"
-//#define HANDLER_POSTDATA_NAME		"postdata"
-#define HANDLER_BUFFER_IMAGE_NAME	"buffer_image"
-//#define HANDLER_LOCAL_IMAGE_NAME	"local_image"
-
-#define URL_IMAGE_OPERATION			"http://image_operation"
-//#define URL_POST_DATA2				"http://postdata/"
-#define URL_BUFFER_IMAGE2			"http://buffer_image/"
-//#define JSON_KEY_FUNC_NAME		"func_name"
-//#define JSON_KEY_PARAS_NAME	"paras_name"
-
-
 #define HANDLER_IAMGE_CONTROLLER				"image_controller"
 #define HANDLER_IAMGE_ARRAY_BUFFER_TRANSFER		"image_buffer_transfer"
+
+const static std::string http_image_controller		= std::string("http://") + std::string(HANDLER_IAMGE_CONTROLLER);
+const static std::string http_image_buffer_transfer = std::string("http://") + std::string(HANDLER_IAMGE_ARRAY_BUFFER_TRANSFER);
 
 // Implementation of the schema handler for client:// requests.
 class ClientXMLRequestResourceHandler : public CefResourceHandler {
@@ -49,18 +31,10 @@ public:
 			CEF_REQUIRE_IO_THREAD();
 			
 			bool handled = false;
-			char *buf = NULL;
-			std::string sPostData;
-			std::wstring wsPostData;
-
+			data_ = "";
+			
 			std::string url = request->GetURL();
-
-			std::string http_image_controller("http://");
-			http_image_controller += HANDLER_IAMGE_CONTROLLER;
-			std::string http_image_buffer_transfer("http://");
-			http_image_buffer_transfer += HANDLER_IAMGE_ARRAY_BUFFER_TRANSFER;
-
-
+						
 			if(url.find(http_image_controller) == 0) {
 				if (ParseImageOperationPostData(request, data_)) {
 					//读取图像成功后，需要设置handled，致使返回为true
@@ -69,7 +43,7 @@ public:
 					mime_type_ = "text";//"image/jpg";
 				}
 			} else if(url.find(http_image_buffer_transfer) == 0) {
-				if (LoadBinaryResourceWithJSBuffer(request, data_)) {
+				if ( HandleArrayBuffrDataFromJS(request, data_)) {
 					//读取图像成功后，需要设置handled，致使返回为true
 					handled = true;
 					// Set the resulting mime type
@@ -88,149 +62,79 @@ public:
 	bool ParseImageOperationPostData(CefRefPtr<CefRequest> request, std::string& resource_data)
 	{
 		CefRefPtr<CefPostData> postData = request->GetPostData();
-		if (postData) {
-			CefPostData::ElementVector elements;
-			postData->GetElements(elements);
+		if (!postData) {
+			return false;
+		}
+		CefPostData::ElementVector elements;
+		postData->GetElements(elements);
 
-			if (elements.size() > 0) {
-				std::wstring queryString;
-				CefRefPtr<CefPostDataElement> data = elements[0];
-				if (data->GetType() == PDE_TYPE_BYTES) {
-					const unsigned int length = data->GetBytesCount();
-					if (length > 0) {
-						char *arraybuffer = new char[length + 1];
-						if (arraybuffer) {
-							memset(arraybuffer, 0, length + 1);
-							data->GetBytes(length, arraybuffer);
-							
-							if (DataTransferController::GetInstance()->ParseImageOperationData(
-								arraybuffer, resource_data)) {
-									return true;
-							}
-						}
-					}
-				}
-			}
+		if (elements.size() <= 0) {
+			return false;
+		}
+		std::wstring queryString;
+		CefRefPtr<CefPostDataElement> data = elements[0];
+		if (data->GetType() != PDE_TYPE_BYTES) {
+			return false;
+		}
+		const unsigned int length = data->GetBytesCount();
+		if (length == 0) {
+			return false;
+		}
+
+		char *arraybuffer = new char[length + 1];
+		if (!arraybuffer) {
+			return false;
+		}
+
+		memset(arraybuffer, 0, length + 1);
+		data->GetBytes(length, arraybuffer);
+
+		if (DataTransferController::GetInstance()->ParseImageOperationData(
+			arraybuffer, resource_data)) {
+				return true;
 		}
 
 		return false;
 	}
 
-	//void ParsePostData(CefRefPtr<CefRequest> request)
-	//{
-	//	CefRefPtr<CefPostData> postData = request->GetPostData();
-	//	if (postData) {
-	//		CefPostData::ElementVector elements;
-	//		postData->GetElements(elements);
-	//		if (elements.size() > 0) {
-	//			std::wstring queryString;
-	//			CefRefPtr<CefPostDataElement> data = elements[0];
-	//			if (data->GetType() == PDE_TYPE_BYTES) {
-	//				const unsigned int length = data->GetBytesCount();
-	//				if (length > 0) {
-	//					char *arraybuffer = new char[length];
-	//					if (arraybuffer) {
-	//						memset(arraybuffer, 0, length);
-	//						data->GetBytes(length, arraybuffer);
-	//						// 解析从浏览器发送过来的Json数据
-	//						Json::Reader reader;
-	//						Json::Value root;
-	//						bool ret = reader.parse(arraybuffer, root, false);
-	//						if (!ret) {
-	//							return ;
-	//						}
-	//						// 获得关键性的参数
-	//						std::string key_name1("");
-	//						std::string key_name2("");
-	//						if (root[JSON_KEY_FUNC_NAME].isString()) {
-	//							key_name1 = root[JSON_KEY_FUNC_NAME].asString();
-	//						}
-	//						if (root[JSON_KEY_PARAS_NAME].isString()) {
-	//							key_name2 = root[JSON_KEY_PARAS_NAME].asString();
-	//						}
-	//						// 模拟再发送给浏览器
-	//						Json::FastWriter writer;
-	//						Json::Value inputjson;
-	//						inputjson[JSON_KEY_FUNC_NAME] = key_name1;
-	//						inputjson[JSON_KEY_PARAS_NAME] = key_name2;
-	//						std::string jsonstr = writer.write(inputjson);
-	//						// 有换行符的json字符串， JS不能处理。
-	//						if (*jsonstr.rbegin() == '\n') {
-	//							jsonstr.erase(jsonstr.end() - 1);
-	//						}
-	//						std::string text("jsSendCount('");
-	//						std::string postfix("')");
-	//						text += jsonstr;
-	//						text += postfix;
-	//						frame_->ExecuteJavaScript(text.c_str(), "", 0);
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-
-	bool LoadBinaryResourceWithJSBuffer(CefRefPtr<CefRequest> request, std::string& resource_data) { 
+	bool  HandleArrayBuffrDataFromJS(CefRefPtr<CefRequest> request, std::string& resource_data) { 
 		CefRefPtr<CefPostData> postData = request->GetPostData();
-		if (postData) {
-			CefPostData::ElementVector elements;
-			postData->GetElements(elements);
-
-			if (elements.size() > 0) {
-				std::wstring queryString;
-				CefRefPtr<CefPostDataElement> data = elements[0];
-				if (data->GetType() == PDE_TYPE_BYTES) {
-					const unsigned int length = data->GetBytesCount();
-					if (length > 0) {
-						char *arraybuffer = new char[length];
-						if (arraybuffer) {
-							memset(arraybuffer, 0, length);
-							data->GetBytes(length, arraybuffer);
-
-							resource_data = "";
-							return true;
-							
-							// 保存为文件
-							{
-								FILE* fp;
-								fp = fopen("C:\\ztest2\\100.jpg", "wb");
-								if (fp) {
-									fwrite(arraybuffer, 1, length, fp);
-									fclose(fp);
-								}
-							}
-
-							// 临时，打开一个图像，回传给JS。以后，会回传一个经过处理过的图像，给JS端。
-							{
-								FILE* fp;
-								fp = fopen("C:\\ztest2\\2000.jpg", "rb");
-								if (fp) {
-									int length = 0;
-									//获取图像数据总长度	 
-									fseek(fp, 0, SEEK_END);	 
-									length=ftell(fp);	 
-									rewind(fp);	 
-									//根据图像数据长度分配内存buffer	
-									char* ImgBuffer=(char*)malloc( length* sizeof(char) );	 
-									//将图像数据读入buffer	 
-									fread(ImgBuffer, length, 1, fp);	 
-									fclose(fp);
-
-									resource_data =   std::string(ImgBuffer, length);
-
-									return true;
-								}
-							}
-							
-
-							
-						}
-					}
-				}
-			}
+		if (!postData) {
+			return false;
 		}
-		return false;
+
+		CefPostData::ElementVector elements;
+		postData->GetElements(elements);
+
+		if (elements.size() <= 0) {
+			return false;
+		}
+
+		std::wstring queryString;
+		CefRefPtr<CefPostDataElement> data = elements[0];
+		if (data->GetType() != PDE_TYPE_BYTES) {
+			return false;
+		}
+
+		const unsigned int length = data->GetBytesCount();
+		if (length == 0) {
+			return false;
+		}
+
+		char *arraybuffer = new char[length];
+		if (!arraybuffer) {
+			return false;
+		}
+
+		memset(arraybuffer, 0, length);
+		data->GetBytes(length, arraybuffer);
+		// 此处需要将arraybuffer数据交给vtk处理
+		// to do
+
+		resource_data = "";
+		return true;
 	}
+
 	virtual void GetResponseHeaders(CefRefPtr<CefResponse> response,
 		int64& response_length,
 		CefString& redirectUrl) OVERRIDE {

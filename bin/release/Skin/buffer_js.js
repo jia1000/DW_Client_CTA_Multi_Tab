@@ -74,7 +74,7 @@
             json_data.image_max         = currFilePaths.length;
 
             var json_str = JSON.stringify(json_data);
-            var url = 'http://image_operation/';
+            var url = 'http://image_controller/';
 
             var xhr = new XMLHttpRequest();
             //  第3个参数async为true，表示为异步，否则为同步
@@ -99,7 +99,7 @@
                  return ;
              }
 
-             var url = 'http://buffer_image/';
+             var url = 'http://image_buffer_transfer/';
 
              var xhr = new XMLHttpRequest();
              //  第3个参数async为true，表示为异步，否则为同步
@@ -188,11 +188,11 @@
                 json_data.request_type = text1;
                 json_data.image_operation = text2;
                 json_data.image_paras = text3;
-                json_data.image_data = arraybuffer2base64(fileString);
+                // json_data.image_data = arraybuffer2base64(fileString);
                 // json_data.file_index = 4;
 
                 var json_str = JSON.stringify(json_data);
-                var url = 'http://image_operation/';
+                var url = 'http://image_controller/';
 
                 var xhr = new XMLHttpRequest();
                 //  第3个参数async为true，表示为异步，否则为同步
