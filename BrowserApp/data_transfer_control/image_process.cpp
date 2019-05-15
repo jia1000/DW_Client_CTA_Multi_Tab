@@ -15,6 +15,7 @@
 #include "data/data_definition.h"
 #include "data/data_loader.h"
 #include "data_source.h"
+#include "encrypt/Utf8String.h"
 #include "io/dcm_reader.h"
 #include "render_source.h"
 #include "render_facade.h"
@@ -29,6 +30,12 @@ static DW::IO::IDicomReader* reader = NULL;
 static bool is_create_mpr_render = false;
 static bool is_create_vr_render  = false;
 static bool is_create_cpr_render  = false;
+
+const std::string dicom_files_dir("C:\\ztest2\\dicom_test");
+const std::string nii_file_data_path("C:\\ztest2\\1203_0000.nii");
+const std::string nii_file_mask_path("C:\\ztest2\\1204_blood.nii");
+const std::string nii_curve_data_path("C:\\ztest2\\curve_data_nii_vessel.txt");
+const std::string screen_shot_file_path("C:\\ztest2\\screen_shot_temp.bmp");
 
 
 
@@ -308,14 +315,13 @@ bool ImageMPRProcess::Excute(std::string& out_image_data)
 	//my->ReadDicomFile(path_file);
 
 	// 1.read dcm image from directory
-	const std::string path_image_data("C:\\ztest2\\dicom_test");
-
+	
 	std::string::size_type sz;
 	double zoom_scale = std::stod(m_key3_str_paras, &sz);
 
 	if (!reader) {
 		reader = new VtkDcmLoader();
-		reader->LoadDirectory(path_image_data.c_str());	// only once
+		reader->LoadDirectory(dicom_files_dir.c_str());	// only once
 		VolData* vol_data = reader->GetData();
 		if (vol_data == NULL) return false;
 		ImageDataSource::Get()->AddVolData("series1", vol_data);
@@ -349,11 +355,10 @@ bool ImageMPRProcess::Excute(std::string& out_image_data)
 	BITMAP  bitmap ;
 	GetObject (hBitmap, sizeof (BITMAP), &bitmap);
 
-	std::wstring ws_screenshot_file = L"C:\\ztest2\\haha1111.bmp";
-	std::string  s_screenshot_file = "C:\\ztest2\\haha1111.bmp";
+	std::wstring ws_screenshot_file = StringToWString(screen_shot_file_path);
 	SaveBitmapToFile(hBitmap, ws_screenshot_file.c_str());
 
-	cv::Mat src = cv::imread(s_screenshot_file.c_str());
+	cv::Mat src = cv::imread(screen_shot_file_path.c_str());
 	out_image_data = Mat2Base64(src, "bmp");
 
 	return true;
@@ -378,14 +383,13 @@ bool ImageVRProcess::Excute(std::string& out_image_data)
 	//my->ReadDicomFile(path_file);
 
 	// 1.read dcm image from directory
-	const std::string path_image_data("C:\\ztest2\\dicom_test");
-
+	
 	std::string::size_type sz;
 	double zoom_scale = std::stod(m_key3_str_paras, &sz);
 
 	if (!reader) {
 		reader = new VtkDcmLoader();
-		reader->LoadDirectory(path_image_data.c_str());	// only once
+		reader->LoadDirectory(dicom_files_dir.c_str());	// only once
 
 		VolData* vol_data = reader->GetData();
 		if (vol_data == NULL) return false;
@@ -423,11 +427,10 @@ bool ImageVRProcess::Excute(std::string& out_image_data)
 	BITMAP  bitmap ;
 	GetObject (hBitmap, sizeof (BITMAP), &bitmap);
 
-	std::wstring ws_screenshot_file = L"C:\\ztest2\\haha1111.bmp";
-	std::string  s_screenshot_file = "C:\\ztest2\\haha1111.bmp";
+	std::wstring ws_screenshot_file = StringToWString(screen_shot_file_path);
 	SaveBitmapToFile(hBitmap, ws_screenshot_file.c_str());
 
-	cv::Mat src = cv::imread(s_screenshot_file.c_str());
+	cv::Mat src = cv::imread(screen_shot_file_path.c_str());
 	out_image_data = Mat2Base64(src, "bmp");
 
 	return true;
@@ -447,7 +450,6 @@ ImageCPRProcess::~ImageCPRProcess()
 bool ImageCPRProcess::Excute(std::string& out_image_data)
 {	
 	// 1.read dcm image from directory
-	const std::string path_image_data("C:\\ztest2\\1203_0000.nii");
 
 	std::string::size_type sz;
 	double zoom_scale = std::stod(m_key3_str_paras, &sz);
@@ -455,10 +457,9 @@ bool ImageCPRProcess::Excute(std::string& out_image_data)
 	if (!reader) {
 		reader = new NiiImageLoader();
 		std::vector<const char*> files;
-		files.push_back(path_image_data.c_str());
+		files.push_back(nii_file_data_path.c_str());
 		reader->LoadFiles(files);	// only once
-		std::string path_mask_file("C:\\ztest2\\1204_blood.nii");
-		reader->LoadVolumeMask(path_mask_file.c_str());
+		reader->LoadVolumeMask(nii_file_mask_path.c_str());
 
 		VolData* vol_data = reader->GetData();
 		if (vol_data == NULL) return false;
@@ -471,8 +472,7 @@ bool ImageCPRProcess::Excute(std::string& out_image_data)
 		RenderSource::Get()->CreateRenderControl(m_wnd_name, RenderControlType::STRETECHED_CPR);	// only once
 		//////////////////////////////////////////////////////////////////////////
 		// move mpr to specified locations
-		std::string path = "C:\\ztest2\\curve_data_nii_vessel.txt";
-		vector<string> curve_data = ReadTxt(path.c_str());
+		vector<string> curve_data = ReadTxt(nii_curve_data_path.c_str());
 		vector<Point3f> points;
 		auto it = curve_data.begin();
 		while (it != curve_data.end()){
@@ -488,17 +488,11 @@ bool ImageCPRProcess::Excute(std::string& out_image_data)
 			++it;
 		}
 		curve_id_ = CurveSource::Get()->CreateCurve("series1", points);
-		//curve_ = CurveSource::Get()->GetCurve("series1", curve_id_);
 
 		Vector3f vx, vy;
 		float ix, iy, iz;
-		//int number_of_poinst = curve_->GetNumberOfSamplePoint();
-		//int center_pos = number_of_poinst / 2;
-		//////////////////////////////////////////////////////////////////////////
-		RenderFacade::Get()->ChangeSeries("series1");	
-		//RenderFacade::Get()->SetOrientation(wnd_mpr1_, AXIAL);
-		//float pos[3] = { 255.0f, 255.0f, 0};
-		//RenderFacade::Get()->SetOrientation(m_wnd_name, SAGITTAL);
+		
+		RenderFacade::Get()->ChangeSeries("series1");
 		RenderFacade::Get()->SetCPRCurveID(m_wnd_name, curve_id_);
 		RenderFacade::Get()->RenderControl(m_wnd_name);
 
@@ -524,11 +518,10 @@ bool ImageCPRProcess::Excute(std::string& out_image_data)
 	BITMAP  bitmap ;
 	GetObject (hBitmap, sizeof (BITMAP), &bitmap);
 
-	std::wstring ws_screenshot_file = L"C:\\ztest2\\haha1111.bmp";
-	std::string  s_screenshot_file = "C:\\ztest2\\haha1111.bmp";
+	std::wstring ws_screenshot_file = StringToWString(screen_shot_file_path);
 	SaveBitmapToFile(hBitmap, ws_screenshot_file.c_str());
 
-	cv::Mat src = cv::imread(s_screenshot_file.c_str());
+	cv::Mat src = cv::imread(screen_shot_file_path.c_str());
 	out_image_data = Mat2Base64(src, "bmp");
 	return true;
 }
