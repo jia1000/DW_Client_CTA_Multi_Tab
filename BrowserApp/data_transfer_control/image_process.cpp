@@ -3,6 +3,7 @@
 #include "image_process.h"
 #include "io/txt_reader.h"
 #include "tools/string_util.h"
+#include "io/nii_loader.h"
 
 #include <algorithm>
 #include "json/json.h"
@@ -27,6 +28,8 @@ using namespace DW::IO;
 static DW::IO::IDicomReader* reader = NULL;
 static bool is_create_mpr_render = false;
 static bool is_create_vr_render  = false;
+static bool is_create_cpr_render  = false;
+
 
 
 ImageProcessBase::ImageProcessBase(std::string str_paras)
@@ -395,7 +398,7 @@ bool ImageVRProcess::Excute(std::string& out_image_data)
 		RenderFacade::Get()->ChangeSeries("series1");	
 		//RenderFacade::Get()->SetOrientation(wnd_mpr1_, AXIAL);
 		//float pos[3] = { 255.0f, 255.0f, 0};
-		RenderFacade::Get()->SetOrientation(m_wnd_name, SAGITTAL);
+		RenderFacade::Get()->SetOrientation(m_wnd_name, CORONAL);
 		RenderFacade::Get()->RenderControl(m_wnd_name);
 
 		is_create_vr_render = true;
@@ -444,26 +447,31 @@ ImageCPRProcess::~ImageCPRProcess()
 bool ImageCPRProcess::Excute(std::string& out_image_data)
 {	
 	// 1.read dcm image from directory
-	const std::string path_image_data("C:\\ztest2\\dicom_test");
+	const std::string path_image_data("C:\\ztest2\\1203_0000.nii");
 
 	std::string::size_type sz;
 	double zoom_scale = std::stod(m_key3_str_paras, &sz);
 
 	if (!reader) {
-		reader = new VtkDcmLoader();
-		reader->LoadDirectory(path_image_data.c_str());	// only once
+		reader = new NiiImageLoader();
+		std::vector<const char*> files;
+		files.push_back(path_image_data.c_str());
+		reader->LoadFiles(files);	// only once
+		std::string path_mask_file("C:\\ztest2\\1204_blood.nii");
+		reader->LoadVolumeMask(path_mask_file.c_str());
 
 		VolData* vol_data = reader->GetData();
 		if (vol_data == NULL) return false;
+		vol_data->SetDefaultWindowWidthLevel(820, 250);
 		ImageDataSource::Get()->AddVolData("series1", vol_data);
 	}
 
-	if (!is_create_vr_render) {
+	if (!is_create_cpr_render) {
 		// 2.create all image control
 		RenderSource::Get()->CreateRenderControl(m_wnd_name, RenderControlType::STRETECHED_CPR);	// only once
 		//////////////////////////////////////////////////////////////////////////
 		// move mpr to specified locations
-		std::string path = "C:\\ztest2\\curve_data.txt";
+		std::string path = "C:\\ztest2\\curve_data_nii_vessel.txt";
 		vector<string> curve_data = ReadTxt(path.c_str());
 		vector<Point3f> points;
 		auto it = curve_data.begin();
@@ -494,7 +502,7 @@ bool ImageCPRProcess::Excute(std::string& out_image_data)
 		RenderFacade::Get()->SetCPRCurveID(m_wnd_name, curve_id_);
 		RenderFacade::Get()->RenderControl(m_wnd_name);
 
-		is_create_vr_render = true;
+		is_create_cpr_render = true;
 	}
 
 	if (m_key2_str_opertation == JSON_VALUE_IMAGE_OPERATION_ZOOM) {
