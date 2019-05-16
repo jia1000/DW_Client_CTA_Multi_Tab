@@ -149,6 +149,9 @@ ShowBuffer* VolumeRenderer::GetShowBuffer()
 
 void VolumeRenderer::SetData(VolData* data)
 {
+	if (volume_data_ == data)
+		return;
+
 	Timer::begin("VolumeRenderer::SetData");
 
 	volume_data_ = data;
