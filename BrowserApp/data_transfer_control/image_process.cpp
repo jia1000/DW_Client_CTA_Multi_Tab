@@ -37,6 +37,10 @@ const std::string nii_file_mask_path("C:\\ztest2\\1204_blood.nii");
 const std::string nii_curve_data_path("C:\\ztest2\\curve_data_nii_vessel.txt");
 const std::string screen_shot_file_path("C:\\ztest2\\screen_shot_temp.bmp");
 
+const std::string series_name_mpr("series1");
+const std::string series_name_vr("series1");
+const std::string series_name_cpr("series1");
+
 
 
 ImageProcessBase::ImageProcessBase(std::string str_paras)
@@ -324,13 +328,13 @@ bool ImageMPRProcess::Excute(std::string& out_image_data)
 		reader->LoadDirectory(dicom_files_dir.c_str());	// only once
 		VolData* vol_data = reader->GetData();
 		if (vol_data == NULL) return false;
-		ImageDataSource::Get()->AddVolData("series1", vol_data);
+		ImageDataSource::Get()->AddVolData(series_name_mpr, vol_data);
 	}
 
 	if (!is_create_mpr_render) {
 		// 2.create all image control
 		RenderSource::Get()->CreateRenderControl(m_wnd_name, RenderControlType::MPR);	// only once
-		RenderFacade::Get()->ChangeSeries("series1");	
+		RenderFacade::Get()->ChangeSeries(series_name_mpr);	
 		//RenderFacade::Get()->SetOrientation(wnd_mpr1_, AXIAL);
 		//float pos[3] = { 255.0f, 255.0f, 0};
 		RenderFacade::Get()->SetOrientation(m_wnd_name, SAGITTAL);
@@ -393,13 +397,13 @@ bool ImageVRProcess::Excute(std::string& out_image_data)
 
 		VolData* vol_data = reader->GetData();
 		if (vol_data == NULL) return false;
-		ImageDataSource::Get()->AddVolData("series1", vol_data);
+		ImageDataSource::Get()->AddVolData(series_name_vr, vol_data);
 	}
 
 	if (!is_create_vr_render) {
 		// 2.create all image control
 		RenderSource::Get()->CreateRenderControl(m_wnd_name, RenderControlType::VR);	// only once
-		RenderFacade::Get()->ChangeSeries("series1");	
+		RenderFacade::Get()->ChangeSeries(series_name_vr);	
 		//RenderFacade::Get()->SetOrientation(wnd_mpr1_, AXIAL);
 		//float pos[3] = { 255.0f, 255.0f, 0};
 		RenderFacade::Get()->SetOrientation(m_wnd_name, CORONAL);
@@ -464,7 +468,7 @@ bool ImageCPRProcess::Excute(std::string& out_image_data)
 		VolData* vol_data = reader->GetData();
 		if (vol_data == NULL) return false;
 		vol_data->SetDefaultWindowWidthLevel(820, 250);
-		ImageDataSource::Get()->AddVolData("series1", vol_data);
+		ImageDataSource::Get()->AddVolData(series_name_cpr, vol_data);
 	}
 
 	if (!is_create_cpr_render) {
@@ -487,12 +491,12 @@ bool ImageCPRProcess::Excute(std::string& out_image_data)
 			}
 			++it;
 		}
-		curve_id_ = CurveSource::Get()->CreateCurve("series1", points);
+		curve_id_ = CurveSource::Get()->CreateCurve(series_name_cpr, points);
 
 		Vector3f vx, vy;
 		float ix, iy, iz;
 		
-		RenderFacade::Get()->ChangeSeries("series1");
+		RenderFacade::Get()->ChangeSeries(series_name_cpr);
 		RenderFacade::Get()->SetCPRCurveID(m_wnd_name, curve_id_);
 		RenderFacade::Get()->RenderControl(m_wnd_name);
 
