@@ -15,7 +15,7 @@
 #include <api/globals.h>
 #include <api/api.h>
 #include <api/dicom/idicommanager.h>
-#include <api/iproxynotificadorprogreso.h>
+//#include <api/iproxynotificadorprogreso.h>
 //#include <model/AIResult.h>
 
 class DcmMetaInfo;
@@ -72,7 +72,8 @@ namespace GIL
 			virtual bool GetTag(unsigned int grupo,unsigned int elemento, TagPrivadoUndefined& tagBinario);
 			virtual bool GetTag(unsigned int grupo,unsigned int elemento, float& valor);
 			virtual bool GetTag(unsigned int grupo,unsigned int elemento, int& valor);virtual bool GetTag(unsigned int grupo,unsigned int elemento, GIL::DICOM::DicomDataset& secuencia);
-			virtual bool ExtractTagToFile(unsigned int group, unsigned int element, const std::string& outputFile, GNC::IProxyNotificadorProgreso* pNotificador = NULL);
+			virtual bool ExtractTagToFile(unsigned int group, unsigned int element, const std::string& outputFile
+				/*, GNC::IProxyNotificadorProgreso* pNotificador = NULL*/);
 
 			virtual bool FindTag(unsigned int group,unsigned int element, TagPrivadoUndefined& tagBinario);
 			

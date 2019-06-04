@@ -16,7 +16,9 @@
 #include <api/api.h>
 #include <list>
 #include <string>
-#include <windows.h>
+//#include <windows.h>
+#include <mutex>
+
 //----------------------------------------------------------------------------------------------------
 //region Forward Declarations
 //class wxCriticalSection;
@@ -38,7 +40,8 @@ public:
 	void Leave();
 
 private:
-	CRITICAL_SECTION cs;
+	//CRITICAL_SECTION cs;
+	std::mutex cs;
 };
 
 

@@ -43,6 +43,8 @@
 #include <dcmtk/dcmdata/dcpxitem.h>
 #include <dcmtk/dcmpstat/dvpstat.h>
 #include <dcmtk/dcmpstat/dvpsgr.h>
+#include <dcmtk/ofstd/ofstring.h>
+#include <dcmtk/dcmdata/dcdatset.h>
 #include <api/dicom/dcmdictionary.h>
 //#include <main/utils/UtilString.h>
 //#include <main/utils/UtilNumber.h>
@@ -128,18 +130,18 @@ namespace GIL
 			//	tempFile = ostr.str();
 			//}
 
-			//cond = m_pDCMSourceFile->saveFile(tempFile.c_str());
-			//if (cond.bad()) {
-			//	std::cerr << "Error: " << cond.text() << std::endl;
+			cond = m_pDCMSourceFile->saveFile(inputFile.c_str());
+			if (cond.bad()) {
+				std::cerr << "Error: " << cond.text() << std::endl;
 			//	wxRemoveFile(FROMPATH(tempFile));
 			//	//return false;
 			//} else {
 			//	wxRenameFile(FROMPATH(tempFile), FROMPATH(inputFile), true);
 			//	m_pDCMSourceFile->loadFile(inputFile.c_str(), EXS_Unknown, EGL_noChange, DCM_TagInfoLength);
-			//}
+			}
    //         DeleteTempDir(tempDir);
-			return true;
-            //return !cond.bad();
+			//return true;
+            return !cond.bad();
 		}
 
 		/*Actualiza la jerarquia cargada*/
@@ -740,7 +742,8 @@ namespace GIL
 			}
 		}
 
-		bool DICOMManager::ExtractTagToFile(unsigned int grupo, unsigned int element, const std::string& outputFile, GNC::IProxyNotificadorProgreso* pNotificador)
+		bool DICOMManager::ExtractTagToFile(unsigned int grupo, unsigned int element, const std::string& outputFile
+			/*, GNC::IProxyNotificadorProgreso* pNotificador*/)
 		{
 			DcmTagKey key(grupo,element);
 			DcmElement* pElement;
@@ -796,13 +799,13 @@ namespace GIL
 					std::ofstream outfile (outputFile.c_str(), std::ios_base::binary);
 					int numIterations = 0;
 					do {
-						if (pNotificador != NULL && numIterations%100 == 0) {
+						//if (pNotificador != NULL && numIterations%100 == 0) {
 							//if (!pNotificador->NotificarProgreso((float)offset/length, _Std("Extracting file..."))) {
 							//	outfile.close();
 							//	wxRemoveFile(FROMPATH(outputFile));
 							//	return false;
 							//}
-						}
+						//}
 						numBytes = ((offset + (int)sizeof(readingBuffer)) > length)? length - offset: (int)sizeof(readingBuffer);
 						pElement->getPartialValue(readingBuffer, offset, numBytes, &cache);
 						outfile.write(readingBuffer, numBytes);
@@ -924,8 +927,9 @@ namespace GIL
 
 		bool DICOMManager::EsDicom(const std::string& inputFile) {
 			//comprobamos que es dicom(numero magico, si no el load file a veces casca estrepitosamente)
-			wxFile fichero(FROMPATH(inputFile),wxFile::read);
 			bool esDicom = false;
+#ifdef USE_WXWIDGETS
+			wxFile fichero(FROMPATH(inputFile),wxFile::read);
 			if(fichero.IsOpened()){
 				char buffer[128];
 				if(fichero.Read(buffer,128) == 128){
@@ -938,6 +942,24 @@ namespace GIL
 					}
 				}
 			}
+#else 
+			FILE* fp = fopen(inputFile.c_str(), "r");
+			if (fp) {
+				const int BUFFER_SIZE = 128;
+				char buffer[BUFFER_SIZE] = {0};
+				if (BUFFER_SIZE == fread(buffer, 1, BUFFER_SIZE, fp)) {
+					const int MAGIC_NUM = 4;
+					char numeroMagico[MAGIC_NUM] = {0};
+					if (MAGIC_NUM == fread(numeroMagico, 1, MAGIC_NUM, fp)) {
+						std::string str(numeroMagico, MAGIC_NUM);
+						if (str == "DICM") {
+							esDicom = true;
+						}
+					}
+				}
+				fclose(fp);
+			}
+#endif
 			return esDicom;
 		}
 

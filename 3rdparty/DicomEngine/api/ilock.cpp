@@ -16,22 +16,24 @@
 
 wxCriticalSection::wxCriticalSection()
 {
-	InitializeCriticalSection(&cs);
+	//InitializeCriticalSection(&cs);
 }
 
 wxCriticalSection::~wxCriticalSection()
 {
-	DeleteCriticalSection(&cs);
+	//DeleteCriticalSection(&cs);
 }
 
 void wxCriticalSection::Enter()
 {
-	EnterCriticalSection(&cs);
+	//EnterCriticalSection(&cs);
+	cs.lock();
 }
 
 void wxCriticalSection::Leave()
 {
-	LeaveCriticalSection(&cs);
+	//LeaveCriticalSection(&cs);
+	cs.unlock();
 }
 
 //----------------------------------------------------------------------------------------------------

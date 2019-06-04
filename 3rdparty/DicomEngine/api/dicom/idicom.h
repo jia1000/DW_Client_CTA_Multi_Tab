@@ -9,7 +9,7 @@
 
 namespace GIL {
 	namespace DICOM {
-		class IDICOMImg2DCM;
+		//class IDICOMImg2DCM;
 		class IDICOMManager;
 	}
 }
@@ -19,7 +19,7 @@ class DcmElement;
 namespace GIL {
 	namespace DICOM {
 
-		class IDICOMImg2DCM;
+		//class IDICOMImg2DCM;
 		class IDICOMManager;
 
 		class EXTAPI TipoTagPrivado {

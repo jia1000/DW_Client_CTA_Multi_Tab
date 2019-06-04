@@ -10,23 +10,8 @@
     <Filter Include="Source\main">
       <UniqueIdentifier>{d4a88312-25a1-44b0-8f3d-d8d6ab15dc4a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\main\streaming">
-      <UniqueIdentifier>{34a85fb6-9b2c-4762-bdde-81fd741afb81}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\api">
       <UniqueIdentifier>{83d9d016-5674-4b41-8ad7-130093218a20}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\api\controlers">
-      <UniqueIdentifier>{a4dbf36c-788b-425a-a994-255c0a27d24a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\api\controlers\proxies">
-      <UniqueIdentifier>{e78f3a5d-29ce-465c-b1bc-c5dac87e7b21}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\itk">
-      <UniqueIdentifier>{9f571f5c-2823-402c-b12b-fc34d4139cb0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\api\utils">
-      <UniqueIdentifier>{97f2b166-e644-4ad1-8738-93588423f805}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\main\controllers">
       <UniqueIdentifier>{23e51446-f8f4-439b-b588-e2fd87bdff84}</UniqueIdentifier>
@@ -34,31 +19,13 @@
     <Filter Include="Source\api\dicom">
       <UniqueIdentifier>{59ded4f0-3338-42c2-8756-607b8fccbddd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\main\controllers\dcmtk">
-      <UniqueIdentifier>{22ee0a23-bd72-41b9-8cf3-da21f51df2cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\main\utils">
-      <UniqueIdentifier>{5f9b6f29-8204-492b-9f12-edcc544a8771}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main\controllers\streaming\streamingloader.cpp">
-      <Filter>Source\main\streaming</Filter>
-    </ClCompile>
-    <ClCompile Include="api\controllers\icontroladorcarga.cpp">
-      <Filter>Source\api\controlers</Filter>
-    </ClCompile>
-    <ClCompile Include="api\controllers\proxies\ipipelineproperties.cpp">
-      <Filter>Source\api\controlers\proxies</Filter>
-    </ClCompile>
     <ClCompile Include="api\ilock.cpp">
       <Filter>Source\api</Filter>
     </ClCompile>
     <ClCompile Include="api\autoptr.cpp">
       <Filter>Source\api</Filter>
-    </ClCompile>
-    <ClCompile Include="api\utils\iginkgomatrix4x4.cpp">
-      <Filter>Source\api\utils</Filter>
     </ClCompile>
     <ClCompile Include="api\dicom\dicomdataset.cpp">
       <Filter>Source\api\dicom</Filter>
@@ -69,26 +36,14 @@
     <ClCompile Include="api\iexception.cpp">
       <Filter>Source\api</Filter>
     </ClCompile>
-    <ClCompile Include="api\icommand.cpp">
-      <Filter>Source\api</Filter>
-    </ClCompile>
-    <ClCompile Include="main\utils\ginkgomatrix4x4.cpp">
-      <Filter>Source\main\utils</Filter>
-    </ClCompile>
     <ClCompile Include="api\studycontextmy.cpp">
       <Filter>Source\api</Filter>
     </ClCompile>
+    <ClCompile Include="main\controllers\dicommanager.cpp">
+      <Filter>Source\main\controllers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main\controllers\streaming\streamingloader.h">
-      <Filter>Source\main\streaming</Filter>
-    </ClInclude>
-    <ClInclude Include="api\controllers\icontroladorcarga.h">
-      <Filter>Source\api\controlers</Filter>
-    </ClInclude>
-    <ClInclude Include="api\controllers\proxies\ipipelineproperties.h">
-      <Filter>Source\api\controlers\proxies</Filter>
-    </ClInclude>
     <ClInclude Include="api\ilock.h">
       <Filter>Source\api</Filter>
     </ClInclude>
@@ -97,18 +52,6 @@
     </ClInclude>
     <ClInclude Include="api\autoptr.h">
       <Filter>Source\api</Filter>
-    </ClInclude>
-    <ClInclude Include="itk\itkImageToVTKImageFilter.h">
-      <Filter>Source\itk</Filter>
-    </ClInclude>
-    <ClInclude Include="itk\itkRGBImageToVTKImageFilter.h">
-      <Filter>Source\itk</Filter>
-    </ClInclude>
-    <ClInclude Include="itk\itkVTKImageToImageFilter.h">
-      <Filter>Source\itk</Filter>
-    </ClInclude>
-    <ClInclude Include="api\utils\iginkgomatrix4x4.h">
-      <Filter>Source\api\utils</Filter>
     </ClInclude>
     <ClInclude Include="api\dicom\dcmdictionary.h">
       <Filter>Source\api\dicom</Filter>
@@ -122,35 +65,20 @@
     <ClInclude Include="api\dicom\idicom.h">
       <Filter>Source\api\dicom</Filter>
     </ClInclude>
-    <ClInclude Include="api\dicom\idicomizador.h">
-      <Filter>Source\api\dicom</Filter>
-    </ClInclude>
     <ClInclude Include="api\dicom\idicommanager.h">
-      <Filter>Source\api\dicom</Filter>
-    </ClInclude>
-    <ClInclude Include="api\dicom\imodelodicom.h">
       <Filter>Source\api\dicom</Filter>
     </ClInclude>
     <ClInclude Include="api\iexception.h">
       <Filter>Source\api</Filter>
     </ClInclude>
-    <ClInclude Include="api\iproxynotificadorprogreso.h">
-      <Filter>Source\api</Filter>
-    </ClInclude>
-    <ClInclude Include="api\icommand.h">
-      <Filter>Source\api</Filter>
-    </ClInclude>
-    <ClInclude Include="main\controllers\dcmtk\dicomnetclient.h">
-      <Filter>Source\main\controllers\dcmtk</Filter>
-    </ClInclude>
     <ClInclude Include="api\globals.h">
       <Filter>Source\api</Filter>
     </ClInclude>
-    <ClInclude Include="main\utils\ginkgomatrix4x4.h">
-      <Filter>Source\main\utils</Filter>
-    </ClInclude>
     <ClInclude Include="api\studycontextmy.h">
       <Filter>Source\api</Filter>
+    </ClInclude>
+    <ClInclude Include="main\controllers\dicommanager.h">
+      <Filter>Source\main\controllers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

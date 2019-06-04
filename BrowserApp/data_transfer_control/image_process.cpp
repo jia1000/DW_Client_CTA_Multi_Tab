@@ -314,9 +314,9 @@ ImageMPRProcess::~ImageMPRProcess()
 bool ImageMPRProcess::Excute(std::string& out_image_data)
 {
 	// 暂时，先从本地读取Dicom文件
-	//GNC::GCS::StudyContextMy* my = new GNC::GCS::StudyContextMy();
-	//const std::string path_file(""C:\\ztest2\\dicom_test\\413");
-	//my->ReadDicomFile(path_file);
+	GNC::GCS::StudyContextMy* my = new GNC::GCS::StudyContextMy();
+	const std::string path_file("C:\\ztest2\\dicom_test\\413");
+	my->ReadDicomFile(path_file);
 
 	// 1.read dcm image from directory
 	

@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\InsightToolkit-3.20.1;..\..\..\InsightToolkit-3.20.1\Code\Common;..\..\..\InsightToolkit-3.20.1\Utilities\vxl\vcl\emulation;..\..\..\InsightToolkit-3.20.1\Utilities\vxl\vcl;..\..\..\InsightToolkit-3.20.1\Code\IO;..\..\..\InsightToolkit-3.20.1\Utilities\gdcm\;..\..\..\InsightToolkit-3.20.1\Utilities\gdcm\src;..\..\..\InsightToolkit-3.20.1\Utilities\vxl\core\;..\..\..\InsightToolkit-3.20.1\Utilities;..\..\..\InsightToolkit-3.20.1\Code\BasicFilters;..\..\..\VTK-5.10.1\Imaging;..\..\..\VTK-5.10.1\VolumeRendering;..\..\..\VTK-5.10.1\Common;..\..\..\VTK-5.10.1;..\..\..\VTK-5.10.1\Filtering;..\..\..\VTK-5.10.1\Rendering;..\..\..\VTK-5.10.1\Graphics;..\..\..\VTK-5.10.1\IO;..\..\..\dcmtk-3.6.0\include;..\..\..\dcmtk-3.6.0\dcmjpeg\include;..\..\..\dcmtk-3.6.0\dcmdata\include;..\..\..\dcmtk-3.6.0\ofstd\include;..\..\..\dcmtk-3.6.0\oflog\include;..\..\..\dcmtk-3.6.0\dcmimgle\include;..\..\..\dcmtk-3.6.0\dcmnet\include;..\..\..\dcmtk-3.6.0\dcmimage\include;..\..\..\dcmtk-3.6.0\dcmtls\include;..\..\..\dcmtk-3.6.0\dcmpstat\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\dcmtk-3.6.0\include;..\..\..\dcmtk-3.6.0\dcmjpeg\include;..\..\..\dcmtk-3.6.0\dcmdata\include;..\..\..\dcmtk-3.6.0\ofstd\include;..\..\..\dcmtk-3.6.0\oflog\include;..\..\..\dcmtk-3.6.0\dcmimgle\include;..\..\..\dcmtk-3.6.0\dcmnet\include;..\..\..\dcmtk-3.6.0\dcmimage\include;..\..\..\dcmtk-3.6.0\dcmsr\include;..\..\..\dcmtk-3.6.0\dcmtls\include;..\..\..\dcmtk-3.6.0\dcmpstat\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -81,43 +81,26 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="api\autoptr.cpp" />
-    <ClCompile Include="api\controllers\icontroladorcarga.cpp" />
-    <ClCompile Include="api\controllers\proxies\ipipelineproperties.cpp" />
     <ClCompile Include="api\dicom\dicomdataset.cpp" />
     <ClCompile Include="api\dicom\idicom.cpp" />
-    <ClCompile Include="api\icommand.cpp" />
     <ClCompile Include="api\iexception.cpp" />
     <ClCompile Include="api\ilock.cpp" />
     <ClCompile Include="api\studycontextmy.cpp" />
-    <ClCompile Include="api\utils\iginkgomatrix4x4.cpp" />
-    <ClCompile Include="main\controllers\streaming\streamingloader.cpp" />
-    <ClCompile Include="main\utils\ginkgomatrix4x4.cpp" />
+    <ClCompile Include="main\controllers\dicommanager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="api\api.h" />
     <ClInclude Include="api\autoptr.h" />
-    <ClInclude Include="api\controllers\icontroladorcarga.h" />
-    <ClInclude Include="api\controllers\proxies\ipipelineproperties.h" />
     <ClInclude Include="api\dicom\dcmdictionary.h" />
     <ClInclude Include="api\dicom\dcmuiddictionary.h" />
     <ClInclude Include="api\dicom\dicomdataset.h" />
     <ClInclude Include="api\dicom\idicom.h" />
-    <ClInclude Include="api\dicom\idicomizador.h" />
     <ClInclude Include="api\dicom\idicommanager.h" />
-    <ClInclude Include="api\dicom\imodelodicom.h" />
     <ClInclude Include="api\globals.h" />
-    <ClInclude Include="api\icommand.h" />
     <ClInclude Include="api\iexception.h" />
     <ClInclude Include="api\ilock.h" />
-    <ClInclude Include="api\iproxynotificadorprogreso.h" />
     <ClInclude Include="api\studycontextmy.h" />
-    <ClInclude Include="api\utils\iginkgomatrix4x4.h" />
-    <ClInclude Include="itk\itkImageToVTKImageFilter.h" />
-    <ClInclude Include="itk\itkRGBImageToVTKImageFilter.h" />
-    <ClInclude Include="itk\itkVTKImageToImageFilter.h" />
-    <ClInclude Include="main\controllers\dcmtk\dicomnetclient.h" />
-    <ClInclude Include="main\controllers\streaming\streamingloader.h" />
-    <ClInclude Include="main\utils\ginkgomatrix4x4.h" />
+    <ClInclude Include="main\controllers\dicommanager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

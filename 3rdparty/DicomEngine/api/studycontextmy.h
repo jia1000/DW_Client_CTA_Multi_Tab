@@ -15,6 +15,7 @@
 #define STUDY_CONTEXT_MY_H
 //---------------------------------------------------------------------------------
 
+#include <string>
 
 
 namespace GNC {

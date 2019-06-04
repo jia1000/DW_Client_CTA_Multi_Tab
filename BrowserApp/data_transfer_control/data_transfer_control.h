@@ -22,6 +22,8 @@
 #include "opencv2/opencv.hpp"
 #include <iostream> 
 
+//#define USE_RAPID_JSON
+
 class ImageProcessBase;
 
 class DataTransferController
