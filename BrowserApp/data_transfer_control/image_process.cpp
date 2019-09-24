@@ -41,7 +41,7 @@ const std::string series_name_mpr("series1");
 const std::string series_name_vr("series1");
 const std::string series_name_cpr("series1");
 
-
+#define TEST__FLAG_USE_ENGINE  0
 
 ImageProcessBase::ImageProcessBase(std::string str_paras)
 	: m_key3_str_paras(str_paras)
@@ -313,6 +313,7 @@ ImageMPRProcess::~ImageMPRProcess()
 
 bool ImageMPRProcess::Excute(std::string& out_image_data)
 {
+#if TEST__FLAG_USE_ENGINE
 	// 暂时，先从本地读取Dicom文件
 	GNC::GCS::StudyContextMy* my = new GNC::GCS::StudyContextMy();
 	const std::string path_file("C:\\ztest2\\dicom_test\\413");
@@ -359,12 +360,19 @@ bool ImageMPRProcess::Excute(std::string& out_image_data)
 	BITMAP  bitmap ;
 	GetObject (hBitmap, sizeof (BITMAP), &bitmap);
 
+	
+
 	std::wstring ws_screenshot_file = StringToWString(screen_shot_file_path);
 	SaveBitmapToFile(hBitmap, ws_screenshot_file.c_str());
-
 	cv::Mat src = cv::imread(screen_shot_file_path.c_str());
 	out_image_data = Mat2Base64(src, "bmp");
-
+#else
+	// do sth.
+	std::string path = "C:\\ztest2\\screen_shot_mpr.bmp";
+	cv::Mat src = cv::imread(path.c_str());
+	out_image_data = Mat2Base64(src, "bmp");
+#endif
+	
 	return true;
 }
 //////////////////////////////////////////////////////////////////////////
@@ -381,10 +389,11 @@ ImageVRProcess::~ImageVRProcess()
 
 bool ImageVRProcess::Excute(std::string& out_image_data)
 {
+#if TEST__FLAG_USE_ENGINE
 	// 暂时，先从本地读取Dicom文件
-	//GNC::GCS::StudyContextMy* my = new GNC::GCS::StudyContextMy();
-	//const std::string path_file(""C:\\ztest2\\dicom_test\\413");
-	//my->ReadDicomFile(path_file);
+	GNC::GCS::StudyContextMy* my = new GNC::GCS::StudyContextMy();
+	const std::string path_file("C:\\ztest2\\dicom_test\\413");
+		my->ReadDicomFile(path_file);
 
 	// 1.read dcm image from directory
 	
@@ -433,10 +442,16 @@ bool ImageVRProcess::Excute(std::string& out_image_data)
 
 	std::wstring ws_screenshot_file = StringToWString(screen_shot_file_path);
 	SaveBitmapToFile(hBitmap, ws_screenshot_file.c_str());
-
 	cv::Mat src = cv::imread(screen_shot_file_path.c_str());
 	out_image_data = Mat2Base64(src, "bmp");
 
+#else
+	// 关掉vr的生成图像，暂时，先读取固定位置的bmp
+	std::string path = "C:\\ztest2\\screen_shot_vr.bmp";
+	cv::Mat src = cv::imread(path.c_str());
+	out_image_data = Mat2Base64(src, "bmp");
+#endif
+	
 	return true;
 }
 
@@ -453,6 +468,7 @@ ImageCPRProcess::~ImageCPRProcess()
 
 bool ImageCPRProcess::Excute(std::string& out_image_data)
 {	
+#if TEST__FLAG_USE_ENGINE
 	// 1.read dcm image from directory
 
 	std::string::size_type sz;
@@ -524,8 +540,15 @@ bool ImageCPRProcess::Excute(std::string& out_image_data)
 
 	std::wstring ws_screenshot_file = StringToWString(screen_shot_file_path);
 	SaveBitmapToFile(hBitmap, ws_screenshot_file.c_str());
-
 	cv::Mat src = cv::imread(screen_shot_file_path.c_str());
 	out_image_data = Mat2Base64(src, "bmp");
+#else
+	// do sth.
+	std::string path = "C:\\ztest2\\screen_shot_cpr.bmp";
+	cv::Mat src = cv::imread(path.c_str());
+	out_image_data = Mat2Base64(src, "bmp");
+#endif
+
+	
 	return true;
 }
