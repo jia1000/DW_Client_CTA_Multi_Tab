@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\dcmtk-3.6.0\include;..\..\..\dcmtk-3.6.0\dcmjpeg\include;..\..\..\dcmtk-3.6.0\dcmdata\include;..\..\..\dcmtk-3.6.0\ofstd\include;..\..\..\dcmtk-3.6.0\oflog\include;..\..\..\dcmtk-3.6.0\dcmimgle\include;..\..\..\dcmtk-3.6.0\dcmnet\include;..\..\..\dcmtk-3.6.0\dcmimage\include;..\..\..\dcmtk-3.6.0\dcmsr\include;..\..\..\dcmtk-3.6.0\dcmtls\include;..\..\..\dcmtk-3.6.0\dcmpstat\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\dcmtk-3.6.0\include;..\..\..\dcmtk-3.6.0\dcmjpeg\include;..\..\..\dcmtk-3.6.0\dcmdata\include;..\..\..\dcmtk-3.6.0\ofstd\include;..\..\..\dcmtk-3.6.0\oflog\include;..\..\..\dcmtk-3.6.0\dcmimgle\include;..\..\..\dcmtk-3.6.0\dcmnet\include;..\..\..\dcmtk-3.6.0\dcmimage\include;..\..\..\dcmtk-3.6.0\dcmsr\include;..\..\..\dcmtk-3.6.0\dcmtls\include;..\..\..\dcmtk-3.6.0\dcmpstat\include;..\..\..\dcmtk-3.6.0\dcmjpls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

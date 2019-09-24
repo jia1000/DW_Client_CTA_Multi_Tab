@@ -22,7 +22,16 @@
 #include "opencv2/opencv.hpp"
 #include <iostream> 
 
-//#define USE_RAPID_JSON
+#define USE_RAPID_JSON
+
+#ifdef USE_RAPID_JSON
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/document.h"
+#include "rapidjson/reader.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+using namespace rapidjson;
+#endif
 
 class ImageProcessBase;
 
@@ -36,8 +45,8 @@ public:
 	bool ParseImageOperationData(char* json_data, std::string& js_data);
 #ifdef USE_RAPID_JSON
 	bool ParseImageOperationDataUseRapidJson(char* json_data, std::string& js_data);
+	std::string GetJsonDataString(Document& doc , std::string key);
 #endif
-
 
 
 private:

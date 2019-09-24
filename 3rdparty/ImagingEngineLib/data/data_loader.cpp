@@ -44,7 +44,9 @@ bool VtkDcmLoader::LoadDirectory(const char* dir)
 		volume_data_->SetBitsPerPixel(16);
 		volume_data_->SetBitsStored(16);
 		//volume_data_->SetVtkData(vtk_image_data_);
-		volume_data_->SetPixelData(new VtkPixelData(vtk_image_data_));
+		VtkPixelData* data = new VtkPixelData(vtk_image_data_);
+		void* v = data->GetDataPointer(0, 0, 0);
+		volume_data_->SetPixelData(data);
 		volume_data_->GetPixelData()->SetBitsPerPixel(16);
 		volume_data_->GetPixelData()->SetDimensions(512, 512, 364);
 		volume_data_->GetPixelData()->SetOrigin(0, 0, 0);

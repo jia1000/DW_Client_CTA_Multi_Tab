@@ -49,6 +49,8 @@ namespace GIL
 			/*Actualiza la jerarquia cargada*/
 			virtual int ActualizarJerarquia(DicomDataset& base);
 
+			
+
 			/*actualiza los tags privados*/
 			virtual int UpdatePrivateTags(TipoPrivateTags& tags);
 
@@ -71,7 +73,8 @@ namespace GIL
 			virtual bool GetTag(unsigned int grupo,unsigned int elemento, std::string & valor);
 			virtual bool GetTag(unsigned int grupo,unsigned int elemento, TagPrivadoUndefined& tagBinario);
 			virtual bool GetTag(unsigned int grupo,unsigned int elemento, float& valor);
-			virtual bool GetTag(unsigned int grupo,unsigned int elemento, int& valor);virtual bool GetTag(unsigned int grupo,unsigned int elemento, GIL::DICOM::DicomDataset& secuencia);
+			virtual bool GetTag(unsigned int grupo,unsigned int elemento, int& valor);
+			virtual bool GetTag(unsigned int grupo,unsigned int elemento, GIL::DICOM::DicomDataset& secuencia);
 			virtual bool ExtractTagToFile(unsigned int group, unsigned int element, const std::string& outputFile
 				/*, GNC::IProxyNotificadorProgreso* pNotificador = NULL*/);
 
@@ -96,6 +99,9 @@ namespace GIL
 
 			/* Inserta la jerarquia en el dataset */
 			int InsertarJerarquia(const DicomDataset& base, DcmItem* itemPadre, DcmSequenceOfItems* seqPadre);
+
+			/*remove certain tags*/
+			int RemoveTags(const DicomDataset& base);
 
 			/* Carga la jerarquia desde el dataset */
 			int CargarJerarquia(DicomDataset& base, unsigned int maximaLongitud, DcmElement * pElementoInicial = NULL, bool mustExistPixel = true);

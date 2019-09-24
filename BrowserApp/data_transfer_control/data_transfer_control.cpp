@@ -10,14 +10,7 @@
 #include <io.h>
 #include <chrono>
 
-#ifdef USE_RAPID_JSON
-#include "rapidjson/rapidjson.h"
-#include "rapidjson/document.h"
-#include "rapidjson/reader.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
-using namespace rapidjson;
-#endif
+
 
 DataTransferController* DataTransferController::instance = nullptr;
 
@@ -113,6 +106,16 @@ bool DataTransferController::ParseImageOperationData(char* json_data, std::strin
 }
 
 #ifdef USE_RAPID_JSON
+std::string DataTransferController::GetJsonDataString(Document& doc, std::string key)
+{
+	std::string str_value = "";
+	if (doc.HasMember(key.data())) {
+		const Value& value = doc[key.c_str()];
+		str_value = value.GetString();
+		return str_value;
+	}	
+}
+
 bool DataTransferController::ParseImageOperationDataUseRapidJson(char* json_data, std::string& js_data)
 {
 	std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
@@ -136,8 +139,11 @@ bool DataTransferController::ParseImageOperationDataUseRapidJson(char* json_data
 	int key_name6 = 0;
 
 	if (doc.HasMember(JSON_KEY_REQUEST_TYPE)) {
-		const Value& value = doc[JSON_KEY_REQUEST_TYPE];
-		key_name1 = value.GetString();
+	//	const Value& value = doc[JSON_KEY_REQUEST_TYPE];
+	//	key_name1 = value.GetString();
+	key_name1 = GetJsonDataString(doc, JSON_KEY_REQUEST_TYPE);
+
+
 		// 都转为小写字符
 		std::transform(key_name1.begin(), key_name1.end(), key_name1.begin(), ::tolower);
 	}
@@ -176,13 +182,13 @@ bool DataTransferController::ParseImageOperationDataUseRapidJson(char* json_data
 
 	if (key_name1 == JSON_VALUE_REQUEST_TYPE_MPR) {
 		CGLogger::Debug("Debug_CTA:MPR---begin");
-		image_process = new ImageMPRProcess(key_name3, key_name4);
+		image_process = new ImageMPRProcess(key_name3);
 		image_process->SetKey2_ImageOperation(key_name2);
 		image_process->Excute(out_image_data);
 		CGLogger::Debug("Debug_CTA:MPR---");
 	} else if (key_name1 == JSON_VALUE_REQUEST_TYPE_VR) {
 		CGLogger::Debug("Debug_CTA:VR---begin");
-		image_process = new ImageVRProcess(key_name3, key_name4);
+		image_process = new ImageVRProcess(key_name3);
 		image_process->SetKey2_ImageOperation(key_name2);
 		image_process->Excute(out_image_data);
 		CGLogger::Debug("Debug_CTA:VR---");

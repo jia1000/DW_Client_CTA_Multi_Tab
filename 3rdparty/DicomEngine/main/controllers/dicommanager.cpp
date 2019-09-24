@@ -45,6 +45,14 @@
 #include <dcmtk/dcmpstat/dvpsgr.h>
 #include <dcmtk/ofstd/ofstring.h>
 #include <dcmtk/dcmdata/dcdatset.h>
+
+#include <dcmtk/dcmjpeg/djdecode.h>
+#include <dcmtk/dcmjpeg/djencode.h>
+#include <dcmtk/dcmjpls/djdecode.h>		//for JPEG-LS decode
+#include <dcmtk/dcmjpls/djencode.h>		//for JPEG-LS encode
+#include <dcmtk/dcmdata/dcrledrg.h>
+#include <dcmtk/dcmdata/dcrleerg.h>
+
 #include <api/dicom/dcmdictionary.h>
 //#include <main/utils/UtilString.h>
 //#include <main/utils/UtilNumber.h>
@@ -76,6 +84,19 @@ namespace GIL
 			m_pDCMSourceFile = NULL;
 			m_pDCMSourceDataset = NULL;
 			//m_pConv = NULL;
+
+			DJEncoderRegistration::registerCodecs(
+				ECC_lossyYCbCr,
+				EUC_default, // UID generation (never create new UID's)
+				OFFalse, // verbose
+				0, 0, 0, true, ESS_444, true); // optimize huffman table
+			DJDecoderRegistration::registerCodecs();
+
+			DJLSEncoderRegistration::registerCodecs();		//JPEG-LS encoder registerCodecs
+			DJLSDecoderRegistration::registerCodecs();		//JPEG-LS decoder registerCodecs
+
+			DcmRLEEncoderRegistration::registerCodecs();
+			DcmRLEDecoderRegistration::registerCodecs();
 		}
 
 		DICOMManager::DICOMManager(DcmDataset* dataset, const std::string& defaultCharset) {
@@ -83,6 +104,20 @@ namespace GIL
 			m_pDCMSourceDataset = dataset;
 			//m_pConv = NULL;
 			FindCharset(defaultCharset);
+
+			DJEncoderRegistration::registerCodecs(
+				ECC_lossyYCbCr,
+				EUC_default, // UID generation (never create new UID's)
+				OFFalse, // verbose
+				0, 0, 0, true, ESS_444, true); // optimize huffman table
+			DJDecoderRegistration::registerCodecs();
+
+			DJLSEncoderRegistration::registerCodecs();		//JPEG-LS encoder registerCodecs
+			DJLSDecoderRegistration::registerCodecs();		//JPEG-LS decoder registerCodecs
+
+			DcmRLEEncoderRegistration::registerCodecs();
+			DcmRLEDecoderRegistration::registerCodecs();
+
 		}
 
 		// Destructor
@@ -95,6 +130,15 @@ namespace GIL
 			//	delete m_pConv;
 			//	m_pConv = NULL;
 			//}
+			DJEncoderRegistration::cleanup();
+			DJDecoderRegistration::cleanup();
+
+			DJLSEncoderRegistration::cleanup();		//JPEG-LS encoder cleanup
+			DJLSDecoderRegistration::cleanup();		//JPEG-LS decoder cleanup
+
+			DcmRLEEncoderRegistration::cleanup();
+			DcmRLEDecoderRegistration::cleanup();
+
 		}
 
 		DcmDataset* DICOMManager::getSourceDataSet() {
@@ -153,7 +197,7 @@ namespace GIL
 
 			return InsertarJerarquia(base, NULL, NULL);
 		}
-
+		
 		/*anonimiza los tags privados*/
 		void DICOMManager::AnonimizarTagsPrivados()
 		{
@@ -1041,6 +1085,33 @@ namespace GIL
 
 		}
 
+		int DICOMManager::RemoveTags(const DicomDataset& base)
+		{
+			DcmDataset* ds = getSourceDataSet();
+			if (ds == NULL) {
+				return 0;
+			}
+
+			for (ListaTags::const_iterator it = base.tags.begin(); it != base.tags.end(); ++it) {
+				std::string claveSecuencia = (*it).first;
+				
+				unsigned int sg = 0xffff;
+				unsigned int se = 0xffff;
+				int sn = 0;
+
+				sn = sscanf(claveSecuencia.c_str(), "%x|%x", &sg, &se);
+				if (sn < 2) {
+					std::cerr << "Formato invalido (" << claveSecuencia.c_str() << "). Solo se soporta (FFFF|FFFF) como formato de tag para secuencias" << std::endl;
+					continue;
+				}
+				DcmTag stag(sg, se);
+
+				OFCondition cond;
+				ds->remove(stag);				
+			}
+			return 1;
+		}
+
 		int DICOMManager::InsertarJerarquia(const DicomDataset& base, DcmItem* itemPadre, DcmSequenceOfItems* seqPadre)
 		{
 
@@ -1205,6 +1276,8 @@ namespace GIL
                         if (e->getGTag() == 0x7fe0 && e->getETag() == 0x0010) {
                             // Excluir pixel data
                             hasPixel = true;
+							pilaElementos.push(e);
+							pilaPadres.push(&base);
                         }
                         else {
                             pilaElementos.push(e);
@@ -1228,6 +1301,10 @@ namespace GIL
 			while(!pilaElementos.empty()) {
 				DcmElement* e = pilaElementos.front(); pilaElementos.pop();
 				GIL::DICOM::DicomDataset* cbase = pilaPadres.front(); pilaPadres.pop();
+
+				if (e->getGTag() == 0x7fe0 && e->getETag() == 0x0010) {
+					printf("haha test\n");
+				}
 
 				if (e->ident() == EVR_item) {
 					//GTRACE("Procesando item: " << e->getTag().toString())
