@@ -88,13 +88,13 @@ public:
 		if (_tcscmp(pstrClass, _T("Cef")) == 0) return this;
 		return NULL;
 	}
+	//获取缩放比例
+	double GetZoomLevel();
 
 private:
 	void resize();
 	//设置焦点
 	void SetFocus(bool enable);
-	//获取缩放比例
-	double GetZoomLevel();
 	string GetErrorString(int code);
 
 private:	

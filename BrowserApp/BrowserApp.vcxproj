@@ -196,6 +196,7 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
     <ClInclude Include="data_transfer_control\image_process.h" />
     <ClInclude Include="extended_control\button_hand_ui.h" />
     <ClInclude Include="fileversion_number.h" />
+    <ClInclude Include="main\CefBrowserClientFrameWnd.h" />
     <ClInclude Include="main\WndFrameBase.h" />
     <ClInclude Include="main\BrowserWndManager.h" />
     <ClInclude Include="main\WndSimpleFrame.h" />
@@ -214,6 +215,7 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
     <ClCompile Include="extended_control\button_hand_ui.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main\BrowserWndManager.cpp" />
+    <ClCompile Include="main\CefBrowserClientFrameWnd.cpp" />
     <ClCompile Include="main\WndFrameBase.cpp" />
     <ClCompile Include="main\WndSimpleFrame.cpp" />
     <ClCompile Include="main\print_preview.cpp" />

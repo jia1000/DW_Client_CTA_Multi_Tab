@@ -76,6 +76,9 @@
     <ClInclude Include="data_transfer_control\image_process.h">
       <Filter>data_transfer_control</Filter>
     </ClInclude>
+    <ClInclude Include="main\CefBrowserClientFrameWnd.h">
+      <Filter>main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\WndSimpleFrame.cpp">
@@ -114,6 +117,9 @@
     </ClCompile>
     <ClCompile Include="data_transfer_control\image_process.cpp">
       <Filter>data_transfer_control</Filter>
+    </ClCompile>
+    <ClCompile Include="main\CefBrowserClientFrameWnd.cpp">
+      <Filter>main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
