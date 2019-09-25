@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "CefBrowserClientFrameWnd.h"
+#include "main/BrowserWndManager.h"
 
 //#include "cef_simple/simple_app.h"
 //#include "cef_simple/simple_handler.h"
@@ -136,11 +137,12 @@ void CCefBrowserClientFrameWnd::OnSelChanged(CControlUI* pSender)
 		//if (m_pCtaOnlyBrowserUI) {
 		//	m_pCtaOnlyBrowserUI->Navigate2(_T("http://192.168.1.251/main"));
 		//}
-		ShowCefWindow();
+		//ShowCefWindow();
 		pTabTest->SelectItem(0);
 	} else if (strSelName == _T("OptionDemo2")) {
-		HideCefWindow();
+		//HideCefWindow();
 		pTabTest->SelectItem(1);
+		TrayWindowManager::getInstance()->CreateRootWindowAsPopup(L"http://127.0.0.1:8080/cta_multi.html");
 	}
 }
 

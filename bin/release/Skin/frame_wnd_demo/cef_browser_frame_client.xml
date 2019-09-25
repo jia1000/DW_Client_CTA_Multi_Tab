@@ -43,7 +43,7 @@
 				<HorizontalLayout>
 					<!-- CEF浏览器控件 预留位置 -->
 					
-						<Cef url="http://127.0.0.1:8080/cta_multi.html" padding="2,1,2,1" />
+						<Cef url="" padding="2,1,2,1" />
 				</HorizontalLayout>
 				<HorizontalLayout>
 					<Button name="OptionDemo2" text="OptionDemo2" bkcolor="#FFF44C4C"  />					
