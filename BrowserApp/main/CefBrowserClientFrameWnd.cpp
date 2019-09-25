@@ -133,9 +133,9 @@ void CCefBrowserClientFrameWnd::OnSelChanged(CControlUI* pSender)
 	CDuiString strSelName = pSender->GetName();
 	if (strSelName == _T("CEF_Control_Test")) 
 	{
-		if (m_pCtaOnlyBrowserUI) {
-			m_pCtaOnlyBrowserUI->Navigate2(_T("http://192.168.1.251/main"));
-		}
+		//if (m_pCtaOnlyBrowserUI) {
+		//	m_pCtaOnlyBrowserUI->Navigate2(_T("http://192.168.1.251/main"));
+		//}
 		ShowCefWindow();
 		pTabTest->SelectItem(0);
 	} else if (strSelName == _T("OptionDemo2")) {
