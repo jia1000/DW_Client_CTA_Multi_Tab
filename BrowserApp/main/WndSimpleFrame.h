@@ -10,6 +10,8 @@
 //#define KEY_CHILDWINDOW "child"
 #include "WndFrameBase.h"
 
+class CEntryFrameWnd;
+
 class CWndSimpleFrame
 	: public CWndFrameBase
 {
@@ -24,8 +26,11 @@ public:
 
 	string GetBrowserWindowID() OVERRIDE {return KEY_MAINWINDOW;}
 	
-private:
+	virtual void Notify(TNotifyUI &msg);
+	void OnSelChanged(CControlUI* pSender);
 
+private:
+	CEntryFrameWnd* m_EntryFrameWnd;
 };
 
 	

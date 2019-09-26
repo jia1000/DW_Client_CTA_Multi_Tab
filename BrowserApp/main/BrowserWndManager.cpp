@@ -57,8 +57,10 @@ void TrayWindowManager::CreateRootWindow(const wstring& url)
 
 	// 需要加入WS_CLIPCHILDREN避免闪屏
 	if (NULL == browser_wnd) {
-		//browser_wnd = CreateMainWnd<CWndSimpleFrame>(_T("SimpleWnd"), this, url, NULL, WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
-		browser_wnd = CreateMainWnd<CCefBrowserClientFrameWnd>(_T("SimpleCEFClient"), this, url, NULL, WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
+		browser_wnd = CreateMainWnd<CWndSimpleFrame>(_T("SimpleWnd"), 
+			this, url, NULL, WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
+		//browser_wnd = CreateMainWnd<CCefBrowserClientFrameWnd>(_T("SimpleCEFClient"),
+		//	this, url, NULL, WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
 	}
 	
 	m_mapBrowserWindows.insert(pair<string, CWndFrameBase*>(KEY_MAINWINDOW, browser_wnd));

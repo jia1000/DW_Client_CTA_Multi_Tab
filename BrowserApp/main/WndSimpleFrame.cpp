@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "WndSimpleFrame.h"
+#include "EntryFrameWnd.h"
 
 //DUI_BEGIN_MESSAGE_MAP(CWndSimpleFrame, WindowImplBase)
 //	DUI_ON_MSGTYPE(DUI_MSGTYPE_CLICK,OnClick)
@@ -36,4 +37,33 @@ LPCTSTR CWndSimpleFrame::GetWindowClassName(void) const
 LRESULT CWndSimpleFrame::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	return __super::HandleMessage(uMsg,wParam,lParam);
+}
+
+void CWndSimpleFrame::Notify(TNotifyUI& msg)
+{
+	if (_tcsicmp(msg.sType, _T("selectchanged")) == 0) {
+		OnSelChanged(msg.pSender);
+	}
+	__super::Notify(msg);
+}
+void CWndSimpleFrame::OnSelChanged(CControlUI* pSender)
+{
+	CTabLayoutUI* pTabTest = static_cast <CTabLayoutUI*>(m_pm.FindControl(_T("tabTest")));
+	if (pTabTest == NULL)
+	{
+		return;
+	}
+	CDuiString strSelName = pSender->GetName();
+	if (strSelName == _T("option_review1")) 
+	{
+		pTabTest->SelectItem(0);
+	} else if (strSelName == _T("option_review2")) {
+		pTabTest->SelectItem(1);
+	} else if (strSelName == _T("option_restruct")) {		
+		pTabTest->SelectItem(2);
+		m_EntryFrameWnd = new CEntryFrameWnd();		
+		m_EntryFrameWnd->Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, 0L);
+		m_EntryFrameWnd->CenterWindow();
+		m_EntryFrameWnd->ShowWindow(true);
+	}
 }
