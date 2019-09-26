@@ -12,11 +12,11 @@
 		
 		<!-- 主窗口 -->
 		<HorizontalLayout  bkcolor="#FF1C2136" >  
-			<TileLayout bkcolor="#FFE6E7E8" columns="2" inset="8,8,8,8" childpadding="8" >			
-				<Button name="Button1"  text="1" 	 			height="260"  bkcolor="#FFFFF0D0" />
-				<Button name="Button2"  text="2" 	 			height="260"  bkcolor="#FFFFF0D0" />				
-				<Button name="Button3"  text="3" 	height="260"  bkcolor="#FFFFF0D0" />
-				<Button name="Button4"  text="4"  			height="260"  bkcolor="#FFFFF0D0" />				
+			<TileLayout bkcolor="#FF1C2136" columns="2" inset="8,8,8,8" childpadding="8" >			
+				<Button name="Button1"  text="1" 	 			height="270"  bkcolor="#FFD0D1D7" />
+				<Button name="Button2"  text="2" 	 			height="270"  bkcolor="#FFD0D1D7" />				
+				<Button name="Button3"  text="3" 	height="270"  bkcolor="#FFD0D1D7" />
+				<Button name="Button4"  text="4"  			height="270"  bkcolor="#FFD0D1D7" />				
 			</TileLayout>
 			<Control width="10" />
 			<TreeView width="140" itemtextcolor="#FFABBCDC" itemhottextcolor="#FFC8C6CB" selitemtextcolor="FFC8C6CB" itemhotbkcolor="#FF2C356A" itemselectedbkcolor="#FF2C356A" bordercolor="#FF10162A" bordersize="1"	>
