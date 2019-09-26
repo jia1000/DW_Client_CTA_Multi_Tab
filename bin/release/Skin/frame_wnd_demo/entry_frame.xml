@@ -11,12 +11,30 @@
 		</HorizontalLayout>
 		
 		<!-- 主窗口 -->
-		<TileLayout bkcolor="#FFE6E7E8" columns="2" inset="8,8,8,8" childpadding="8" >			
-			<Button name="Button1"  text="1" 	 			height="260"  bkcolor="#FFFFF0D0" />
-			<Button name="Button2"  text="2" 	 			height="260"  bkcolor="#FFFFF0D0" />				
-			<Button name="Button3"  text="3" 	height="260"  bkcolor="#FFFFF0D0" />
-			<Button name="Button4"  text="4"  			height="260"  bkcolor="#FFFFF0D0" />
-			
-		</TileLayout>
+		<HorizontalLayout  bkcolor="#FF1C2136" >  
+			<TileLayout bkcolor="#FFE6E7E8" columns="2" inset="8,8,8,8" childpadding="8" >			
+				<Button name="Button1"  text="1" 	 			height="260"  bkcolor="#FFFFF0D0" />
+				<Button name="Button2"  text="2" 	 			height="260"  bkcolor="#FFFFF0D0" />				
+				<Button name="Button3"  text="3" 	height="260"  bkcolor="#FFFFF0D0" />
+				<Button name="Button4"  text="4"  			height="260"  bkcolor="#FFFFF0D0" />				
+			</TileLayout>
+			<Control width="10" />
+			<TreeView width="140" itemtextcolor="#FFABBCDC" itemhottextcolor="#FFC8C6CB" selitemtextcolor="FFC8C6CB" itemhotbkcolor="#FF2C356A" itemselectedbkcolor="#FF2C356A" bordercolor="#FF10162A" bordersize="1"	>
+				<TreeNode name="vtk_function_3D" text="VTK 3D测试"  height="32" folderattr="padding=&quot;5,10,10,10&quot; width=&quot;12&quot; height=&quot;12&quot; normalimage=&quot;file='common_icon/down_nor.png' source='0,0,12,12' &quot; selectedimage=&quot;file='common_icon/up_nor.png' source='0,0,12,12' &quot;" >
+					<TreeNode name="function_3d_01" 	text="multi_slice_image_mapper"  	height="32"/>					
+					<TreeNode name="function_3d_move_sagitta" 	text="sagitta move "  	height="32"/>
+					<TreeNode name="function_3d_move_cornal" 	text="cornal move"  	height="32"/>
+					<TreeNode name="function_3d_move_axial" 	text="axial move"  	height="32"/>
+					<TreeNode name="function_3d_hue_coronal" 	text="hue coronal"  	height="32"/>
+					<TreeNode name="function_3d_show_hide_sagitta" 	text="show/hide sagitta"  	height="32"/>
+					<TreeNode name="function_3d_show_hide_coronal" 	text="show/hide coronal"  	height="32"/>
+					<TreeNode name="function_3d_show_hide_axial" 	text="show/hide axial"  	height="32"/>
+					<TreeNode name="function_3d_show_hide_bone" 	text="show/hide bone"  	height="32"/>
+					<TreeNode name="function_3d_show_hide_skin" 	text="show/hide skin"  	height="32"/>
+					<TreeNode name="function_3d_show_hide_outline" 	text="show/hide outlline"  	height="32"/>
+					<TreeNode name="function_3d_mip_coronal" 	text="mip coronal"  	height="32"/>					
+				</TreeNode>			
+			</TreeView>
+		</HorizontalLayout>
 	</VerticalLayout>
 </Window>

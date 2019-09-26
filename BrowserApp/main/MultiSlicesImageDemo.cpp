@@ -187,9 +187,9 @@ void MultiSlicesImageDemo::StartWidgetsRender(vtkSmartPointer<vtkRenderer> rende
 	// 用这个验证函数的使用
 	m_hueLut = vtkSmartPointer<vtkLookupTable>::New();
 	m_hueLut->SetTableRange (0, 2000);
-	m_hueLut->SetHueRange (0, 1);		// 设置色度/色调范围
-	m_hueLut->SetSaturationRange (1, 1);// 设置色彩饱和度
-	m_hueLut->SetValueRange (1, 1);
+	m_hueLut->SetHueRange (0, 01);		// 设置色度/色调范围
+	m_hueLut->SetSaturationRange (0, 0);// 设置色彩饱和度
+	m_hueLut->SetValueRange (0, 1);
 	m_hueLut->Build();
 
 	m_cur_hue_coronal_min = 0.6;
@@ -197,9 +197,9 @@ void MultiSlicesImageDemo::StartWidgetsRender(vtkSmartPointer<vtkRenderer> rende
 
 	m_satLut = vtkSmartPointer<vtkLookupTable>::New();
 	m_satLut->SetTableRange (0, 2000);
-	m_satLut->SetHueRange (.6, .6);		// 设置色度/色调范围
-	m_satLut->SetSaturationRange (0, 1);// 设置色彩饱和度
-	m_satLut->SetValueRange (1, 1);
+	m_satLut->SetHueRange (0, 0);		// 设置色度/色调范围
+	m_satLut->SetSaturationRange (0, 0);// 设置色彩饱和度
+	m_satLut->SetValueRange (0, 1);
 	m_satLut->Build();
 
 	SetSkinActor(m_v16);

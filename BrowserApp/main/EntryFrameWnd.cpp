@@ -27,21 +27,22 @@ void CEntryFrameWnd::OnFinalMessage(HWND hWnd)
 
 void CEntryFrameWnd::InitWindow()
 {
-	CButtonUI* pVtkShowBtn1 = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button3")));
-	if (pVtkShowBtn1) {
-		pVtkShowBtn1->SetText(_T("Please wait..."));
-	}
-	MultiSlicesImageDemo* box_widgets1 = new MultiSlicesImageDemo(this->m_hWnd, pVtkShowBtn1, false);
-	std::thread th1(&MultiSlicesImageDemo::ShowWidgets_Test, box_widgets1);
-	th1.detach();
+	//CButtonUI* pVtkShowBtn1 = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button3")));
+	//if (pVtkShowBtn1) {
+	//	pVtkShowBtn1->SetText(_T("Please wait..."));
+	//}
+	//box_widgets1 = new MultiSlicesImageDemo(this->m_hWnd, pVtkShowBtn1, false);
+	//std::thread th1(&MultiSlicesImageDemo::ShowWidgets_Test, box_widgets1);
+	//th1.detach();
 
-	CButtonUI* pVtkShowBtn2 = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button4")));
-	if (pVtkShowBtn2) {
-		pVtkShowBtn2->SetText(_T("Please wait..."));
-	}
-	MultiSlicesImageDemo* box_widgets2 = new MultiSlicesImageDemo(this->m_hWnd, pVtkShowBtn2, true);			
-	std::thread th2(&MultiSlicesImageDemo::ShowWidgets_Test, box_widgets2);
-	th2.detach();
+	//CButtonUI* pVtkShowBtn2 = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button4")));
+	//if (pVtkShowBtn2) {
+	//	pVtkShowBtn2->SetText(_T("Please wait..."));
+	//}
+	//box_widgets = new MultiSlicesImageDemo(this->m_hWnd, pVtkShowBtn2, true);			
+	//std::thread th2(&MultiSlicesImageDemo::ShowWidgets_Test, box_widgets);
+	//th2.detach();
+	//box_widgets->ShowWidgets_Test();
 }
 
 CControlUI* CEntryFrameWnd::CreateControl(LPCTSTR pstrClass, CPaintManagerUI *pManager)
@@ -94,24 +95,96 @@ void    CEntryFrameWnd::Notify(TNotifyUI& msg)
 		} else if (_tcscmp(pszCtrlName, _T("Button2")) == 0) {
 			
 		} else if (_tcscmp(pszCtrlName, _T("Button3")) == 0) {
-			//CButtonUI* pVtkShowBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button3")));
-			//if (pVtkShowBtn) {
-			//	pVtkShowBtn->SetText(_T("Please wait..."));
-			//}
-			//MultiSlicesImageDemo* box_widgets = new MultiSlicesImageDemo(this->m_hWnd, pVtkShowBtn, false);
-			//std::thread th(&MultiSlicesImageDemo::ShowWidgets_Test, box_widgets);
-			//th.detach();			
+						
 		} else if (_tcscmp(pszCtrlName, _T("Button4")) == 0) {
-			//CButtonUI* pVtkShowBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button4")));
-			//if (pVtkShowBtn) {
-			//	pVtkShowBtn->SetText(_T("Please wait..."));
-			//}
-			//MultiSlicesImageDemo* box_widgets = new MultiSlicesImageDemo(this->m_hWnd, pVtkShowBtn, true);			
-			//std::thread th(&MultiSlicesImageDemo::ShowWidgets_Test, box_widgets);
-			//th.detach();
+			CButtonUI* pVtkShowBtn2 = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button4")));
+			if (pVtkShowBtn2) {
+				pVtkShowBtn2->SetText(_T("Please wait..."));
+			}
+			box_widgets = new MultiSlicesImageDemo(this->m_hWnd, pVtkShowBtn2, true);
+			box_widgets->ShowWidgets_Test();
 		} 
 	} else if (_tcsicmp(msg.sType, _T("selectchanged")) == 0) {
 		//
+	} else if (msg.sType == _T("itemclick")){        
+		// 改双击收缩为单击收缩
+		CTreeNodeUI * pTreeNode = static_cast<CTreeNodeUI*>(msg.pSender);
+		CDuiString item_name = msg.pSender->GetName();
+		if (pTreeNode && _tcsicmp(pTreeNode->GetClass(), _T("TreeNodeUI")) == 0) {
+			if (pTreeNode->IsHasChild()) {
+				// 如果是一级菜单
+				CTreeViewUI	* pTreeView = pTreeNode->GetTreeView();
+				if (pTreeView) {
+					CCheckBoxUI* pFolder = pTreeNode->GetFolderButton();
+					pFolder->Selected(!pFolder->IsSelected());
+					pTreeNode->SetVisibleTag(!pFolder->GetCheck());
+					pTreeView->SetItemExpand(!pFolder->GetCheck(), pTreeNode);
+				}
+				// 点击第一级菜单，会选择第二级菜单的第一个
+				if (item_name.CompareNoCase(L"vtk_function_test") == 0) {
+					CButtonUI* pControl = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button1")));
+					if (pControl) {
+						pControl->SetText(_T("Group click."));
+					}
+				}
+			} else {
+				// 如果是二级菜单
+				RECT rc;
+				CButtonUI* pVtkShowBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button_vtk_function_show")));
+				if (pVtkShowBtn) {
+					rc = pVtkShowBtn->GetClientPos();
+				}
+				CButtonUI* pControl = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button_vtk_function_show")));
+				if (item_name.CompareNoCase(L"function_3d_01") == 0) {
+
+				}else if (item_name.CompareNoCase(L"function_3d_move_sagitta") == 0) {
+					if (box_widgets) {
+						box_widgets->ShowWidgets_Move_Sagitta();
+					}
+				}else if (item_name.CompareNoCase(L"function_3d_move_cornal") == 0) {
+					if (box_widgets) {
+						box_widgets->ShowWidgets_Move_Cornal();
+					}
+				}else if (item_name.CompareNoCase(L"function_3d_move_axial") == 0) {
+					if (box_widgets) {
+						box_widgets->ShowWidgets_Move_Axial();
+					}
+				}else if (item_name.CompareNoCase(L"function_3d_hue_coronal") == 0) {
+					if (box_widgets) {
+						box_widgets->ShowWidgets_Hue_coronal();
+					}
+				}else if (item_name.CompareNoCase(L"function_3d_show_hide_sagitta") == 0) {
+					if (box_widgets) {
+						box_widgets->ShowWidgets_show_Hide_Sagitta();
+					}
+				}else if (item_name.CompareNoCase(L"function_3d_show_hide_coronal") == 0) {
+					if (box_widgets) {
+						box_widgets->ShowWidgets_show_Hide_coronal();
+					}
+				}else if (item_name.CompareNoCase(L"function_3d_show_hide_axial") == 0) {
+					if (box_widgets) {
+						box_widgets->ShowWidgets_show_Hide_Axial();
+					}
+				}else if (item_name.CompareNoCase(L"function_3d_show_hide_bone") == 0) {
+					if (box_widgets) {
+						box_widgets->ShowWidgets_show_Hide_bone();
+					}
+				}else if (item_name.CompareNoCase(L"function_3d_show_hide_skin") == 0) {
+					if (box_widgets) {
+						box_widgets->ShowWidgets_show_Hide_skin();
+					}
+				}else if (item_name.CompareNoCase(L"function_3d_show_hide_outline") == 0) {
+					if (box_widgets) {
+						box_widgets->ShowWidgets_show_Hide_outline();
+					}
+				}else if (item_name.CompareNoCase(L"function_3d_mip_coronal") == 0) {
+					if (box_widgets) {
+						box_widgets->ShowWidgets_Mip_Cornal();
+					}
+				}
+				// 其它二级菜单
+			}
+		}
 	}
 }
 

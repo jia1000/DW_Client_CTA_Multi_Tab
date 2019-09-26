@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 
-#include <map>;
+#include <map>
 #include "BrowserWndManager.h"
 #include "WndFrameBase.h"
 #include "WndSimpleFrame.h"
