@@ -31,6 +31,9 @@
     <Filter Include="头文件">
       <UniqueIdentifier>{3bfb1355-05ca-4b04-815a-8b06ae2a70ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="main\vtk_dicom_demo">
+      <UniqueIdentifier>{e68652b9-2d4d-44c3-9ec0-269cdec45fd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\WndSimpleFrame.h">
@@ -94,6 +97,9 @@
     <ClInclude Include="global_include.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="main\vtk_dicom_demo\DicomView.h">
+      <Filter>main\vtk_dicom_demo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\WndSimpleFrame.cpp">
@@ -144,6 +150,9 @@
     </ClCompile>
     <ClCompile Include="main\WidgetsDemoBase.cpp">
       <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="main\vtk_dicom_demo\DicomView.cpp">
+      <Filter>main\vtk_dicom_demo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,7 @@ using namespace DuiLib;
 //////////////////////////////////////////////////////////////////////////
 
 class MultiSlicesImageDemo;
+class CDicomView;
 
 class CEntryFrameWnd : public WindowImplBase
 {
@@ -28,5 +29,9 @@ public:
 private:
 	MultiSlicesImageDemo* box_widgets1;
 	MultiSlicesImageDemo* box_widgets;
+	CDicomView* dicom_viewxy;
+	CDicomView* dicom_viewyz;
+	CDicomView* dicom_viewxz;
+
 };
 

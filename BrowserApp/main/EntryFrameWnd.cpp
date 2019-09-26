@@ -2,11 +2,15 @@
 
 #include "EntryFrameWnd.h"
 #include "MultiSlicesImageDemo.h"
+#include "vtk_dicom_demo/DicomView.h"
 
 #include <thread>
 
 CEntryFrameWnd::CEntryFrameWnd(void)
 {
+	dicom_viewxy = NULL;
+	dicom_viewyz = NULL;
+	dicom_viewxz = NULL;
 }
 
 CEntryFrameWnd::~CEntryFrameWnd(void)
@@ -135,7 +139,43 @@ void    CEntryFrameWnd::Notify(TNotifyUI& msg)
 					rc = pVtkShowBtn->GetClientPos();
 				}
 				CButtonUI* pControl = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button_vtk_function_show")));
-				if (item_name.CompareNoCase(L"function_3d_01") == 0) {
+				if (item_name.CompareNoCase(L"function_3") == 0) {
+					CButtonUI* pVtkShowBtn2 = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button1")));
+					if (pVtkShowBtn2) {
+						pVtkShowBtn2->SetText(_T("Please wait..."));					
+
+						RECT rc = pVtkShowBtn2->GetClientPos();
+						if (!dicom_viewxy) {
+							dicom_viewxy = new CDicomView(this->m_hWnd, vtkImageViewer2::SLICE_ORIENTATION_XY, rc);
+							dicom_viewxy->InitVtk("..\\bin\\release\\Skin\\data\\slices1");
+						}
+						dicom_viewxy->SetOrientation(vtkImageViewer2::SLICE_ORIENTATION_XY);
+					}					
+				} else if (item_name.CompareNoCase(L"function_4") == 0) {
+					CButtonUI* pVtkShowBtn2 = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button2")));
+					if (pVtkShowBtn2) {
+						pVtkShowBtn2->SetText(_T("Please wait..."));					
+
+						RECT rc = pVtkShowBtn2->GetClientPos();
+						if (!dicom_viewyz) {
+							dicom_viewyz = new CDicomView(this->m_hWnd, vtkImageViewer2::SLICE_ORIENTATION_YZ, rc);
+							dicom_viewyz->InitVtk("..\\bin\\release\\Skin\\data\\slices1");
+						}
+						dicom_viewyz->SetOrientation(vtkImageViewer2::SLICE_ORIENTATION_YZ);
+					}					
+				} else if (item_name.CompareNoCase(L"function_5") == 0) {
+					CButtonUI* pVtkShowBtn2 = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button3")));
+					if (pVtkShowBtn2) {
+						pVtkShowBtn2->SetText(_T("Please wait..."));					
+
+						RECT rc = pVtkShowBtn2->GetClientPos();
+						if (!dicom_viewxz) {
+							dicom_viewxz = new CDicomView(this->m_hWnd, vtkImageViewer2::SLICE_ORIENTATION_XZ, rc);
+							dicom_viewxz->InitVtk("..\\bin\\release\\Skin\\data\\slices1");
+						}
+						dicom_viewxz->SetOrientation(vtkImageViewer2::SLICE_ORIENTATION_XZ);
+					}
+				} else if (item_name.CompareNoCase(L"function_3d_01") == 0) {
 
 				}else if (item_name.CompareNoCase(L"function_3d_move_sagitta") == 0) {
 					if (box_widgets) {

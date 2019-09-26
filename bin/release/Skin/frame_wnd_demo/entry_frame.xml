@@ -20,7 +20,11 @@
 			</TileLayout>
 			<Control width="10" />
 			<TreeView width="140" itemtextcolor="#FFABBCDC" itemhottextcolor="#FFC8C6CB" selitemtextcolor="FFC8C6CB" itemhotbkcolor="#FF2C356A" itemselectedbkcolor="#FF2C356A" bordercolor="#FF10162A" bordersize="1"	>
-				<TreeNode name="vtk_function_3D" text="VTK 3D测试"  height="32" folderattr="padding=&quot;5,10,10,10&quot; width=&quot;12&quot; height=&quot;12&quot; normalimage=&quot;file='common_icon/down_nor.png' source='0,0,12,12' &quot; selectedimage=&quot;file='common_icon/up_nor.png' source='0,0,12,12' &quot;" >
+				<TreeNode name="vtk_function_test" text="VTK功能测试"  height="32" folderattr="padding=&quot;5,10,10,10&quot; width=&quot;12&quot; height=&quot;12&quot; normalimage=&quot;file='common_icon/down_nor.png' source='0,0,12,12' &quot; selectedimage=&quot;file='common_icon/up_nor.png' source='0,0,12,12' &quot;" >
+					<TreeNode name="function_3" 	text="横状面"  	height="32"/>
+					<TreeNode name="function_4" 	text="矢状面"  	height="32"/>
+					<TreeNode name="function_5" 	text="冠状面"  	height="32"/>
+				</TreeNode><TreeNode name="vtk_function_3D" text="VTK 3D测试"  height="32" folderattr="padding=&quot;5,10,10,10&quot; width=&quot;12&quot; height=&quot;12&quot; normalimage=&quot;file='common_icon/down_nor.png' source='0,0,12,12' &quot; selectedimage=&quot;file='common_icon/up_nor.png' source='0,0,12,12' &quot;" >
 					<TreeNode name="function_3d_01" 	text="multi_slice_image_mapper"  	height="32"/>					
 					<TreeNode name="function_3d_move_sagitta" 	text="sagitta move "  	height="32"/>
 					<TreeNode name="function_3d_move_cornal" 	text="cornal move"  	height="32"/>
