@@ -1,12 +1,13 @@
 #pragma once
 //#include "base/Cef3/common/client_callback_handler.h"
 #include "WndFrameBase.h"
+#include "EntryFrameWnd.h"
 
 #include <UIlib.h>
 using namespace DuiLib;
 
 class CCefBrowserUI;
-
+	
 //////////////////////////////////////////////////////////////////////////
 // 该类使用xml文件创建窗口,其中，有cef浏览器控件(参考了官方cefclient示例）
 //////////////////////////////////////////////////////////////////////////
@@ -116,4 +117,6 @@ private:
 	CButtonUI* m_pStopBtn;
 	// 定义导航和地址栏控件结束
 	CLabelUI* m_title_label;
+
+	CEntryFrameWnd* m_EntryFrameWnd;
 };

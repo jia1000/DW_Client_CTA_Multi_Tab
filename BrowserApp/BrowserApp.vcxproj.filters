@@ -28,6 +28,9 @@
     <Filter Include="data_transfer_control">
       <UniqueIdentifier>{1f1afae6-c0f7-4501-952a-1ba30edede61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{3bfb1355-05ca-4b04-815a-8b06ae2a70ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\WndSimpleFrame.h">
@@ -79,6 +82,18 @@
     <ClInclude Include="main\CefBrowserClientFrameWnd.h">
       <Filter>main</Filter>
     </ClInclude>
+    <ClInclude Include="main\EntryFrameWnd.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="main\MultiSlicesImageDemo.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="main\WidgetsDemoBase.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="global_include.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\WndSimpleFrame.cpp">
@@ -119,6 +134,15 @@
       <Filter>data_transfer_control</Filter>
     </ClCompile>
     <ClCompile Include="main\CefBrowserClientFrameWnd.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="main\EntryFrameWnd.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="main\MultiSlicesImageDemo.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="main\WidgetsDemoBase.cpp">
       <Filter>main</Filter>
     </ClCompile>
   </ItemGroup>

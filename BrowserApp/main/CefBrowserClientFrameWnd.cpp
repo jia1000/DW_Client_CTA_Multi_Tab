@@ -2,6 +2,7 @@
 
 #include "CefBrowserClientFrameWnd.h"
 #include "main/BrowserWndManager.h"
+#include "EntryFrameWnd.h"
 
 //#include "cef_simple/simple_app.h"
 //#include "cef_simple/simple_handler.h"
@@ -11,7 +12,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 CCefBrowserClientFrameWnd::CCefBrowserClientFrameWnd(const wstring& url)
-	:CWndFrameBase()
+	: CWndFrameBase()
 {
 	m_pCtaOnlyBrowserUI = new CCefBrowserUI(this, url);
 }
@@ -143,6 +144,11 @@ void CCefBrowserClientFrameWnd::OnSelChanged(CControlUI* pSender)
 		//HideCefWindow();
 		pTabTest->SelectItem(1);
 		TrayWindowManager::getInstance()->CreateRootWindowAsPopup(L"http://127.0.0.1:8080/cta_multi.html");
+	} else if (strSelName == _T("OptionDemo3")) {		
+		m_EntryFrameWnd = new CEntryFrameWnd();		
+		m_EntryFrameWnd->Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, 0L);
+		m_EntryFrameWnd->CenterWindow();
+		m_EntryFrameWnd->ShowWindow(true);
 	}
 }
 

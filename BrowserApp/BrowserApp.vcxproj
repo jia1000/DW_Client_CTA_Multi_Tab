@@ -196,7 +196,11 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
     <ClInclude Include="data_transfer_control\image_process.h" />
     <ClInclude Include="extended_control\button_hand_ui.h" />
     <ClInclude Include="fileversion_number.h" />
+    <ClInclude Include="global_include.h" />
     <ClInclude Include="main\CefBrowserClientFrameWnd.h" />
+    <ClInclude Include="main\EntryFrameWnd.h" />
+    <ClInclude Include="main\MultiSlicesImageDemo.h" />
+    <ClInclude Include="main\WidgetsDemoBase.h" />
     <ClInclude Include="main\WndFrameBase.h" />
     <ClInclude Include="main\BrowserWndManager.h" />
     <ClInclude Include="main\WndSimpleFrame.h" />
@@ -216,6 +220,9 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main\BrowserWndManager.cpp" />
     <ClCompile Include="main\CefBrowserClientFrameWnd.cpp" />
+    <ClCompile Include="main\EntryFrameWnd.cpp" />
+    <ClCompile Include="main\MultiSlicesImageDemo.cpp" />
+    <ClCompile Include="main\WidgetsDemoBase.cpp" />
     <ClCompile Include="main\WndFrameBase.cpp" />
     <ClCompile Include="main\WndSimpleFrame.cpp" />
     <ClCompile Include="main\print_preview.cpp" />
