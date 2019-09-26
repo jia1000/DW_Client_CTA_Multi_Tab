@@ -2,6 +2,7 @@
 
 #include "WndSimpleFrame.h"
 #include "EntryFrameWnd.h"
+#include "BrowserWndManager.h"
 
 //DUI_BEGIN_MESSAGE_MAP(CWndSimpleFrame, WindowImplBase)
 //	DUI_ON_MSGTYPE(DUI_MSGTYPE_CLICK,OnClick)
@@ -59,6 +60,7 @@ void CWndSimpleFrame::OnSelChanged(CControlUI* pSender)
 		pTabTest->SelectItem(0);
 	} else if (strSelName == _T("option_review2")) {
 		pTabTest->SelectItem(1);
+		TrayWindowManager::getInstance()->CreateRootWindowAsPopup(L"http://www.baidu.com", this->m_hWnd);
 	} else if (strSelName == _T("option_restruct")) {		
 		pTabTest->SelectItem(2);
 		m_EntryFrameWnd = new CEntryFrameWnd();		

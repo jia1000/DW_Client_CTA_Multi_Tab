@@ -47,7 +47,7 @@ public:
 	void CreateRootWindow(const wstring& url);
 
 	// create a new popup window.
-	void CreateRootWindowAsPopup(const wstring& url);
+	void CreateRootWindowAsPopup(const wstring& url, HWND parent_wnd);
 	// create print preview dialog window
 	void CreatePrintWindow(const wstring& url);
 	

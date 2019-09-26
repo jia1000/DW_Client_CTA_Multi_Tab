@@ -143,7 +143,7 @@ void CCefBrowserClientFrameWnd::OnSelChanged(CControlUI* pSender)
 	} else if (strSelName == _T("OptionDemo2")) {
 		//HideCefWindow();
 		pTabTest->SelectItem(1);
-		TrayWindowManager::getInstance()->CreateRootWindowAsPopup(L"http://127.0.0.1:8080/cta_multi.html");
+		TrayWindowManager::getInstance()->CreateRootWindowAsPopup(L"http://127.0.0.1:8080/cta_multi.html", this->m_hWnd);
 	} else if (strSelName == _T("OptionDemo3")) {		
 		m_EntryFrameWnd = new CEntryFrameWnd();		
 		m_EntryFrameWnd->Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, 0L);

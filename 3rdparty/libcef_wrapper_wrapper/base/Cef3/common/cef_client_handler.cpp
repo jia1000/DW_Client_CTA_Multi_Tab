@@ -406,7 +406,7 @@ bool CCefClientHandler::OnBeforePopup(
 		// 创建子窗口的逻辑交由TrayWindowManager
 		exec_on_main_thread([this, target_url]
 		{
-			TrayWindowManager::getInstance()->CreateRootWindowAsPopup(target_url);
+			TrayWindowManager::getInstance()->CreateRootWindowAsPopup(target_url, NULL);
 		});
 #else
         //////////////////////////////////////////////////////////////////////////

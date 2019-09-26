@@ -106,7 +106,7 @@ void TrayWindowManager::CreatePrintWindow(const wstring& url)
 	mainWnd->OpenPrintWindow(url);
 }
 
-void TrayWindowManager::CreateRootWindowAsPopup(const wstring& url)
+void TrayWindowManager::CreateRootWindowAsPopup(const wstring& url, HWND parent_wnd)
 {
 	if (url.empty()){
 		CGLogger::Error("New window's url is empty");
