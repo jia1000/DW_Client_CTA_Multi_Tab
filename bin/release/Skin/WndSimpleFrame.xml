@@ -61,7 +61,7 @@
 		<!-- 主窗口 -->
 		<VerticalLayout bkcolor="#FFE6E7E8"> 	
 			<HorizontalLayout height="40">				
-				<Option name="option_review1" text="阅片1" width="120"  group="tabDemo" textcolor="#FF454545" hottextcolor="#FF111111" bordersize="1" bordercolor="#FF969696" borderround="1" selectedbkcolor="#FF272B2E" selectedtextcolor="#FFA7A6AA" />
+				<Option name="option_review1" text="阅片1" selected="true" width="120"  group="tabDemo" textcolor="#FF454545" hottextcolor="#FF111111" bordersize="1" bordercolor="#FF969696" borderround="1" selectedbkcolor="#FF272B2E" selectedtextcolor="#FFA7A6AA" />
 				<Control width="2"/>
 				<Option name="option_review2" text="阅片2" width="120"  group="tabDemo"  textcolor="#FF454545" hottextcolor="#FF111111" bordersize="1" bordercolor="#FF969696" borderround="1" selectedbkcolor="#FF272B2E" selectedtextcolor="#FFA7A6AA"/>
 				<Control width="2"/>
