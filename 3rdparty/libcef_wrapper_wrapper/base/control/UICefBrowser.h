@@ -99,7 +99,9 @@ private:
 
 private:	
 	CefRefPtr<CCefClientHandler>			m_pClientHandler;
+public://for test
 	CefRefPtr<CefBrowser>					m_pBrowser;
+private:
 	CefRefPtr<CProcessMessageHandler>		m_pProcessMessageHandler;
 	CefString								m_sStartupUrl;
 	ICallbackDelegate*						m_CallbackDelegate;

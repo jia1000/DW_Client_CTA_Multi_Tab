@@ -10,6 +10,14 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+CWndSimpleFrame::CWndSimpleFrame(const wstring& url) 
+	:CWndFrameBase() 
+{
+	m_pBrowserUI = new CCefBrowserUI(this, L"http://127.0.0.1:8080/cta_only.html"); 
+	m_pBrowserUI2 = new CCefBrowserUI(this, L"http://127.0.0.1:8080/cta_multi.html"); 
+}
+
+
 void CWndSimpleFrame::OnFinalMessage(HWND /*hWnd*/)
 {
 	NotifyWindowDestroyed();
@@ -57,15 +65,32 @@ void CWndSimpleFrame::OnSelChanged(CControlUI* pSender)
 	CDuiString strSelName = pSender->GetName();
 	if (strSelName == _T("option_review1")) 
 	{
+		SetShowCefBrowser(m_pBrowserUI, true);
+		SetShowCefBrowser(m_pBrowserUI2, false);
 		pTabTest->SelectItem(0);
 	} else if (strSelName == _T("option_review2")) {
+		SetShowCefBrowser(m_pBrowserUI, false);
+		SetShowCefBrowser(m_pBrowserUI2, true);
 		pTabTest->SelectItem(1);
-		TrayWindowManager::getInstance()->CreateRootWindowAsPopup(L"http://www.baidu.com", this->m_hWnd);
+		//TrayWindowManager::getInstance()->CreateRootWindowAsPopup(L"http://www.baidu.com", this->m_hWnd);
 	} else if (strSelName == _T("option_restruct")) {		
 		pTabTest->SelectItem(2);
 		m_EntryFrameWnd = new CEntryFrameWnd();		
 		m_EntryFrameWnd->Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, 0L);
 		m_EntryFrameWnd->CenterWindow();
 		m_EntryFrameWnd->ShowWindow(true);
+	}
+}
+
+void CWndSimpleFrame::SetShowCefBrowser(CCefBrowserUI* browser, bool is_show)
+{
+	// 暂时，使用这种方式，去显示隐藏cef。
+	HWND hwnd = browser->m_pBrowser->GetHost()->GetWindowHandle();
+	if (hwnd) {
+		if (is_show){
+			::ShowWindow(hwnd, SW_SHOW);			
+		} else {
+			::SetWindowPos(hwnd, NULL, 0, 0, 0, 0, SWP_NOZORDER | SWP_NOMOVE | SWP_NOACTIVATE);			
+		}
 	}
 }

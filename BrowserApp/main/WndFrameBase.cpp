@@ -121,6 +121,9 @@ CControlUI* CWndFrameBase::CreateControl(LPCTSTR pstrClass, CPaintManagerUI *pMa
 	if( _tcsicmp(pstrClass, _T("Cef")) == 0){
 		return m_pBrowserUI;
 	}
+	else if( _tcsicmp(pstrClass, _T("Cef2")) == 0){
+		return m_pBrowserUI2;
+	}
 	return NULL;
 }
 

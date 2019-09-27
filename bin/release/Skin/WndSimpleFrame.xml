@@ -73,7 +73,7 @@
 					<Cef url="" padding="2,1,2,1" />
 				</HorizontalLayout>
 				<HorizontalLayout>
-					<Button name="OptionDemo2" text="OptionDemo2" bkcolor="#FFF44C4C"  />					
+					<Cef2 url="" padding="2,1,2,1" />					
 				</HorizontalLayout>
 			</TabLayout> 
 		</VerticalLayout>

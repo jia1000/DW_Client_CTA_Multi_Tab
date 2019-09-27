@@ -91,7 +91,8 @@ public:
 protected:
 	CWndFrameBase::Delegate* m_pDelegate;
 	CCefBrowserUI* m_pBrowserUI;
-	
+	CCefBrowserUI* m_pBrowserUI2;
+
 private:
 	void ClosePrintWindow();
 

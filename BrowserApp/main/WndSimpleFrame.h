@@ -16,7 +16,7 @@ class CWndSimpleFrame
 	: public CWndFrameBase
 {
 public:
-	CWndSimpleFrame(const wstring& url) :CWndFrameBase() { m_pBrowserUI = new CCefBrowserUI(this, url); }
+	CWndSimpleFrame(const wstring& url);
 
 	CDuiString GetSkinFile() OVERRIDE;
 	LPCTSTR GetWindowClassName() const OVERRIDE;
@@ -28,6 +28,8 @@ public:
 	
 	virtual void Notify(TNotifyUI &msg);
 	void OnSelChanged(CControlUI* pSender);
+
+	void SetShowCefBrowser(CCefBrowserUI* browser, bool is_show);
 
 private:
 	CEntryFrameWnd* m_EntryFrameWnd;
