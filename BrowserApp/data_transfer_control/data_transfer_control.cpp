@@ -86,21 +86,27 @@ bool DataTransferController::ParseImageOperationData(char* json_data, std::strin
 		return true;
 	}
 
-	// 模拟再发送给浏览器
-	Json::FastWriter writer;
-	// 只修改客户端关心的key
-	//Json::Value inputjson;
-	//root[JSON_KEY_REQUEST_TYPE]	= key_name1;
-	//root[JSON_KEY_IMAGE_OPERATION] = key_name2;
-	//root[JSON_KEY_IMAGE_PARAS]		= key_name3;
-	root[JSON_KEY_IMAGE_DATA]		= out_image_data;
-	std::string jsonstr = writer.write(root);
-	// 有换行符的json字符串， JS不能处理。
-	if (*jsonstr.rbegin() == '\n') {
-		jsonstr.erase(jsonstr.end() - 1);
+	bool is_use_json = false; // 返回结果图像文件时，是否使用json格式
+	if (is_use_json) {
+		// 模拟再发送给浏览器
+		Json::FastWriter writer;
+		// 只修改客户端关心的key
+		//Json::Value inputjson;
+		//root[JSON_KEY_REQUEST_TYPE]	= key_name1;
+		//root[JSON_KEY_IMAGE_OPERATION] = key_name2;
+		//root[JSON_KEY_IMAGE_PARAS]		= key_name3;
+		root[JSON_KEY_IMAGE_DATA]		= out_image_data;
+		std::string jsonstr = writer.write(root);
+		// 有换行符的json字符串， JS不能处理。
+		if (*jsonstr.rbegin() == '\n') {
+			jsonstr.erase(jsonstr.end() - 1);
+		}
+		// 使用XML Request 的回调机制，传回json字符串
+		js_data = jsonstr;
+	} else {
+		// 使用XML Request 的回调机制，直接传回图像的base64
+		js_data = out_image_data;
 	}
-	// 使用XML Request 的回调机制，传回json字符串
-	js_data = jsonstr;
 
 	return true;
 }

@@ -368,7 +368,14 @@ bool ImageMPRProcess::Excute(std::string& out_image_data)
 	out_image_data = Mat2Base64(src, "bmp");
 #else
 	// do sth.
-	std::string path = "C:\\ztest2\\screen_shot_mpr.bmp";
+	std::string path = "C:\\ztest2\\mpr\\";
+	static int bmp_index = 1;
+	path += to_string(bmp_index);
+	path += ".bmp";
+	bmp_index++;
+	if (bmp_index > 10) {
+		bmp_index = 1;
+	}
 	cv::Mat src = cv::imread(path.c_str());
 	out_image_data = Mat2Base64(src, "bmp");
 #endif
@@ -447,7 +454,14 @@ bool ImageVRProcess::Excute(std::string& out_image_data)
 
 #else
 	// 关掉vr的生成图像，暂时，先读取固定位置的bmp
-	std::string path = "C:\\ztest2\\screen_shot_vr.bmp";
+	std::string path = "C:\\ztest2\\vr\\";
+	static int bmp_index = 1;
+	path += to_string(bmp_index);
+	path += ".bmp";
+	bmp_index++;
+	if (bmp_index > 12) {
+		bmp_index = 1;
+	}
 	cv::Mat src = cv::imread(path.c_str());
 	out_image_data = Mat2Base64(src, "bmp");
 #endif
@@ -544,7 +558,14 @@ bool ImageCPRProcess::Excute(std::string& out_image_data)
 	out_image_data = Mat2Base64(src, "bmp");
 #else
 	// do sth.
-	std::string path = "C:\\ztest2\\screen_shot_cpr.bmp";
+	std::string path = "C:\\ztest2\\cpr\\";
+	static int bmp_index = 1;
+	path += to_string(bmp_index);
+	path += ".bmp";
+	bmp_index++;
+	if (bmp_index > 8) {
+		bmp_index = 1;
+	}
 	cv::Mat src = cv::imread(path.c_str());
 	out_image_data = Mat2Base64(src, "bmp");
 #endif
