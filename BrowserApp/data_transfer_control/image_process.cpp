@@ -367,6 +367,8 @@ bool ImageMPRProcess::Excute(std::string& out_image_data)
 	cv::Mat src = cv::imread(screen_shot_file_path.c_str());
 	out_image_data = Mat2Base64(src, "bmp");
 #else
+	static DWORD s_total_elapse = 0;
+	DWORD start_time = GetTickCount();
 	// do sth.
 	std::string path = "C:\\ztest2\\mpr\\";
 	static int bmp_index = 1;
@@ -377,7 +379,14 @@ bool ImageMPRProcess::Excute(std::string& out_image_data)
 		bmp_index = 1;
 	}
 	cv::Mat src = cv::imread(path.c_str());
+	DWORD read_time = GetTickCount();
+	printf("read_time :					%d\n", read_time - start_time);
 	out_image_data = Mat2Base64(src, "bmp");
+	DWORD end_time = GetTickCount();
+	DWORD elapse = end_time - start_time;
+	printf("elapse time :      %d\n", elapse);
+	s_total_elapse += elapse;
+	printf("total elapse time :                     %d\n", s_total_elapse);
 #endif
 	
 	return true;
@@ -453,6 +462,8 @@ bool ImageVRProcess::Excute(std::string& out_image_data)
 	out_image_data = Mat2Base64(src, "bmp");
 
 #else
+	static DWORD s_total_elapse = 0;
+	DWORD start_time = GetTickCount();
 	// 关掉vr的生成图像，暂时，先读取固定位置的bmp
 	std::string path = "C:\\ztest2\\vr\\";
 	static int bmp_index = 1;
@@ -463,7 +474,18 @@ bool ImageVRProcess::Excute(std::string& out_image_data)
 		bmp_index = 1;
 	}
 	cv::Mat src = cv::imread(path.c_str());
+
+	DWORD read_time = GetTickCount();
+	printf("read_time :					%d\n", read_time - start_time);
+
 	out_image_data = Mat2Base64(src, "bmp");
+
+	DWORD end_time = GetTickCount();
+	DWORD elapse = end_time - start_time;
+	printf("elapse time :      %d\n", elapse);
+	s_total_elapse += elapse;
+	printf("total elapse time :                     %d\n", s_total_elapse);
+
 #endif
 	
 	return true;
@@ -557,6 +579,8 @@ bool ImageCPRProcess::Excute(std::string& out_image_data)
 	cv::Mat src = cv::imread(screen_shot_file_path.c_str());
 	out_image_data = Mat2Base64(src, "bmp");
 #else
+	static DWORD s_total_elapse = 0;
+	DWORD start_time = GetTickCount();
 	// do sth.
 	std::string path = "C:\\ztest2\\cpr\\";
 	static int bmp_index = 1;
@@ -567,7 +591,15 @@ bool ImageCPRProcess::Excute(std::string& out_image_data)
 		bmp_index = 1;
 	}
 	cv::Mat src = cv::imread(path.c_str());
+	DWORD read_time = GetTickCount();
+	printf("read_time :					%d\n", read_time - start_time);
 	out_image_data = Mat2Base64(src, "bmp");
+
+	DWORD end_time = GetTickCount();
+	DWORD elapse = end_time - start_time;
+	printf("elapse time :      %d\n", elapse);
+	s_total_elapse += elapse;
+	printf("total elapse time :                     %d\n", s_total_elapse);
 #endif
 
 	
