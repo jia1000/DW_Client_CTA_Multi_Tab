@@ -44,6 +44,13 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		return 0;
 	}
 
+
+#if _DEBUG
+	AllocConsole();
+	freopen("CONOUT$", "w+t", stdout);
+	printf("test console");
+#endif
+
 	CPaintManagerUI::SetInstance(hInstance);
 	// ¶ÁÈ¡ÅäÖÃÎÄ¼þ
 	Configurations::getInstance()->Initialize();
