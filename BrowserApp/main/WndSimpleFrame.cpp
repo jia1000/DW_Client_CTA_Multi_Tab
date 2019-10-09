@@ -14,7 +14,10 @@ CWndSimpleFrame::CWndSimpleFrame(const wstring& url)
 	:CWndFrameBase() 
 {
 	m_pBrowserUI = new CCefBrowserUI(this, L"http://127.0.0.1:8080/cta_only.html"); 
-	m_pBrowserUI2 = new CCefBrowserUI(this, L"http://127.0.0.1:8080/cta_multi.html"); 
+	//m_pBrowserUI2 = new CCefBrowserUI(this, L"http://127.0.0.1:8080/cta_multi.html"); 
+	// 和web端联调时，测试网址 
+	m_pBrowserUI2 = new CCefBrowserUI(this, L"http://172.16.11.134:8080/home"); 
+
 }
 
 

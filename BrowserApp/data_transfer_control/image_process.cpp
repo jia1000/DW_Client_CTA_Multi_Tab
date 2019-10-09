@@ -605,3 +605,78 @@ bool ImageCPRProcess::Excute(std::string& out_image_data)
 	
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
+// 和web端联调时，直接回传dcm文件流
+ImageDcmProcess::ImageDcmProcess(std::string str_paras)
+	: ImageProcessBase(str_paras)
+{
+	m_wnd_name = "dcm";
+}
+
+ImageDcmProcess::~ImageDcmProcess()
+{
+}
+
+bool ImageDcmProcess::Excute(std::string& out_image_data)
+{	
+	static DWORD first_time = 0;
+	static DWORD one_hundred_time = 0;
+
+	static int circle_count = 1;
+
+	static DWORD s_total_elapse = 0;
+	DWORD start_time = GetTickCount();
+	// do sth.
+	std::string path = "C:\\ztest2\\dcm\\";
+	static int bmp_index = 1;
+	path += std::to_string(bmp_index);
+	if (1 == bmp_index)
+	{
+		first_time = GetTickCount();
+	}
+	bmp_index++;
+	if (bmp_index > 126) {
+		bmp_index = 1;
+		one_hundred_time = GetTickCount();
+		printf("read_time :		%ld     %ld			%d\n", one_hundred_time, first_time, one_hundred_time - first_time);
+
+		if (circle_count == 4)
+		{
+			printf("count = %d\n", circle_count);
+			Sleep(3 * 1000);
+		}
+		circle_count++;
+	}
+
+	// 读取dcm文件
+	FILE* fp = fopen(path.c_str(), "rb");
+
+	if (fp) {
+		long lSize;   // 用于文件长度    
+		char* buffer; // 文件缓冲区指针    
+		size_t result;  // 返回值是读取的内容数量
+		fseek(fp, 0, SEEK_END);
+		lSize = ftell(fp);
+		rewind(fp);
+		buffer = (char*)malloc(sizeof(char) * lSize);
+		if (!buffer) {
+			fclose(fp);
+			return false;
+		}
+		result = fread(buffer, 1, lSize, fp);
+		if (result != lSize) {
+			free(buffer);
+			fclose(fp);
+			return false;
+		}
+		out_image_data = std::string(buffer, lSize);
+		free(buffer);
+		fclose(fp);
+	}
+
+	DWORD read_time = GetTickCount();
+	//printf("read_time :					%d\n", read_time - start_time);
+
+	return true;
+}

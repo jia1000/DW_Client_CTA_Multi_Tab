@@ -43,6 +43,10 @@ public:
 	static DataTransferController* GetInstance();
 
 	bool ParseImageOperationData(char* json_data, std::string& js_data);
+
+	// 直接读取dcm文件，和web端联调
+	bool ParseDcmOperationData(char* json_data, std::string& js_data);
+
 #ifdef USE_RAPID_JSON
 	bool ParseImageOperationDataUseRapidJson(char* json_data, std::string& js_data);
 	std::string GetJsonDataString(Document& doc , std::string key);

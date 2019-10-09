@@ -112,3 +112,16 @@ public:
 private:
 	std::string curve_id_;
 };
+
+//////////////////////////////////////////////////////////////////////////
+// 直接读取dcm文件，和web端联调
+class ImageDcmProcess : public ImageProcessBase
+{
+public:
+	ImageDcmProcess(std::string str_paras);
+	~ImageDcmProcess();
+	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
+
+private:
+	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;	
+};

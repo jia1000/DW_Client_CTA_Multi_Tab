@@ -111,6 +111,20 @@ bool DataTransferController::ParseImageOperationData(char* json_data, std::strin
 	return true;
 }
 
+// 和web端联调时，直接传输dcm文件流
+bool DataTransferController::ParseDcmOperationData(char* json_data, std::string& js_data)
+{
+	if(image_process) {
+		delete image_process;
+		image_process = NULL;
+	}
+
+	image_process = new ImageDcmProcess("dcm");
+	image_process->Excute(js_data);
+
+	return true;
+}
+
 #ifdef USE_RAPID_JSON
 std::string DataTransferController::GetJsonDataString(Document& doc, std::string key)
 {
