@@ -184,8 +184,13 @@ public:
 
 		if (DataTransferController::GetInstance()->ParseWriteFileOperationData(
 			arraybuffer, length, vec_url_elements, resource_data)) {
+				delete [] arraybuffer;
+				arraybuffer = NULL;
 				return true;
 		}
+
+		delete [] arraybuffer;
+		arraybuffer = NULL;
 
 		return false;
 	}
