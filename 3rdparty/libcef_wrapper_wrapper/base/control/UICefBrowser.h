@@ -97,7 +97,7 @@ private:
 	void SetFocus(bool enable);
 	string GetErrorString(int code);
 
-private:	
+public:	//for test
 	CefRefPtr<CCefClientHandler>			m_pClientHandler;
 public://for test
 	CefRefPtr<CefBrowser>					m_pBrowser;

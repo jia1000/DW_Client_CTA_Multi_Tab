@@ -36,7 +36,7 @@
                   hotimage="file='window/close_hov.png' dest='16,8,32,24'" 
                   pushedimage="file='window/close_push.png' dest='16,8,32,24'" />
 		    </HorizontalLayout>
-        <HorizontalLayout height="28" visible="false">
+        <HorizontalLayout height="28" visible="true">
           <Control width="2"/>
           <Button name="btn_back" text="后退" width="88" height="28" tooltip="后退" textcolor="#FF454545" hottextcolor="#FF111111" bordersize="1" bordercolor="#FF969696" borderround="1"/>
           <Control width="2"/>
@@ -45,6 +45,8 @@
           <Button name="btn_refresh" text="刷新" width="88" height="28" tooltip="刷新" textcolor="#FF454545" hottextcolor="#FF111111" bordersize="1" bordercolor="#FF969696" borderround="1"/>
           <Control width="2"/>
           <Button name="btn_stop" text="停止" width="88" height="28" tooltip="停止" textcolor="#FF454545" hottextcolor="#FF111111" bordersize="1" bordercolor="#FF969696" borderround="1"/>
+          <Control width="2"/>
+          <Button name="btn_dev_tools" text="DEV" width="88" height="28" tooltip="开发工具" textcolor="#FF454545" hottextcolor="#FF111111" bordersize="1" bordercolor="#FF969696" borderround="1"/>
           <Control width="2"/>
           <Edit name="edit_address" tipvalue="url address..." maxchar="2000" style="edit_style" bordersize="1" bordercolor="#FF969696" borderround="2" />
           <Control width="2"/>
