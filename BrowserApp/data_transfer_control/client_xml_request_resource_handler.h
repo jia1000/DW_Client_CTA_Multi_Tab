@@ -29,7 +29,7 @@ public:
 		: m_name(name)
 		, m_circle_count(count)
 		, m_index(1)
-		, m_is_printf_once(false)
+		, m_is_printf_once(true)
 	{
 		begin_time = GetTickCount();
 		pre_time = begin_time;
@@ -38,11 +38,13 @@ public:
 
 	void Ellapse()
 	{
+		if (m_index == 1) {
+			begin_time = GetTickCount();
+		}
 		if (m_index == m_circle_count) {
 			end_time = GetTickCount();
 			m_index = 1;
 			printf("%s ellpase_time :		%ld     %ld			%d\n", m_name.c_str(), end_time, begin_time, end_time - begin_time);
-			begin_time = GetTickCount();
 			return;
 		}
 		if (m_is_printf_once) {
