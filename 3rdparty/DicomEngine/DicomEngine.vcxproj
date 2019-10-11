@@ -45,6 +45,10 @@
     <TargetName>$(ProjectName)_d</TargetName>
     <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)\lib\$(ProjectName)\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>
@@ -68,6 +72,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\dcmtk-3.6.0\include;..\..\..\dcmtk-3.6.0\dcmjpeg\include;..\..\..\dcmtk-3.6.0\dcmdata\include;..\..\..\dcmtk-3.6.0\ofstd\include;..\..\..\dcmtk-3.6.0\oflog\include;..\..\..\dcmtk-3.6.0\dcmimgle\include;..\..\..\dcmtk-3.6.0\dcmnet\include;..\..\..\dcmtk-3.6.0\dcmimage\include;..\..\..\dcmtk-3.6.0\dcmsr\include;..\..\..\dcmtk-3.6.0\dcmtls\include;..\..\..\dcmtk-3.6.0\dcmpstat\include;..\..\..\dcmtk-3.6.0\dcmjpls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
