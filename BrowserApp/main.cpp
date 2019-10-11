@@ -45,11 +45,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	}
 
 
-#if _DEBUG
-	AllocConsole();
-	freopen("CONOUT$", "w+t", stdout);
-	printf("test console");
-#endif
+
 
 	CPaintManagerUI::SetInstance(hInstance);
 	// 读取配置文件
@@ -75,6 +71,14 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	}
 #endif
 
+
+#if _DEBUG
+	if (processType == ClientApp::ProcessType::BrowserProcess){
+		AllocConsole();
+		freopen("CONOUT$", "w+t", stdout);
+		printf("test console\n");
+	}
+#endif
 	// ------------------CEF初始化------------------
 	CCefMainHandler CefMainHandler;
 	if (!CefMainHandler.Initialize(hInstance, FALSE))
