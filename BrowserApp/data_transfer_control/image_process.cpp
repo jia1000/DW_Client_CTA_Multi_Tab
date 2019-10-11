@@ -65,6 +65,11 @@ ImageProcessBase::~ImageProcessBase()
 //	}
 //}
 
+void ImageProcessBase::SetFileName(std::string file_name) 
+{ 
+	m_file_name = file_name; 
+}
+
 void ImageProcessBase::SetKey2_ImageOperation(std::string str_opertation) 
 { 
 	m_key2_str_opertation = str_opertation; 
@@ -678,5 +683,108 @@ bool ImageDcmProcess::Excute(std::string& out_image_data)
 	DWORD read_time = GetTickCount();
 	//printf("read_time :					%d\n", read_time - start_time);
 
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// 和web端联调时，web传入文件流，客户端写入保存
+ImageWriteProcess::ImageWriteProcess(std::string str_paras)
+	: ImageProcessBase(str_paras)
+{
+	m_wnd_name = "dcm";
+}
+
+ImageWriteProcess::~ImageWriteProcess()
+{
+}
+
+bool ImageWriteProcess::Excute(std::string& out_image_data)
+{	
+	return true;
+}
+
+bool ImageWriteProcess::SaveFile(char * src)
+{	
+	FILE* fp = fopen("C:\\ztest2\\save_file\\5", "wb");
+	if (fp) {
+		fprintf(fp, "%s", src);
+		fclose(fp);
+	}
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// 和web端联调时，web请求，客户端读取保存，传给web
+ImageReadDcmProcess::ImageReadDcmProcess(std::string str_paras)
+	: ImageProcessBase(str_paras)
+{
+	m_wnd_name = str_paras;
+}
+
+ImageReadDcmProcess::~ImageReadDcmProcess()
+{
+}
+
+bool ImageReadDcmProcess::Excute(std::string& out_image_data)
+{	
+	static DWORD first_time = 0;
+	static DWORD one_hundred_time = 0;
+	static DWORD s_total_elapse = 0;
+
+	DWORD start_time = GetTickCount();
+	// do sth.
+	std::string path = "C:\\ztest2\\save_file\\";
+	
+	path += m_file_name;
+	
+	
+
+	// 读取dcm文件
+	FILE* fp = fopen(path.c_str(), "rb");
+
+	if (fp) {
+		long lSize;   // 用于文件长度    
+		char* buffer; // 文件缓冲区指针    
+		size_t result;  // 返回值是读取的内容数量
+		fseek(fp, 0, SEEK_END);
+		lSize = ftell(fp);
+		rewind(fp);
+		buffer = (char*)malloc(sizeof(char) * lSize);
+		if (!buffer) {
+			fclose(fp);
+			return false;
+		}
+		result = fread(buffer, 1, lSize, fp);
+		if (result != lSize) {
+			free(buffer);
+			fclose(fp);
+			return false;
+		}
+		out_image_data = std::string(buffer, lSize);
+		free(buffer);
+		fclose(fp);
+	}
+
+	DWORD read_time = GetTickCount();
+	//printf("read_time :					%d\n", read_time - start_time);
+
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// 和web端联调时，web请求，客户端清除内存
+ImageClearFileDcmProcess::ImageClearFileDcmProcess(std::string str_paras)
+	: ImageProcessBase(str_paras)
+{
+	m_wnd_name = str_paras;
+}
+
+ImageClearFileDcmProcess::~ImageClearFileDcmProcess()
+{
+}
+
+bool ImageClearFileDcmProcess::Excute(std::string& out_image_data)
+{	
+	
 	return true;
 }

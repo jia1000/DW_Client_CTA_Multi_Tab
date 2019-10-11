@@ -57,6 +57,7 @@ public:
 	void SetKey3_ImageOperationParas(std::string str_paras);
 
 	virtual bool Excute(std::string& out_image_data);
+	virtual void SetFileName(std::string file_name) ;
 
 protected:	
 	// opencv Mat和base64的互转
@@ -72,6 +73,8 @@ protected:
 	std::string m_key3_str_paras;		// 不同图像操作类型的参数，参数含义会有不同。具体需要见产品设计
 	/// 窗口名称
 	std::string m_wnd_name;
+
+	std::string m_file_name;// 用于和web交互时，需要保存的dcm文件的名称
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -120,6 +123,43 @@ class ImageDcmProcess : public ImageProcessBase
 public:
 	ImageDcmProcess(std::string str_paras);
 	~ImageDcmProcess();
+	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
+
+private:
+	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;	
+};
+//////////////////////////////////////////////////////////////////////////
+// 和web端联调时，web传入文件流，客户端写入保存
+class ImageWriteProcess : public ImageProcessBase
+{
+public:
+	ImageWriteProcess(std::string str_paras);
+	~ImageWriteProcess();
+	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
+
+	bool SaveFile(char * src);
+private:
+	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;	
+};
+//////////////////////////////////////////////////////////////////////////
+// 和web端联调时，web请求，客户端读取保存，传给web
+class ImageReadDcmProcess : public ImageProcessBase
+{
+public:
+	ImageReadDcmProcess(std::string str_paras);
+	~ImageReadDcmProcess();
+	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
+
+private:
+	//GNC::GCS::Ptr<GNC::GCS::IStreamingLoader>         Loader;	
+};
+//////////////////////////////////////////////////////////////////////////
+// 和web端联调时，web请求，客户端清除内存
+class ImageClearFileDcmProcess : public ImageProcessBase
+{
+public:
+	ImageClearFileDcmProcess(std::string str_paras);
+	~ImageClearFileDcmProcess();
 	virtual bool Excute(std::string& out_image_data); // 图像缩放后数据，base64编码
 
 private:

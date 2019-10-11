@@ -13,11 +13,47 @@
 #include "include/wrapper/cef_helpers.h"
 #include "data_transfer_control/data_transfer_control.h"
 
+#include "util/StringUtil.h"
+
 #define HANDLER_IAMGE_CONTROLLER				"image_controller"
 #define HANDLER_IAMGE_ARRAY_BUFFER_TRANSFER		"image_buffer_transfer"
 
 const static std::string http_image_controller		= std::string("http://") + std::string(HANDLER_IAMGE_CONTROLLER);
 const static std::string http_image_buffer_transfer = std::string("http://") + std::string(HANDLER_IAMGE_ARRAY_BUFFER_TRANSFER);
+
+
+class TimeEllapse
+{
+public:
+	TimeEllapse(std::string name, int count = 100)
+		: m_name(name)
+		, m_circle_count(count)
+		, m_index(1)
+	{
+		begin_time = GetTickCount();
+	}
+	~TimeEllapse() {}
+
+	void Ellapse()
+	{
+		if (m_index == m_circle_count) {
+			end_time = GetTickCount();
+			m_index = 1;
+			printf("%s ellpase_time :		%ld     %ld			%d\n", m_name.c_str(), end_time, begin_time, end_time - begin_time);
+			begin_time = GetTickCount();
+			return;
+		}
+		m_index++;
+	}
+
+private:
+	int m_circle_count; //
+	int m_index;
+	DWORD begin_time;
+	DWORD end_time;
+	std::string m_name; 
+};
+
 
 // Implementation of the schema handler for client:// requests.
 class ClientXMLRequestResourceHandler : public CefResourceHandler {
@@ -35,6 +71,7 @@ public:
 			
 			std::string url = request->GetURL();
 
+			std::vector<std::string> vec_url_elements = SplitString(url, "/");
             std::string method = request->GetMethod();
 			// 和web端联调时，web端会先发送一个Option的请求，然后再发送Get。这里，需要不处理Option请求
             if (method == "OPTIONS")
@@ -44,17 +81,48 @@ public:
             } 
             else if(url.find(http_image_controller) == 0) 
             {
-				if (ParseImageOperationPostData(request, data_)) {
+				if (false) {//ParseImageOperationPostData(request, data_)) {
 					//读取图像成功后，需要设置handled，致使返回为true
 					handled = true;
 					// Set the resulting mime type
 					mime_type_ = "text";//"image/jpg";					
 				} else {
-					// 和web端联调时，不会发送postdata
-					char *arraybuffer = new char[256];
-					if (!DataTransferController::GetInstance()->ParseDcmOperationData(
-						arraybuffer, data_)) {
-							return false;
+					if (vec_url_elements.size() >= 4 && vec_url_elements[2] == "write_file") {
+						static TimeEllapse ellapse("write_file");
+						ParseWriteFileOperationPostData(request, data_);
+						ellapse.Ellapse();
+						//char arraybuffer = 0;
+						//if (!DataTransferController::GetInstance()->ParseWriteFileOperationData(
+						//	&arraybuffer, data_)) {
+						//		//return false;
+						//}
+					} 
+					else if (vec_url_elements.size() >= 4 && vec_url_elements[2] == "read_file") {
+						char arraybuffer = 0;
+						std::string file_index = vec_url_elements[3];
+						static TimeEllapse ellapse("read_file");
+						if (!DataTransferController::GetInstance()->ParseReadFileOperationData(
+							&arraybuffer, vec_url_elements, data_)) {
+								//return false;
+						}
+						ellapse.Ellapse();
+					}
+					else if (vec_url_elements.size() >= 3 && vec_url_elements[2] == "clear_files") {
+						char arraybuffer = 0;
+						static TimeEllapse ellapse("clear_files");
+						if (!DataTransferController::GetInstance()->ParseClearFilesOperationData(
+							&arraybuffer, vec_url_elements, data_)) {
+								//return false;
+						}
+						ellapse.Ellapse();
+					}
+					else {
+						// 和web端联调时，不会发送postdata
+						char arraybuffer = 0;
+						if (!DataTransferController::GetInstance()->ParseDcmOperationData(
+							&arraybuffer, data_)) {
+								//return false;
+						}
 					}
 					//读取图像成功后，需要设置handled，致使返回为true
 					handled = true;
@@ -80,6 +148,47 @@ public:
 
 			return false;
 	};
+	bool ParseWriteFileOperationPostData(CefRefPtr<CefRequest> request, std::string& resource_data)
+	{
+		std::string url = request->GetURL();
+
+		std::vector<std::string> vec_url_elements = SplitString(url, "/");
+
+		CefRefPtr<CefPostData> postData = request->GetPostData();
+		if (!postData) {
+			return false;
+		}
+		CefPostData::ElementVector elements;
+		postData->GetElements(elements);
+
+		if (elements.size() <= 0) {
+			return false;
+		}
+		std::wstring queryString;
+		CefRefPtr<CefPostDataElement> data = elements[0];
+		if (data->GetType() != PDE_TYPE_BYTES) {
+			return false;
+		}
+		const unsigned int length = data->GetBytesCount();
+		if (length == 0) {
+			return false;
+		}
+
+		char *arraybuffer = new char[length + 1];
+		if (!arraybuffer) {
+			return false;
+		}
+
+		memset(arraybuffer, 0, length + 1);
+		data->GetBytes(length, arraybuffer);
+
+		if (DataTransferController::GetInstance()->ParseWriteFileOperationData(
+			arraybuffer, length, vec_url_elements, resource_data)) {
+				return true;
+		}
+
+		return false;
+	}
 	bool ParseImageOperationPostData(CefRefPtr<CefRequest> request, std::string& resource_data)
 	{
 		CefRefPtr<CefPostData> postData = request->GetPostData();

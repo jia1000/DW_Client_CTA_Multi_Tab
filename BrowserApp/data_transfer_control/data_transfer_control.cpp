@@ -125,6 +125,72 @@ bool DataTransferController::ParseDcmOperationData(char* json_data, std::string&
 	return true;
 }
 
+// 和web端联调时，web传入文件流，客户端写入保存
+bool DataTransferController::ParseWriteFileOperationData(char* json_data, unsigned int length, std::vector<std::string>& vec_url_elements, std::string& js_data)
+{
+	if(image_process) {
+		delete image_process;
+		image_process = NULL;
+	}
+
+	image_process = new ImageWriteProcess("write");
+	//image_process->SaveFile(json_data);
+	std::string path = "C:\\ztest2\\save_file\\";
+	if (vec_url_elements.size() < 4) {
+		return false;
+	}
+
+	path += vec_url_elements[3];
+	FILE* fp = fopen(path.c_str(), "wb");
+	if (fp) {
+		//fprintf(fp, "%s", json_data);
+		fwrite(json_data, 1, length, fp);
+		fclose(fp);
+	}
+
+	image_process->Excute(js_data);
+
+	return true;
+}
+// 和web端联调时，web请求，客户端读取保存，传给web
+bool DataTransferController::ParseReadFileOperationData(char* json_data, std::vector<std::string>& vec_url_elements, std::string& js_data)
+{
+	if(image_process) {
+		delete image_process;
+		image_process = NULL;
+	}
+
+	image_process = new ImageReadDcmProcess("read");
+	if (vec_url_elements.size() < 4) {
+		return false;
+	}
+
+	// web传入的read_file的索引会带有时间戳,需要裁切掉
+	std::vector<std::string> v = SplitString(vec_url_elements[3], "&");
+	if (v.size() == 0) {
+		return false;
+	}
+
+	image_process->SetFileName(v[0]);
+	image_process->Excute(js_data);
+
+	return true;
+}
+
+// 和web端联调时，web请求，客户端清除内存
+bool DataTransferController::ParseClearFilesOperationData(char* json_data, std::vector<std::string>& vec_url_elements, std::string& js_data)
+{
+	if(image_process) {
+		delete image_process;
+		image_process = NULL;
+	}
+
+	image_process = new ImageClearFileDcmProcess("clear_files");
+	image_process->Excute(js_data);
+
+	return true;
+}
+
 #ifdef USE_RAPID_JSON
 std::string DataTransferController::GetJsonDataString(Document& doc, std::string key)
 {
