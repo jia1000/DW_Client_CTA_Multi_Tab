@@ -29,8 +29,10 @@ public:
 		: m_name(name)
 		, m_circle_count(count)
 		, m_index(1)
+		, m_is_printf_once(false)
 	{
 		begin_time = GetTickCount();
+		pre_time = begin_time;
 	}
 	~TimeEllapse() {}
 
@@ -43,6 +45,11 @@ public:
 			begin_time = GetTickCount();
 			return;
 		}
+		if (m_is_printf_once) {
+			DWORD current = GetTickCount();
+			printf("%s current call  :		%ld     %ld			%d\n", m_name.c_str(), current, pre_time, current - pre_time);
+			pre_time = current;
+		}
 		m_index++;
 	}
 
@@ -51,7 +58,9 @@ private:
 	int m_index;
 	DWORD begin_time;
 	DWORD end_time;
+	DWORD pre_time;
 	std::string m_name; 
+	bool m_is_printf_once;
 };
 
 
