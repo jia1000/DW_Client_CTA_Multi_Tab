@@ -84,6 +84,7 @@ void CWndFrameBase::Notify(TNotifyUI& msg)
 		}
 		else if (_tcscmp(pszCtrlName, _T("btn_dev_tools")) == 0)
 		{
+			// ´ò¿ªdevtools
 			CefWindowInfo windowInfo;
 			windowInfo.SetAsPopup(NULL, L"cef_devtools");
 			CefBrowserSettings settings;

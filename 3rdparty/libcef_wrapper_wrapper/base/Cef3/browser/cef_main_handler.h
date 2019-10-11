@@ -91,6 +91,7 @@ public:
 
 		CefString(&settings.locale).FromString("zh-CN");
 
+		// 打开devtools
 		settings.remote_debugging_port = 8088;//如果不定义，则不能运行调试工具
 		
 		return CefInitialize(args, settings, app, NULL);
