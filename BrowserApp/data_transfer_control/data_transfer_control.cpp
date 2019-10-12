@@ -200,6 +200,7 @@ std::string DataTransferController::GetJsonDataString(Document& doc, std::string
 		str_value = value.GetString();
 		return str_value;
 	}	
+	return str_value;
 }
 
 bool DataTransferController::ParseImageOperationDataUseRapidJson(char* json_data, std::string& js_data)

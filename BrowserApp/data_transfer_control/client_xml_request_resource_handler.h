@@ -49,7 +49,7 @@ public:
 		}
 		if (m_is_printf_once) {
 			DWORD current = GetTickCount();
-			printf("%s current call  :		%ld     %ld			%d\n", m_name.c_str(), current, pre_time, current - pre_time);
+			printf("%s (%3d) current call  :		%ld     %ld			%d\n", m_name.c_str(), m_index, current, pre_time, current - pre_time);
 			pre_time = current;
 		}
 		m_index++;
