@@ -17,16 +17,28 @@ CWidgetsDemoBase::~CWidgetsDemoBase(void)
 void CWidgetsDemoBase::ShowWidgets_Test()
 {
     // Create the RenderWindow, Renderer and both Actors
-    m_renderer        = CreateRenderer();
-    m_renderWindow    = CreateRenderWindow(m_renderer);
-    m_interactor      = CreateInteractor(m_renderWindow);
+	CreateRendererAndRenderWindowAndInteractor();
+
     SetMyInteractorStyle(m_interactor);
     // Create a test pipeline
     CreatePipeline(m_renderer);
     // Create the widget
     AddMyActor(m_interactor);
 
-    StartWidgetsRender(m_renderer, m_renderWindow, m_interactor);
+    StartWidgetsRender();
+}
+
+void CWidgetsDemoBase::CreateRendererAndRenderWindowAndInteractor()
+{
+	m_renderer = vtkSmartPointer<vtkRenderer>::New();
+	m_renderer->SetBackground(0.1, 0.2, 0.4);
+
+	m_renderWindow = vtkSmartPointer< vtkRenderWindow >::New();
+	m_renderWindow->AddRenderer(m_renderer);
+	m_renderWindow->SetWindowName("AnnotationWidget");
+
+	m_interactor = vtkSmartPointer< vtkRenderWindowInteractor >::New();
+	m_interactor->SetRenderWindow(m_renderWindow);
 }
 
 vtkSmartPointer<vtkRenderer> CWidgetsDemoBase::CreateRenderer()

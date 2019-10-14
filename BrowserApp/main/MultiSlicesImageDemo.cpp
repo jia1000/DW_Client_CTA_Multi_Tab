@@ -17,6 +17,8 @@ MultiSlicesImageDemo::MultiSlicesImageDemo(HWND parent, CButtonUI* pVtkShowBtn, 
 
 MultiSlicesImageDemo::~MultiSlicesImageDemo(void)
 {
+	//m_interactor->
+	m_renderWindow->RemoveRenderer(m_renderer);
 }
 
 void MultiSlicesImageDemo::ShowWidgets_Move_Sagitta()
@@ -150,9 +152,7 @@ void MultiSlicesImageDemo::ShowWidgets_Mip_Cornal()
 }
 #define TEST_CTA_RAW  1  // 用于测CTA项目重建崩溃时，验证vtk的PloyData的正确性
 
-void MultiSlicesImageDemo::StartWidgetsRender(vtkSmartPointer<vtkRenderer> renderer, 
-                                              vtkSmartPointer<vtkRenderWindow> renderWindow, 
-                                              vtkSmartPointer<vtkRenderWindowInteractor> interactor)
+void MultiSlicesImageDemo::StartWidgetsRender()
 {
 	//m_v16 = vtkSmartPointer<vtkMetaImageReader>::New();
 	//m_v16->SetDataDimensions(64,64);
@@ -162,17 +162,22 @@ void MultiSlicesImageDemo::StartWidgetsRender(vtkSmartPointer<vtkRenderer> rende
 	//m_v16->SetDataSpacing (3.2, 3.2, 1.5);
 	//m_v16->Update();
 
-	m_v16 = vtkSmartPointer<vtkMetaImageReader>::New();
-	
-	if (m_use_multi_actor) {
-		m_v16->SetFileName("F:\\dev_study\\duilib_study\\Duilib_Demo\\Duilib_Demo\\data\\FullHead.mhd");
-	} else {
-		m_v16->SetFileName("F:\\dev_study\\duilib_study\\Duilib_Demo\\Duilib_Demo\\data\\FullHead.mhd");
-	}
+	//m_v16 = vtkSmartPointer<vtkMetaImageReader>::New();
+	//
+	//if (m_use_multi_actor) {
+	//	m_v16->SetFileName("F:\\dev_study\\duilib_study\\Duilib_Demo\\Duilib_Demo\\data\\FullHead.mhd");
+	//} else {
+	//	m_v16->SetFileName("F:\\dev_study\\duilib_study\\Duilib_Demo\\Duilib_Demo\\data\\FullHead.mhd");
+	//}
+	//m_v16->Update();
+			
+	m_v16 = vtkSmartPointer<vtkDICOMImageReader>::New();
+	m_v16->SetDirectoryName("..\\bin\\release\\Skin\\data\\slices1");
 	m_v16->Update();
 
 	int *data_extent;
 	data_extent = m_v16->GetDataExtent();
+
 
 	for (int Index = 0; Index < 6 ; Index++) {
 		m_data_extent[Index] = data_extent[Index];
@@ -223,16 +228,16 @@ void MultiSlicesImageDemo::StartWidgetsRender(vtkSmartPointer<vtkRenderer> rende
 	aCamera->Elevation(30.0);
 
 	if (m_use_multi_actor) {
-		renderer->AddActor(outline);
-		renderer->AddActor(sagittal);
-		renderer->AddActor(axial);
-		renderer->AddActor(coronal);	
-		renderer->AddActor(bone);
+		m_renderer->AddActor(outline);
+		m_renderer->AddActor(sagittal);
+		m_renderer->AddActor(axial);
+		m_renderer->AddActor(coronal);	
+		m_renderer->AddActor(bone);
 	} else {
 	}
 
 	
-	renderer->AddActor(skin);
+	m_renderer->AddActor(skin);
 	// Turn off bone for this example.
 	//bone->VisibilityOff();
 
@@ -241,20 +246,20 @@ void MultiSlicesImageDemo::StartWidgetsRender(vtkSmartPointer<vtkRenderer> rende
 
 	// An initial camera view is created.  The Dolly() method moves
 	// the camera towards the FocalPoint, thereby enlarging the image.
-	renderer->SetActiveCamera(aCamera);
+	m_renderer->SetActiveCamera(aCamera);
 
 	//////////////////////////////////////////////////////////////////////////
     //renderWindow->SetSize(600, 600);
 	ResizeAndPosition();
 
-	renderer->ResetCamera ();
+	m_renderer->ResetCamera ();
 	aCamera->Dolly(1.5);
 
-	renderer->ResetCameraClippingRange ();
+	m_renderer->ResetCameraClippingRange ();
 
-    interactor->Initialize();
-    renderWindow->Render();
-    interactor->Start();
+    m_interactor->Initialize();
+    m_renderWindow->Render();
+    m_interactor->Start();
 }
 
 void MultiSlicesImageDemo::SetMyInteractorStyle(vtkSmartPointer<vtkRenderWindowInteractor> interactor)
@@ -273,12 +278,14 @@ void MultiSlicesImageDemo::AddMyActor(vtkSmartPointer<vtkRenderWindowInteractor>
 
 }
 
-void MultiSlicesImageDemo::SetSkinActor(vtkSmartPointer<vtkMetaImageReader> v16)
+void MultiSlicesImageDemo::SetSkinActor(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
+	vtkSmartPointer<vtkDICOMImageReader> reader = vtkSmartPointer<vtkDICOMImageReader>::New();
+
 	// Contour 轮廓、等高线
 	vtkSmartPointer<vtkContourFilter> skinExtractor =
 		vtkSmartPointer<vtkContourFilter>::New();
-	skinExtractor->SetInputConnection( v16->GetOutputPort());
+	skinExtractor->SetInputConnection( reader->GetOutputPort());
 	skinExtractor->SetValue(0, 500);
 	//skinExtractor->Update();
 
@@ -308,7 +315,7 @@ void MultiSlicesImageDemo::SetSkinActor(vtkSmartPointer<vtkMetaImageReader> v16)
 	skin->GetProperty()->SetSpecularPower(20);
 }
 
-void MultiSlicesImageDemo::SetBoneActor(vtkSmartPointer<vtkMetaImageReader> v16)
+void MultiSlicesImageDemo::SetBoneActor(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
 	vtkSmartPointer<vtkContourFilter> boneExtractor =
 		vtkSmartPointer<vtkContourFilter>::New();
@@ -334,7 +341,7 @@ void MultiSlicesImageDemo::SetBoneActor(vtkSmartPointer<vtkMetaImageReader> v16)
 	bone->GetProperty()->SetDiffuseColor(1, 1, .9412);
 }
 
-void MultiSlicesImageDemo::SetOutlineActor(vtkSmartPointer<vtkMetaImageReader> v16)
+void MultiSlicesImageDemo::SetOutlineActor(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
 	vtkSmartPointer<vtkOutlineFilter> outlineData =
 		vtkSmartPointer<vtkOutlineFilter>::New();
@@ -350,7 +357,7 @@ void MultiSlicesImageDemo::SetOutlineActor(vtkSmartPointer<vtkMetaImageReader> v
 	outline->GetProperty()->SetColor(0,0,0);
 }
 
-void MultiSlicesImageDemo::SetSagittalActor(vtkSmartPointer<vtkMetaImageReader> v16, vtkSmartPointer<vtkLookupTable> lut)
+void MultiSlicesImageDemo::SetSagittalActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut)
 {
 	vtkSmartPointer<vtkImageMapToColors> sagittalColors = vtkSmartPointer<vtkImageMapToColors>::New();
 	sagittalColors->SetInputConnection(v16->GetOutputPort());
@@ -367,7 +374,7 @@ void MultiSlicesImageDemo::SetSagittalActor(vtkSmartPointer<vtkMetaImageReader> 
 
 }
 
-void MultiSlicesImageDemo::SetAxialActor(vtkSmartPointer<vtkMetaImageReader> v16, vtkSmartPointer<vtkLookupTable> lut)
+void MultiSlicesImageDemo::SetAxialActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut)
 {
 	vtkSmartPointer<vtkImageMapToColors> axialColors = vtkSmartPointer<vtkImageMapToColors>::New();
 	axialColors->SetInputConnection(v16->GetOutputPort());
@@ -384,7 +391,7 @@ void MultiSlicesImageDemo::SetAxialActor(vtkSmartPointer<vtkMetaImageReader> v16
 	
 }
 
-void MultiSlicesImageDemo::SetCoronalActor(vtkSmartPointer<vtkMetaImageReader> v16, vtkSmartPointer<vtkLookupTable> lut)
+void MultiSlicesImageDemo::SetCoronalActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut)
 {
 	vtkSmartPointer<vtkImageMapToColors> coronalColors =	vtkSmartPointer<vtkImageMapToColors>::New();
 	coronalColors->SetInputConnection(v16->GetOutputPort());

@@ -10,19 +10,17 @@ public:
 
     void SetMyInteractorStyle(vtkSmartPointer<vtkRenderWindowInteractor> interactor);
 
-    virtual void StartWidgetsRender(vtkSmartPointer<vtkRenderer> renderer, 
-        vtkSmartPointer<vtkRenderWindow> renderWindow, 
-        vtkSmartPointer<vtkRenderWindowInteractor> interactor);
+    virtual void StartWidgetsRender();
     virtual void CreatePipeline(vtkSmartPointer<vtkRenderer> renderer);
     virtual void AddMyActor(vtkSmartPointer<vtkRenderWindowInteractor> interactor);
 
-	void SetSkinActor(vtkSmartPointer<vtkMetaImageReader> v16);
-	void SetBoneActor(vtkSmartPointer<vtkMetaImageReader> v16);
-	void SetOutlineActor(vtkSmartPointer<vtkMetaImageReader> v16);
+	void SetSkinActor(vtkSmartPointer<vtkDICOMImageReader> v16);
+	void SetBoneActor(vtkSmartPointer<vtkDICOMImageReader> v16);
+	void SetOutlineActor(vtkSmartPointer<vtkDICOMImageReader> v16);
 
-	void SetSagittalActor(vtkSmartPointer<vtkMetaImageReader> v16, vtkSmartPointer<vtkLookupTable> lut);
-	void SetAxialActor(vtkSmartPointer<vtkMetaImageReader> v16, vtkSmartPointer<vtkLookupTable> lut);
-	void SetCoronalActor(vtkSmartPointer<vtkMetaImageReader> v16, vtkSmartPointer<vtkLookupTable> lut);
+	void SetSagittalActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut);
+	void SetAxialActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut);
+	void SetCoronalActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut);
 
 	void ShowWidgets_Move_Sagitta();
 	void ShowWidgets_Move_Cornal();
@@ -38,7 +36,8 @@ public:
 private:
     vtkSmartPointer<vtkTextWidget> textWidget;
 
-	vtkSmartPointer<vtkMetaImageReader> m_v16;
+	vtkSmartPointer<vtkDICOMImageReader> m_v16;
+
 	//vtkSmartPointer<vtkMetaImageReader> m_v16;
 	vtkSmartPointer<vtkLookupTable> m_bwLut;
 	vtkSmartPointer<vtkLookupTable> m_hueLut;

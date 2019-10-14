@@ -11,11 +11,28 @@ CEntryFrameWnd::CEntryFrameWnd(void)
 	dicom_viewxy = NULL;
 	dicom_viewyz = NULL;
 	dicom_viewxz = NULL;
+	box_widgets  = NULL;
 }
 
 CEntryFrameWnd::~CEntryFrameWnd(void)
 {
-	PostQuitMessage(0);
+	if (dicom_viewxy) {
+		delete dicom_viewxy;
+		dicom_viewxy = NULL;
+	}
+	if (dicom_viewyz) {
+		delete dicom_viewyz;
+		dicom_viewyz = NULL;
+	}
+	if (dicom_viewxz) {
+		delete dicom_viewxz;
+		dicom_viewxz = NULL;
+	}
+	if (box_widgets) {
+		delete box_widgets;
+		box_widgets = NULL;
+	}
+	//PostQuitMessage(0);	
 }
 
 LPCTSTR CEntryFrameWnd::GetWindowClassName() const 
@@ -26,7 +43,7 @@ LPCTSTR CEntryFrameWnd::GetWindowClassName() const
 void CEntryFrameWnd::OnFinalMessage(HWND hWnd)
 {
 	WindowImplBase::OnFinalMessage(hWnd);
-	//delete this; 
+	delete this; 
 }
 
 void CEntryFrameWnd::InitWindow()

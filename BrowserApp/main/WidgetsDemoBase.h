@@ -9,15 +9,14 @@ public:
 
     void ShowWidgets_Test();
 
+	virtual void CreateRendererAndRenderWindowAndInteractor();
     virtual vtkSmartPointer<vtkRenderer> CreateRenderer();
     virtual vtkSmartPointer<vtkRenderWindow> CreateRenderWindow(vtkSmartPointer<vtkRenderer> renderer);
     virtual vtkSmartPointer<vtkRenderWindowInteractor> CreateInteractor(vtkSmartPointer<vtkRenderWindow> renderWindow);
     virtual void SetMyInteractorStyle(vtkSmartPointer<vtkRenderWindowInteractor> interactor) { }
     virtual void CreatePipeline(vtkSmartPointer<vtkRenderer> renderer) { }
     virtual void AddMyActor(vtkSmartPointer<vtkRenderWindowInteractor> interactor) { }
-    virtual void StartWidgetsRender(vtkSmartPointer<vtkRenderer> renderer, 
-        vtkSmartPointer<vtkRenderWindow> renderWindow, 
-        vtkSmartPointer<vtkRenderWindowInteractor> interactor) { }
+    virtual void StartWidgetsRender() { }
 
 	void ResizeAndPosition();
 
