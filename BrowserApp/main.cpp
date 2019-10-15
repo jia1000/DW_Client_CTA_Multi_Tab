@@ -72,13 +72,13 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 #endif
 
 
-#if _DEBUG
+//#if _DEBUG
 	if (processType == ClientApp::ProcessType::BrowserProcess){
 		AllocConsole();
 		freopen("CONOUT$", "w+t", stdout);
 		printf("test console\n");
 	}
-#endif
+//#endif
 	// ------------------CEF≥ı ºªØ------------------
 	CCefMainHandler CefMainHandler;
 	if (!CefMainHandler.Initialize(hInstance, FALSE))
