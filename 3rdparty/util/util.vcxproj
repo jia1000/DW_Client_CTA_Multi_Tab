@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClInclude Include="Configurations.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="md5.h" />
     <ClInclude Include="MiniDump.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="stdafx.h" />
@@ -92,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Configurations.cpp" />
+    <ClCompile Include="md5.cpp" />
     <ClCompile Include="MiniDump.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

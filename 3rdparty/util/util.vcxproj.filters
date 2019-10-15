@@ -8,10 +8,12 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StringUtil.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="md5.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Configurations.cpp" />
     <ClCompile Include="MiniDump.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="md5.cpp" />
   </ItemGroup>
 </Project>
