@@ -2,6 +2,7 @@
 
 #include "WndSimpleFrame.h"
 #include "EntryFrameWnd.h"
+#include "EntryFrameWnd2.h"
 #include "BrowserWndManager.h"
 
 //DUI_BEGIN_MESSAGE_MAP(CWndSimpleFrame, WindowImplBase)
@@ -17,8 +18,8 @@ CWndSimpleFrame::CWndSimpleFrame(const wstring& url)
 	//m_pBrowserUI2 = new CCefBrowserUI(this, L"http://127.0.0.1:8080/cta_multi.html"); 
 	// 和web端联调时，测试网址  
 	//m_pBrowserUI2 = new CCefBrowserUI(this, L"http://172.16.11.134:8080/home"); // huyong pc
-	//m_pBrowserUI2 = new CCefBrowserUI(this, L"http://172.16.100.29:8080/home"); 
-	m_pBrowserUI2 = new CCefBrowserUI(this, L"http://172.16.30.167:8080/home"); // duandongyi pc
+	m_pBrowserUI2 = new CCefBrowserUI(this, L"http://172.16.100.29:8080/home"); 
+	//m_pBrowserUI2 = new CCefBrowserUI(this, L"http://172.16.30.167:8080/home"); // duandongyi pc
 
 }
 
@@ -84,6 +85,12 @@ void CWndSimpleFrame::OnSelChanged(CControlUI* pSender)
 		m_EntryFrameWnd->Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, 0L);
 		m_EntryFrameWnd->CenterWindow();
 		m_EntryFrameWnd->ShowWindow(true);
+	} else if (strSelName == _T("option_restruct2")) {		
+		pTabTest->SelectItem(2);
+		m_EntryFrameWnd2 = new CEntryFrameWnd2();		
+		m_EntryFrameWnd2->Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, 0L);
+		m_EntryFrameWnd2->CenterWindow();
+		m_EntryFrameWnd2->ShowWindow(true);
 	}
 }
 

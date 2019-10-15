@@ -68,6 +68,8 @@
 				<Option name="option_review2" text="阅片2" width="120"  group="tabDemo"  textcolor="#FF454545" hottextcolor="#FF111111" bordersize="1" bordercolor="#FF969696" borderround="1" selectedbkcolor="#FF272B2E" selectedtextcolor="#FFA7A6AA"/>
 				<Control width="2"/>
 				<Option name="option_restruct" text="重建 " width="120" group="tabDemo"  textcolor="#FF454545" hottextcolor="#FF111111" bordersize="1" bordercolor="#FF969696" borderround="1" selectedbkcolor="#FF272B2E" selectedtextcolor="#FFA7A6AA"/>				
+				<Control width="2"/>
+				<Option name="option_restruct2" text="重建2 " width="120" group="tabDemo"  textcolor="#FF454545" hottextcolor="#FF111111" bordersize="1" bordercolor="#FF969696" borderround="1" selectedbkcolor="#FF272B2E" selectedtextcolor="#FFA7A6AA"/>				
 			</HorizontalLayout>
 			<TabLayout name="tabTest" bkcolor="#FFF9FBFC" selectedid="-1">
 				<HorizontalLayout>

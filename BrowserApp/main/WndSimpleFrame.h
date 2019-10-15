@@ -11,6 +11,7 @@
 #include "WndFrameBase.h"
 
 class CEntryFrameWnd;
+class CEntryFrameWnd2;
 
 class CWndSimpleFrame
 	: public CWndFrameBase
@@ -33,6 +34,8 @@ public:
 
 private:
 	CEntryFrameWnd* m_EntryFrameWnd;
+	CEntryFrameWnd2* m_EntryFrameWnd2;
+
 };
 
 	

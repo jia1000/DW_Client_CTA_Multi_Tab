@@ -199,7 +199,9 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
     <ClInclude Include="global_include.h" />
     <ClInclude Include="main\CefBrowserClientFrameWnd.h" />
     <ClInclude Include="main\EntryFrameWnd.h" />
+    <ClInclude Include="main\EntryFrameWnd2.h" />
     <ClInclude Include="main\MultiSlicesImageDemo.h" />
+    <ClInclude Include="main\MultiSlicesImageDemoSameSource.h" />
     <ClInclude Include="main\vtk_dicom_demo\DicomView.h" />
     <ClInclude Include="main\WidgetsDemoBase.h" />
     <ClInclude Include="main\WndFrameBase.h" />
@@ -222,7 +224,9 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
     <ClCompile Include="main\BrowserWndManager.cpp" />
     <ClCompile Include="main\CefBrowserClientFrameWnd.cpp" />
     <ClCompile Include="main\EntryFrameWnd.cpp" />
+    <ClCompile Include="main\EntryFrameWnd2.cpp" />
     <ClCompile Include="main\MultiSlicesImageDemo.cpp" />
+    <ClCompile Include="main\MultiSlicesImageDemoSameSource.cpp" />
     <ClCompile Include="main\vtk_dicom_demo\DicomView.cpp" />
     <ClCompile Include="main\WidgetsDemoBase.cpp" />
     <ClCompile Include="main\WndFrameBase.cpp" />
