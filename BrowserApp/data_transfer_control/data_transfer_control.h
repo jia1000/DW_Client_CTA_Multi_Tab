@@ -47,9 +47,9 @@ public:
 	// 直接读取dcm文件，和web端联调
 	bool ParseDcmOperationData(char* json_data, std::string& js_data);
 	// 和web端联调时，web传入文件流，客户端写入保存
-	bool ParseWriteFileOperationData(char* json_data, unsigned int length, std::vector<std::string>& vec_url_elements, std::string& js_data);
+	bool ParseWriteFileOperationData(char* json_data, unsigned int length, std::vector<std::string>& vec_url_elements, std::string url, std::string& js_data);
 	// 和web端联调时，web请求，客户端读取保存，传给web
-	bool ParseReadFileOperationData(char* json_data, std::vector<std::string>& vec_url_elements, std::string& js_data);
+	bool ParseReadFileOperationData(char* json_data, std::vector<std::string>& vec_url_elements, std::string url, std::string& js_data);
 	// 和web端联调时，web请求，客户端清除内存
 	bool ParseClearFilesOperationData(char* json_data, std::vector<std::string>& vec_url_elements, std::string& js_data);
 

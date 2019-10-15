@@ -10,7 +10,7 @@
 #include <io.h>
 #include <chrono>
 
-
+#include "util/md5.h"
 
 DataTransferController* DataTransferController::instance = nullptr;
 
@@ -126,7 +126,10 @@ bool DataTransferController::ParseDcmOperationData(char* json_data, std::string&
 }
 
 // 和web端联调时，web传入文件流，客户端写入保存
-bool DataTransferController::ParseWriteFileOperationData(char* json_data, unsigned int length, std::vector<std::string>& vec_url_elements, std::string& js_data)
+bool DataTransferController::ParseWriteFileOperationData(
+	char* json_data, unsigned int length, 
+    std::vector<std::string>& vec_url_elements, std::string url, 
+	std::string& js_data)
 {
 	if(image_process) {
 		delete image_process;
@@ -140,7 +143,29 @@ bool DataTransferController::ParseWriteFileOperationData(char* json_data, unsign
 		return false;
 	}
 
-	path += vec_url_elements[3];
+	int len = std::string("http://image_controller/write_file/").length();
+	std::string file_name = url.substr(len);
+	printf("write---url payload : %s\n", file_name.c_str());
+	MD5 md5(file_name);
+	std::string file_name_md5 = md5.toString();
+	printf("write---file_name_md5 : %s\n", file_name_md5.c_str());
+
+#if _DEBUG
+	std::string file_key_value = path + "file_key_log.csv";
+	{
+		FILE* fp = fopen(file_key_value.c_str(), "wa");
+		if (fp) {
+			fprintf(fp, "%s,%s\n", file_name_md5.c_str(), file_name.c_str());
+			fclose(fp);
+		}
+
+	}
+#endif
+
+	//std::string decode_str = md5.
+	//path += vec_url_elements[3];
+	path += file_name_md5;
+
 	FILE* fp = fopen(path.c_str(), "wb");
 	if (fp) {
 		//fprintf(fp, "%s", json_data);
@@ -153,7 +178,9 @@ bool DataTransferController::ParseWriteFileOperationData(char* json_data, unsign
 	return true;
 }
 // 和web端联调时，web请求，客户端读取保存，传给web
-bool DataTransferController::ParseReadFileOperationData(char* json_data, std::vector<std::string>& vec_url_elements, std::string& js_data)
+bool DataTransferController::ParseReadFileOperationData(
+	char* json_data, std::vector<std::string>& vec_url_elements, 
+	std::string url, std::string& js_data)
 {
 	if(image_process) {
 		delete image_process;
@@ -166,12 +193,22 @@ bool DataTransferController::ParseReadFileOperationData(char* json_data, std::ve
 	}
 
 	// web传入的read_file的索引会带有时间戳,需要裁切掉
-	std::vector<std::string> v = SplitString(vec_url_elements[3], "&");
-	if (v.size() == 0) {
-		return false;
-	}
+	//std::vector<std::string> v = SplitString(vec_url_elements[3], "&");
+	//if (v.size() == 0) {
+	//	return false;
+	//}
+	//image_process->SetFileName(v[0]);
 
-	image_process->SetFileName(v[0]);
+	int len = std::string("http://image_controller/read_file/").length();
+	std::string file_name = url.substr(len);
+	printf("read---url payload : %s\n", file_name.c_str());
+
+	MD5 md5(file_name);
+	std::string file_name_md5 = md5.toString();
+	printf("read---file_name_md5 : %s\n", file_name_md5.c_str());
+
+	image_process->SetFileName(file_name_md5);
+
 	image_process->Excute(js_data);
 
 	return true;

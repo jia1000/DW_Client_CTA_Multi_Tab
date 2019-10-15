@@ -29,7 +29,7 @@ public:
 		: m_name(name)
 		, m_circle_count(count)
 		, m_index(1)
-		, m_is_printf_once(true)
+		, m_is_printf_once(false)
 	{
 		begin_time = GetTickCount();
 		pre_time = begin_time;
@@ -113,7 +113,7 @@ public:
 						std::string file_index = vec_url_elements[3];
 						static TimeEllapse ellapse("read_file");
 						if (!DataTransferController::GetInstance()->ParseReadFileOperationData(
-							&arraybuffer, vec_url_elements, data_)) {
+							&arraybuffer, vec_url_elements, url, data_)) {
 								//return false;
 						}
 						ellapse.Ellapse();
@@ -194,7 +194,7 @@ public:
 		data->GetBytes(length, arraybuffer);
 
 		if (DataTransferController::GetInstance()->ParseWriteFileOperationData(
-			arraybuffer, length, vec_url_elements, resource_data)) {
+			arraybuffer, length, vec_url_elements, url, resource_data)) {
 				delete [] arraybuffer;
 				arraybuffer = NULL;
 				return true;

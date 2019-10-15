@@ -733,14 +733,14 @@ bool ImageReadDcmProcess::Excute(std::string& out_image_data)
 
 	DWORD start_time = GetTickCount();
 	// do sth.
-	std::string path = "C:\\ztest2\\web_test_dcm\\";
+	std::string path = "C:\\ztest2\\save_file\\";
 	//std::string path = "C:\\ztest2\\dcm\\";
 	
-	//path += m_file_name;
+	path += m_file_name;
 
-	int get_type = 0;
-	std::string file_name[] = {"0.2M.dcm", "0.5M.dcm", "1.7M.dcm", "12M.dcm", "25M.dcm"};
-	path += file_name[get_type];
+	//int get_type = 0;
+	//std::string file_name[] = {"0.2M.dcm", "0.5M.dcm", "1.7M.dcm", "12M.dcm", "25M.dcm"};
+	//path += file_name[get_type];
 	
 
 	// ¶ÁÈ¡dcmÎÄ¼þ
