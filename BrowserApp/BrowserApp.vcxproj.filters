@@ -106,6 +106,9 @@
     <ClInclude Include="main\MultiSlicesImageDemoSameSource.h">
       <Filter>main</Filter>
     </ClInclude>
+    <ClInclude Include="main\EntryFrameWnd3.h">
+      <Filter>main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\WndSimpleFrame.cpp">
@@ -164,6 +167,9 @@
       <Filter>main</Filter>
     </ClCompile>
     <ClCompile Include="main\MultiSlicesImageDemoSameSource.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="main\EntryFrameWnd3.cpp">
       <Filter>main</Filter>
     </ClCompile>
   </ItemGroup>
