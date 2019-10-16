@@ -99,34 +99,35 @@ void myInteractorStyle::Dolly()
 
 void    myInteractorStyle::CameraSynchronous()
 {
-	vtkCamera *leftCamera = m_leftRender->GetActiveCamera();
-	vtkCamera *rightCamera = m_rightRender->GetActiveCamera();
+    // 去掉2个窗口的联动。随后会做3个窗口的联动
+	//vtkCamera *leftCamera = m_leftRender->GetActiveCamera();
+	//vtkCamera *rightCamera = m_rightRender->GetActiveCamera();
 
-	//获取窗口大小
-	int *winSize = this->GetInteractor()->GetRenderWindow()->GetSize();
+	////获取窗口大小
+	//int *winSize = this->GetInteractor()->GetRenderWindow()->GetSize();
 
-	//获取事件窗口位置
-	int eventStation[3];
-	this->GetInteractor()->GetEventPosition(eventStation);
+	////获取事件窗口位置
+	//int eventStation[3];
+	//this->GetInteractor()->GetEventPosition(eventStation);
 
-	if (eventStation[0] < winSize[0] / 2)
-	{
-		rightCamera->SetPosition(leftCamera->GetPosition());
-		rightCamera->SetFocalPoint(leftCamera->GetFocalPoint());
-		rightCamera->SetViewUp(leftCamera->GetViewUp());
-		m_rightRender->ResetCameraClippingRange();
+	//if (eventStation[0] < winSize[0] / 2)
+	//{
+	//	rightCamera->SetPosition(leftCamera->GetPosition());
+	//	rightCamera->SetFocalPoint(leftCamera->GetFocalPoint());
+	//	rightCamera->SetViewUp(leftCamera->GetViewUp());
+	//	m_rightRender->ResetCameraClippingRange();
 
-	}
-	else
-	{
-		leftCamera->SetPosition(rightCamera->GetPosition());
-		leftCamera->SetViewUp(rightCamera->GetViewUp());
-		leftCamera->SetFocalPoint(rightCamera->GetFocalPoint());
-		m_leftRender->ResetCameraClippingRange();
+	//}
+	//else
+	//{
+	//	leftCamera->SetPosition(rightCamera->GetPosition());
+	//	leftCamera->SetViewUp(rightCamera->GetViewUp());
+	//	leftCamera->SetFocalPoint(rightCamera->GetFocalPoint());
+	//	m_leftRender->ResetCameraClippingRange();
 
-	}
+	//}
 
-	this->GetInteractor()->GetRenderWindow()->Render();
+	//this->GetInteractor()->GetRenderWindow()->Render();
 }
 #endif
 //////////////////////////////////////////////////////////////////////////
@@ -218,6 +219,10 @@ void MultiSlicesImageDemoSameSource::StartWidgetsRender()
 	m_satLut->SetValueRange (0, 1);
 	m_satLut->Build();
 
+    SetSagittalActorNormal(m_v16);
+    SetAxialActorNormal(m_v16);
+    SetCoronalActorNormal(m_v16);
+
 	SetSkinActor(m_v16);
 	SetBoneActor(m_v16);
 	SetOutlineActor(m_v16);
@@ -225,43 +230,49 @@ void MultiSlicesImageDemoSameSource::StartWidgetsRender()
 	SetSagittalActor(m_v16, m_bwLut);
 	SetAxialActor(m_v16, m_hueLut);
 	SetCoronalActor(m_v16, m_satLut);
+    
+    ResizeAndPosition();
 
-	m_renderer->AddActor(sagittal); 
+    // 横状面  -- CT的切层 
+	m_renderer->AddActor(axial_normal);
 	vtkCamera* cam1 = m_renderer->GetActiveCamera();
 	cam1->SetFocalPoint(0,0,0);
-	cam1->SetPosition(0, -1, 0);
-	cam1->SetViewUp(0,0,1);
-	//m_renderer->ResetCamera();
-	m_renderer->DrawOn();
+	cam1->SetPosition(0, 0, 1);
+	cam1->SetViewUp(0,1, 0);
+	m_renderer->ResetCamera();
+    m_renderer->DrawOn();
 	m_renderer->SetViewport(leftViewStation);
 
-	ResizeAndPosition();
-
-	m_renderer2->AddActor(axial); 
+	
+    // 冠状面  -- 人的正面
+	m_renderer2->AddActor(coronal_normal);
 	vtkCamera* cam2 = m_renderer2->GetActiveCamera();
-	cam2->SetFocalPoint(0,0,0);
-	cam2->SetPosition(0,0,1);
-	cam2->SetViewUp(0,1,0);//m_renderer2->ResetCamera();
-	m_renderer2->DrawOn();
+    cam2->SetFocalPoint(0, 0, 0);
+    cam2->SetPosition(0, -1, 0);
+    cam2->SetViewUp(0, 0, -1);	
+    m_renderer2->ResetCamera();
+    m_renderer2->DrawOn();
 	m_renderer2->SetViewport(rightViewStation);
 
-	m_renderer3->AddActor(coronal);  
+
+    // 矢状面  -- 人的侧面
+	m_renderer3->AddActor(sagittal_normal);
 	vtkCamera* cam3 = m_renderer3->GetActiveCamera();
-	cam3->SetFocalPoint(0,0,0);
-	cam3->SetPosition(1,0,0);
-	cam3->SetViewUp(0,0,1);
-	//m_renderer3->ResetCamera();
-	m_renderer3->DrawOn();
+    cam3->SetFocalPoint(0, 0, 0);
+    cam3->SetPosition(-1, 0, 0);
+    cam3->SetViewUp(0, 0, 1);
+    m_renderer3->ResetCamera();
+    m_renderer3->DrawOn();
 	m_renderer3->SetViewport(leftdownViewStation);
 
+
+    // 三维图像
 	m_renderer4->AddActor(skin);  
 	m_renderer4->AddActor(bone);
 	m_renderer4->AddActor(outline);
-	//m_renderer4->AddActor(sagittal);
-	//m_renderer4->AddActor(axial);
-	//m_renderer4->AddActor(coronal);
-
-	//m_renderer4->ResetCamera();
+	m_renderer4->AddActor(sagittal);
+	m_renderer4->AddActor(axial);
+	m_renderer4->AddActor(coronal);
 	m_renderer4->DrawOn();
 	m_renderer4->SetViewport(rightdownViewStation);
 
@@ -283,32 +294,63 @@ void MultiSlicesImageDemoSameSource::AddMyActor(vtkSmartPointer<vtkRenderWindowI
 
 }
 
+void MultiSlicesImageDemoSameSource::SetSagittalActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
+{
+    vtkSmartPointer<vtkImageMapToColors> sagittalColors = vtkSmartPointer<vtkImageMapToColors>::New();
+    sagittalColors->SetInputConnection(v16->GetOutputPort());
+    
+    sagittal_normal = vtkSmartPointer<vtkImageActor>::New();
+    sagittal_normal->GetMapper()->SetInputConnection(sagittalColors->GetOutputPort());
+    int adv = m_data_extent[1] - m_data_extent[0] + 1;
+    m_cur_sagitta_normal = adv / 2;
+    // 设置显示3D切层的位置
+    sagittal_normal->SetDisplayExtent(m_cur_sagitta_normal, m_cur_sagitta_normal, m_data_extent[2], m_data_extent[3], m_data_extent[4], m_data_extent[5]);
+
+}
+void MultiSlicesImageDemoSameSource::SetAxialActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
+{
+    vtkSmartPointer<vtkImageMapToColors> axialColors = vtkSmartPointer<vtkImageMapToColors>::New();
+    axialColors->SetInputConnection(v16->GetOutputPort());
+    
+    axial_normal = vtkSmartPointer<vtkImageActor>::New();
+    axial_normal->GetMapper()->SetInputConnection(axialColors->GetOutputPort());
+    int adv = m_data_extent[5] - m_data_extent[4] + 1;
+    m_cur_axial_normal = adv / 2;
+    // 设置显示3D切层的位置
+    axial_normal->SetDisplayExtent(m_data_extent[0], m_data_extent[1], m_data_extent[2], m_data_extent[3], m_cur_axial_normal, m_cur_axial_normal);
+
+}
+void MultiSlicesImageDemoSameSource::SetCoronalActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
+{
+    vtkSmartPointer<vtkImageMapToColors> coronalColors = vtkSmartPointer<vtkImageMapToColors>::New();
+    coronalColors->SetInputConnection(v16->GetOutputPort());
+    
+    coronal_normal = vtkSmartPointer<vtkImageActor>::New();
+    coronal_normal->GetMapper()->SetInputConnection(coronalColors->GetOutputPort());
+    int adv = m_data_extent[3] - m_data_extent[2] + 1;
+    m_cur_cornal_normal = adv / 2;
+    // 设置显示3D切层的位置
+    coronal_normal->SetDisplayExtent(m_data_extent[0], m_data_extent[1], m_cur_cornal_normal, m_cur_cornal_normal, m_data_extent[4], m_data_extent[5]);
+
+}
 void MultiSlicesImageDemoSameSource::SetSkinActor(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
-	//vtkSmartPointer<vtkDICOMImageReader> reader = vtkSmartPointer<vtkDICOMImageReader>::New();
-
 	// Contour 轮廓、等高线
-	vtkSmartPointer<vtkContourFilter> skinExtractor =
-		vtkSmartPointer<vtkContourFilter>::New();
+	vtkSmartPointer<vtkContourFilter> skinExtractor = vtkSmartPointer<vtkContourFilter>::New();
 	skinExtractor->SetInputConnection( v16->GetOutputPort());
 	skinExtractor->SetValue(0, 500);
-	//skinExtractor->Update();
-
+	
 	// Poly Data 多边形数据
-	vtkSmartPointer<vtkPolyDataNormals> skinNormals =
-		vtkSmartPointer<vtkPolyDataNormals>::New();
+	vtkSmartPointer<vtkPolyDataNormals> skinNormals = vtkSmartPointer<vtkPolyDataNormals>::New();
 	skinNormals->SetInputConnection(skinExtractor->GetOutputPort());
 	skinNormals->SetFeatureAngle(60.0);
-	//skinNormals->Update();
-
+	
 	// stripper 剥离器
-	vtkSmartPointer<vtkStripper> skinStripper =
-		vtkSmartPointer<vtkStripper>::New();
+	vtkSmartPointer<vtkStripper> skinStripper =	vtkSmartPointer<vtkStripper>::New();
 	skinStripper->SetInputConnection(skinNormals->GetOutputPort());
 	//skinStripper->Update();
 
-	vtkSmartPointer<vtkPolyDataMapper> skinMapper =
-		vtkSmartPointer<vtkPolyDataMapper>::New();
+	vtkSmartPointer<vtkPolyDataMapper> skinMapper =	vtkSmartPointer<vtkPolyDataMapper>::New();
 	skinMapper->SetInputConnection(skinStripper->GetOutputPort());
 	// scalar标量、梯状、分等级
 	skinMapper->ScalarVisibilityOff();
@@ -322,22 +364,18 @@ void MultiSlicesImageDemoSameSource::SetSkinActor(vtkSmartPointer<vtkDICOMImageR
 
 void MultiSlicesImageDemoSameSource::SetBoneActor(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
-	vtkSmartPointer<vtkContourFilter> boneExtractor =
-		vtkSmartPointer<vtkContourFilter>::New();
+	vtkSmartPointer<vtkContourFilter> boneExtractor = vtkSmartPointer<vtkContourFilter>::New();
 	boneExtractor->SetInputConnection(v16->GetOutputPort());
 	boneExtractor->SetValue(0, 1150);
 
-	vtkSmartPointer<vtkPolyDataNormals> boneNormals =
-		vtkSmartPointer<vtkPolyDataNormals>::New();
+	vtkSmartPointer<vtkPolyDataNormals> boneNormals = vtkSmartPointer<vtkPolyDataNormals>::New();
 	boneNormals->SetInputConnection(boneExtractor->GetOutputPort());
 	boneNormals->SetFeatureAngle(60.0);
 
-	vtkSmartPointer<vtkStripper> boneStripper =
-		vtkSmartPointer<vtkStripper>::New();
+	vtkSmartPointer<vtkStripper> boneStripper =	vtkSmartPointer<vtkStripper>::New();
 	boneStripper->SetInputConnection(boneNormals->GetOutputPort());
 
-	vtkSmartPointer<vtkPolyDataMapper> boneMapper =
-		vtkSmartPointer<vtkPolyDataMapper>::New();
+	vtkSmartPointer<vtkPolyDataMapper> boneMapper =	vtkSmartPointer<vtkPolyDataMapper>::New();
 	boneMapper->SetInputConnection(boneStripper->GetOutputPort());
 	boneMapper->ScalarVisibilityOff();
 
@@ -348,13 +386,10 @@ void MultiSlicesImageDemoSameSource::SetBoneActor(vtkSmartPointer<vtkDICOMImageR
 
 void MultiSlicesImageDemoSameSource::SetOutlineActor(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
-	vtkSmartPointer<vtkOutlineFilter> outlineData =
-		vtkSmartPointer<vtkOutlineFilter>::New();
+	vtkSmartPointer<vtkOutlineFilter> outlineData =	vtkSmartPointer<vtkOutlineFilter>::New();
 	outlineData->SetInputConnection(v16->GetOutputPort());
-	//outlineData->Update();
-
-	vtkSmartPointer<vtkPolyDataMapper> mapOutline =
-		vtkSmartPointer<vtkPolyDataMapper>::New();
+	
+	vtkSmartPointer<vtkPolyDataMapper> mapOutline =	vtkSmartPointer<vtkPolyDataMapper>::New();
 	mapOutline->SetInputConnection(outlineData->GetOutputPort());
 
 	outline = vtkSmartPointer<vtkActor>::New();
@@ -367,16 +402,13 @@ void MultiSlicesImageDemoSameSource::SetSagittalActor(vtkSmartPointer<vtkDICOMIm
 	vtkSmartPointer<vtkImageMapToColors> sagittalColors = vtkSmartPointer<vtkImageMapToColors>::New();
 	sagittalColors->SetInputConnection(v16->GetOutputPort());
 	sagittalColors->SetLookupTable(lut);
-	//sagittalColors->Update();
-
+	
 	sagittal = vtkSmartPointer<vtkImageActor>::New();
 	sagittal->GetMapper()->SetInputConnection(sagittalColors->GetOutputPort());
-	//sagittal->SetDisplayExtent(32,32, 0,63, 0,92);
 	int adv = m_data_extent[1] - m_data_extent[0] + 1;
 	m_cur_sagitta = adv / 2;
 	// 设置显示3D切层的位置
 	sagittal->SetDisplayExtent(m_cur_sagitta, m_cur_sagitta, m_data_extent[2],m_data_extent[3], m_data_extent[4],m_data_extent[5]);
-
 }
 
 void MultiSlicesImageDemoSameSource::SetAxialActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut)
@@ -384,16 +416,13 @@ void MultiSlicesImageDemoSameSource::SetAxialActor(vtkSmartPointer<vtkDICOMImage
 	vtkSmartPointer<vtkImageMapToColors> axialColors = vtkSmartPointer<vtkImageMapToColors>::New();
 	axialColors->SetInputConnection(v16->GetOutputPort());
 	axialColors->SetLookupTable(lut);
-	//axialColors->Update();
-
+	
 	axial =	vtkSmartPointer<vtkImageActor>::New();
 	axial->GetMapper()->SetInputConnection(axialColors->GetOutputPort());
-	//axial->SetDisplayExtent(0,63, 0,63, 46,46);
 	int adv = m_data_extent[5] - m_data_extent[4] + 1;
 	m_cur_axial = adv / 2;
 	// 设置显示3D切层的位置
 	axial->SetDisplayExtent(m_data_extent[0],m_data_extent[1], m_data_extent[2],m_data_extent[3], m_cur_axial, m_cur_axial);
-
 }
 
 void MultiSlicesImageDemoSameSource::SetCoronalActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut)
@@ -401,11 +430,9 @@ void MultiSlicesImageDemoSameSource::SetCoronalActor(vtkSmartPointer<vtkDICOMIma
 	vtkSmartPointer<vtkImageMapToColors> coronalColors =	vtkSmartPointer<vtkImageMapToColors>::New();
 	coronalColors->SetInputConnection(v16->GetOutputPort());
 	coronalColors->SetLookupTable(lut);
-	//coronalColors->Update();
-
+	
 	coronal = vtkSmartPointer<vtkImageActor>::New();
 	coronal->GetMapper()->SetInputConnection(coronalColors->GetOutputPort());
-	//coronal->SetDisplayExtent(0,63, 32,32, 0,92);
 	int adv = m_data_extent[3] - m_data_extent[2] + 1;
 	m_cur_cornal = adv / 2;
 	// 设置显示3D切层的位置

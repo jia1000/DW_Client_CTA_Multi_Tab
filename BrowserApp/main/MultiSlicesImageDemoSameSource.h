@@ -63,6 +63,11 @@ public:
     virtual void CreatePipeline(vtkSmartPointer<vtkRenderer> renderer);
     virtual void AddMyActor(vtkSmartPointer<vtkRenderWindowInteractor> interactor);
 
+    void SetSagittalActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16);
+    void SetAxialActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16);
+    void SetCoronalActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16);
+
+
 	void SetSkinActor(vtkSmartPointer<vtkDICOMImageReader> v16);
 	void SetBoneActor(vtkSmartPointer<vtkDICOMImageReader> v16);
 	void SetOutlineActor(vtkSmartPointer<vtkDICOMImageReader> v16);
@@ -83,6 +88,10 @@ private:
 	vtkSmartPointer<vtkLookupTable> m_hueLut;
 	vtkSmartPointer<vtkLookupTable> m_satLut;
 
+    vtkSmartPointer<vtkImageActor> sagittal_normal;
+    vtkSmartPointer<vtkImageActor> axial_normal;
+    vtkSmartPointer<vtkImageActor> coronal_normal;
+
 	vtkSmartPointer<vtkActor> skin;
 	vtkSmartPointer<vtkActor> bone;
 	vtkSmartPointer<vtkActor> outline;
@@ -92,6 +101,10 @@ private:
 	vtkSmartPointer<vtkImageActor> coronal;
 
 	int m_data_extent[6];
+    int m_cur_sagitta_normal;
+    int m_cur_cornal_normal;
+    int m_cur_axial_normal;
+
 	int m_cur_sagitta;
 	int m_cur_cornal;
 	int m_cur_axial;
