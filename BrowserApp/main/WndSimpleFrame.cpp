@@ -3,7 +3,7 @@
 #include "WndSimpleFrame.h"
 #include "EntryFrameWnd.h"
 #include "EntryFrameWnd2.h"
-#include "EntryFrameWnd3.h"
+#include "analyzefilms_wnd.h"
 #include "BrowserWndManager.h"
 
 //DUI_BEGIN_MESSAGE_MAP(CWndSimpleFrame, WindowImplBase)
@@ -93,7 +93,7 @@ void CWndSimpleFrame::OnSelChanged(CControlUI* pSender)
 		m_EntryFrameWnd2->CenterWindow();
 		m_EntryFrameWnd2->ShowWindow(true);
 	} else if (strSelName == _T("option_restruct3")) {
-        m_EntryFrameWnd3 = new CEntryFrameWnd3();
+        m_EntryFrameWnd3 = new AnalyzeFilms_Wnd();
         m_EntryFrameWnd3->Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, 0L);
         m_EntryFrameWnd3->CenterWindow();
         m_EntryFrameWnd3->ShowWindow(true);

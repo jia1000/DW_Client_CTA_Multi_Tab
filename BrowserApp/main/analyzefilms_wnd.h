@@ -9,11 +9,11 @@ using namespace DuiLib;
 class MultiSlicesImageDemoSameSource;
 class CDicomView;
 
-class CEntryFrameWnd3 : public WindowImplBase
+class AnalyzeFilms_Wnd : public WindowImplBase
 {
 public:
-	CEntryFrameWnd3(void);
-	virtual ~CEntryFrameWnd3(void);
+	AnalyzeFilms_Wnd(void);
+	virtual ~AnalyzeFilms_Wnd(void);
 
 	virtual LPCTSTR GetWindowClassName() const ;
 	virtual void OnFinalMessage(HWND hWnd);

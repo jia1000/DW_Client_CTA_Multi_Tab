@@ -106,7 +106,7 @@
     <ClInclude Include="main\MultiSlicesImageDemoSameSource.h">
       <Filter>main</Filter>
     </ClInclude>
-    <ClInclude Include="main\EntryFrameWnd3.h">
+    <ClInclude Include="main\analyzefilms_wnd.h">
       <Filter>main</Filter>
     </ClInclude>
   </ItemGroup>
@@ -169,7 +169,7 @@
     <ClCompile Include="main\MultiSlicesImageDemoSameSource.cpp">
       <Filter>main</Filter>
     </ClCompile>
-    <ClCompile Include="main\EntryFrameWnd3.cpp">
+    <ClCompile Include="main\analyzefilms_wnd.cpp">
       <Filter>main</Filter>
     </ClCompile>
   </ItemGroup>

@@ -12,7 +12,7 @@
 
 class CEntryFrameWnd;
 class CEntryFrameWnd2;
-class CEntryFrameWnd3;
+class AnalyzeFilms_Wnd;
 
 
 class CWndSimpleFrame
@@ -37,7 +37,7 @@ public:
 private:
 	CEntryFrameWnd* m_EntryFrameWnd;
 	CEntryFrameWnd2* m_EntryFrameWnd2;
-    CEntryFrameWnd3* m_EntryFrameWnd3;
+    AnalyzeFilms_Wnd* m_EntryFrameWnd3;
     
 };
 
