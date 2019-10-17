@@ -31,12 +31,12 @@ public:
 
 protected:
     vtkSmartPointer<vtkRenderWindow>            m_renderWindow;
-    
+public:
     vtkSmartPointer<vtkRenderer>                m_renderer;
     vtkSmartPointer<vtkRenderer>                m_renderer2;
     vtkSmartPointer<vtkRenderer>                m_renderer3;
     vtkSmartPointer<vtkRenderer>                m_renderer4;
-
+protected:
     vtkSmartPointer<vtkRenderWindowInteractor>  m_interactor;
 
     vtkSmartPointer<vtkDICOMImageReader> m_v16;

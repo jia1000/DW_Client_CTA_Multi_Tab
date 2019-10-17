@@ -18,6 +18,8 @@
 
 #include "global_include.h"
 
+class WidgetsMprVtk;
+
 enum
 {
     SLICE_ORIENTATION_AXIAL     = 0,
@@ -31,6 +33,8 @@ public:
 
     int SetSlice(int slice);
 	
+    void SetMprWindowControl(WidgetsMprVtk* mpr);
+
     virtual void SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> v16);
 
     void SetRendeerWindow(vtkSmartPointer< vtkRenderWindow> renderer_window);
@@ -49,7 +53,11 @@ protected:
 	
 private:
     vtkSmartPointer< vtkRenderWindow> m_renderer_window;
+    vtkSmartPointer<vtkRenderer> m_renderer;
     vtkSmartPointer<vtkDICOMImageReader> m_v16;
+
+    WidgetsMprVtk* m_mpr;
+
     int m_data_extent[6];
 
     int max_slice;
