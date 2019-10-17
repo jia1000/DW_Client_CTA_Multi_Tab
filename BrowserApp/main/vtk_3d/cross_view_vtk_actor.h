@@ -31,7 +31,7 @@ class CrossViewVtkActor : public vtkImageActor {
 public:
 	static CrossViewVtkActor *New();
 
-    int SetSlice(int slice);
+    void SetSlice(int delta_slice);
 	
     void SetMprWindowControl(WidgetsMprVtk* mpr);
 

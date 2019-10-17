@@ -32,14 +32,13 @@ protected:
     //CrossViewVtkActor* _ImageActor;
     WidgetsMprVtk* m_mpr;
     vtkDICOMImageReader* _DicomReader;
-    int _Slice;
 
 public:
     void SetImageViewer(WidgetsMprVtk* mpr);
 
     void SetDicomImageReader(vtkDICOMImageReader* dicomReader);
 
-    void SetSlice(int slice);
+    void SetSlice(int delta_slice);
 
 protected:
     void MoveSliceForward();

@@ -29,7 +29,6 @@ vtkStandardNewMacro(CrossViewVtkInteractorStyle)
 void CrossViewVtkInteractorStyle::SetImageViewer(WidgetsMprVtk* mpr) {
     //_ImageActor = image_actor;
     m_mpr = mpr;
-    _Slice = 1;
 }
 
 void CrossViewVtkInteractorStyle::SetDicomImageReader(vtkDICOMImageReader* dicomReader)
@@ -57,22 +56,18 @@ void CrossViewVtkInteractorStyle::SetSlice(int slice)
         actor = m_mpr->axial_normal;
     }
     if (actor) {
-    	_Slice = actor->SetSlice(slice);
+    	actor->SetSlice(slice);
     }
 }
 
 void CrossViewVtkInteractorStyle::MoveSliceForward()
 {    
-    _Slice += 1;
-    cout << "MoveSliceForward::Slice = " << _Slice << endl;
-    SetSlice(_Slice);   
+    SetSlice(1);   
 }
 
 void CrossViewVtkInteractorStyle::MoveSliceBackward()
 {
-    _Slice -= 1;
-    cout << "MoveSliceBackward::Slice = " << _Slice << endl;
-    SetSlice(_Slice);    
+    SetSlice(-1);    
 }
 
 void CrossViewVtkInteractorStyle::OnKeyDown()
