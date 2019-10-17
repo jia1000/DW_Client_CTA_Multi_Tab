@@ -22,41 +22,30 @@ class WidgetsMprVtk;
 
 enum
 {
-    SLICE_ORIENTATION_AXIAL     = 0,
-    SLICE_ORIENTATION_CORONAL   = 1,
-    SLICE_ORIENTATION_SAGITTAL  = 2
+    SLICE_ORIENTATION_AXIAL     = 2,   // XY
+    SLICE_ORIENTATION_CORONAL   = 1,   // XZ
+    SLICE_ORIENTATION_SAGITTAL  = 0    // YZ
 };
 
-class CrossViewVtkActor : public vtkImageActor {
+class CrossViewVtkActorBase : public vtkImageActor {
 public:
-	static CrossViewVtkActor *New();
+	static CrossViewVtkActorBase *New();
 
-    void SetSlice(int delta_slice);
+    virtual void SetSlice(int delta_slice);
 	
-    void SetMprWindowControl(WidgetsMprVtk* mpr);
-
-
-    void SetRendeerWindow(vtkSmartPointer< vtkRenderWindow> renderer_window);
-
-    void SetSliceOrientationMy(int orientation);
-
-    void SetActorName(std::string actor_name);
+    virtual void SetMprWindowControl(WidgetsMprVtk* mpr);
 
     // 这个函数，需要放在其他几个Set之后
     virtual void SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> v16);
 
-    void UpdateDisplay();
+    virtual void UpdateDisplay();
 
 protected:
-    CrossViewVtkActor();
-	~CrossViewVtkActor();
-	
-    
+    CrossViewVtkActorBase();
+	~CrossViewVtkActorBase();
 
-	vtkTypeMacro(CrossViewVtkActor, vtkImageActor);
+	vtkTypeMacro(CrossViewVtkActorBase, vtkImageActor);
 	
-private:
-    vtkSmartPointer< vtkRenderWindow> m_renderer_window;
     vtkSmartPointer<vtkRenderer> m_renderer;
     vtkSmartPointer<vtkDICOMImageReader> m_v16;
 
@@ -71,3 +60,49 @@ private:
     int m_cur_cross_normal;
     int SliceOrientation;
 };
+
+/////////////////////////////////////////////
+class CrossViewVtkActorAxial : public CrossViewVtkActorBase {
+public:
+    static CrossViewVtkActorAxial* New();    
+
+protected:
+    CrossViewVtkActorAxial();
+    ~CrossViewVtkActorAxial();
+
+    vtkTypeMacro(CrossViewVtkActorAxial, CrossViewVtkActorBase);
+
+private:
+    
+};
+//////////////////////////////////////////////////////
+
+class CrossViewVtkActorCoronal : public CrossViewVtkActorBase {
+public:
+    static CrossViewVtkActorCoronal* New();
+
+protected:
+    CrossViewVtkActorCoronal();
+    ~CrossViewVtkActorCoronal();
+
+    vtkTypeMacro(CrossViewVtkActorCoronal, CrossViewVtkActorBase);
+
+private:
+
+};
+//////////////////////////////////////////////////////
+
+class CrossViewVtkActorSagittal : public CrossViewVtkActorBase {
+public:
+    static CrossViewVtkActorSagittal* New();
+
+protected:
+    CrossViewVtkActorSagittal();
+    ~CrossViewVtkActorSagittal();
+
+    vtkTypeMacro(CrossViewVtkActorSagittal, CrossViewVtkActorBase);
+
+private:
+
+};
+//////////////////////////////////////////////////////

@@ -124,6 +124,12 @@
     <ClInclude Include="main\vtk_3d\cross_view_vtk_interactor_style.h">
       <Filter>main\vtk_3d</Filter>
     </ClInclude>
+    <ClInclude Include="main\vtk_3d\cross_view_vtk_renderer_base.h">
+      <Filter>main\vtk_3d</Filter>
+    </ClInclude>
+    <ClInclude Include="main\vtk_3d\cross_view_vtk_renderer_axial.h">
+      <Filter>main\vtk_3d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\WndSimpleFrame.cpp">
@@ -197,6 +203,12 @@
       <Filter>main\vtk_3d</Filter>
     </ClCompile>
     <ClCompile Include="main\vtk_3d\cross_view_vtk_interactor_style.cpp">
+      <Filter>main\vtk_3d</Filter>
+    </ClCompile>
+    <ClCompile Include="main\vtk_3d\cross_view_vtk_renderer_base.cpp">
+      <Filter>main\vtk_3d</Filter>
+    </ClCompile>
+    <ClCompile Include="main\vtk_3d\cross_view_vtk_renderer_axial.cpp">
       <Filter>main\vtk_3d</Filter>
     </ClCompile>
   </ItemGroup>

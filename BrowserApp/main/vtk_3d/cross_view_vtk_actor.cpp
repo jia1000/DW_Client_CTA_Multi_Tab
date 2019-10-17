@@ -17,38 +17,23 @@
 
 #include "widgets_mpr_vtk.h"
 
-vtkStandardNewMacro(CrossViewVtkActor);
+vtkStandardNewMacro(CrossViewVtkActorBase);
 
-CrossViewVtkActor::CrossViewVtkActor()
+CrossViewVtkActorBase::CrossViewVtkActorBase()
 {
 }
 
 
-CrossViewVtkActor::~CrossViewVtkActor()
+CrossViewVtkActorBase::~CrossViewVtkActorBase()
 {	
 }
 
-void CrossViewVtkActor::SetMprWindowControl(WidgetsMprVtk* mpr)
+void CrossViewVtkActorBase::SetMprWindowControl(WidgetsMprVtk* mpr)
 {
     m_mpr = mpr;
 }
 
-void CrossViewVtkActor::SetRendeerWindow(vtkSmartPointer< vtkRenderWindow> renderer_window)
-{
-    m_renderer_window = renderer_window;
-}
-
-void CrossViewVtkActor::SetSliceOrientationMy(int orientation)
-{
-    SliceOrientation = orientation;
-}
-
-void CrossViewVtkActor::SetActorName(std::string actor_name)
-{
-    m_actor_name = actor_name;
-}
-
-void CrossViewVtkActor::SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> v16)
+void CrossViewVtkActorBase::SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
     m_v16 = v16;
     
@@ -60,7 +45,6 @@ void CrossViewVtkActor::SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> 
     
     int* data_extent;
     data_extent = m_v16->GetDataExtent();
-
 
     for (int Index = 0; Index < 6; Index++) {
         m_data_extent[Index] = data_extent[Index];
@@ -83,7 +67,7 @@ void CrossViewVtkActor::SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> 
         m_renderer = m_mpr->m_renderer3;
         break;
     default:
-        m_renderer = m_mpr->m_renderer;
+        m_renderer = m_mpr->m_renderer ;
         ;
     }
 
@@ -93,8 +77,7 @@ void CrossViewVtkActor::SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> 
     UpdateDisplay();
 }
 
-// 返回修正后的slice值
-void CrossViewVtkActor::SetSlice(int delta_slice)
+void CrossViewVtkActorBase::SetSlice(int delta_slice)
 {
     int slice = m_cur_cross_normal + delta_slice;
     if (slice  < min_slice)
@@ -112,19 +95,17 @@ void CrossViewVtkActor::SetSlice(int delta_slice)
 
     //////////////////////////////////////////////////////////////////////////
     // Figure out the correct clipping range
-    //m_renderer->GetRenderWindow()->GetInteractor()->GetInteractorStyle()->GetAutoAdjustCameraClippingRange();
     m_renderer->ResetCameraClippingRange();
     //////////////////////////////////////////////////////////////////////////
 
     printf("%s : slice %3d\n", m_actor_name.c_str(), m_cur_cross_normal);
 
-    m_renderer_window->Render();
+    m_mpr->m_renderWindow->Render();
 
     return ;
 }
 
-
-void CrossViewVtkActor::UpdateDisplay()
+void CrossViewVtkActorBase::UpdateDisplay()
 {
     // 设置显示3D切层的位置
     switch (SliceOrientation)
@@ -143,3 +124,40 @@ void CrossViewVtkActor::UpdateDisplay()
     }
 }
 
+/////////////////////////////////////////////////////////////////
+vtkStandardNewMacro(CrossViewVtkActorAxial);
+
+CrossViewVtkActorAxial::CrossViewVtkActorAxial()
+{
+    SliceOrientation = SLICE_ORIENTATION_AXIAL;
+    m_actor_name = "Axial";
+}
+
+CrossViewVtkActorAxial::~CrossViewVtkActorAxial()
+{
+}
+/////////////////////////////////////////////////////////
+vtkStandardNewMacro(CrossViewVtkActorCoronal);
+
+CrossViewVtkActorCoronal::CrossViewVtkActorCoronal()
+{
+    SliceOrientation = SLICE_ORIENTATION_CORONAL;
+    m_actor_name = "Coronal";
+}
+
+CrossViewVtkActorCoronal::~CrossViewVtkActorCoronal()
+{
+}
+/////////////////////////////////////////////////////////
+vtkStandardNewMacro(CrossViewVtkActorSagittal);
+
+CrossViewVtkActorSagittal::CrossViewVtkActorSagittal()
+{
+    SliceOrientation = SLICE_ORIENTATION_SAGITTAL;
+    m_actor_name = "Sagittal";
+}
+
+CrossViewVtkActorSagittal::~CrossViewVtkActorSagittal()
+{
+}
+/////////////////////////////////////////////////////////

@@ -18,7 +18,7 @@
 
 #include "global_include.h"
 
-class CrossViewVtkActor;
+class CrossViewVtkActorBase;
 class WidgetsMprVtk;
 
 class CrossViewVtkInteractorStyle : public vtkInteractorStyleImage

@@ -45,7 +45,7 @@ void CrossViewVtkInteractorStyle::SetSlice(int slice)
     int eventStation[3] = { 0 };
     this->GetInteractor()->GetEventPosition(eventStation);
     
-    CrossViewVtkActor* actor = NULL;
+    CrossViewVtkActorBase* actor = NULL;
     if (eventStation[0] < winSize[0] / 2 && eventStation[1] < winSize[1] / 2) {
         actor = m_mpr->sagittal_normal;
     } else if(eventStation[0] > winSize[0] / 2 && eventStation[1] > winSize[1] / 2){
@@ -73,10 +73,9 @@ void CrossViewVtkInteractorStyle::MoveSliceBackward()
 void CrossViewVtkInteractorStyle::OnKeyDown()
 {
     std::string key = this->GetInteractor()->GetKeySym();
-    if (key.compare("Up") == 0)
+    if (key.compare("Up") == 0) {
         MoveSliceForward();
-    else if (key.compare("Down") == 0)
-    {
+    } else if (key.compare("Down") == 0) {
         MoveSliceBackward();
     }
 

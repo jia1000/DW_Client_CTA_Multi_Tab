@@ -1,7 +1,11 @@
 #pragma once
 #include "global_include.h"
 
-class CrossViewVtkActor;
+class CrossViewVtkActorBase;
+
+class CrossViewVtkActorSagittal;
+class CrossViewVtkActorAxial;
+class CrossViewVtkActorCoronal;
 
 class WidgetsMprVtk
 {
@@ -29,9 +33,9 @@ public:
     void SetAxialActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut);
     void SetCoronalActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut);
 
-protected:
-    vtkSmartPointer<vtkRenderWindow>            m_renderWindow;
 public:
+    vtkSmartPointer<vtkRenderWindow>            m_renderWindow;
+
     vtkSmartPointer<vtkRenderer>                m_renderer;
     vtkSmartPointer<vtkRenderer>                m_renderer2;
     vtkSmartPointer<vtkRenderer>                m_renderer3;
@@ -47,9 +51,9 @@ protected:
     vtkSmartPointer<vtkLookupTable> m_hueLut;
     vtkSmartPointer<vtkLookupTable> m_satLut;
 public:
-    vtkSmartPointer<CrossViewVtkActor> sagittal_normal;
-    vtkSmartPointer<CrossViewVtkActor> axial_normal;
-    vtkSmartPointer<CrossViewVtkActor> coronal_normal;
+    vtkSmartPointer<CrossViewVtkActorSagittal> sagittal_normal;
+    vtkSmartPointer<CrossViewVtkActorAxial> axial_normal;
+    vtkSmartPointer<CrossViewVtkActorCoronal> coronal_normal;
 protected:
     vtkSmartPointer<vtkActor> skin;
     vtkSmartPointer<vtkActor> bone;
