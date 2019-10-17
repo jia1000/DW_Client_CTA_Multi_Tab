@@ -55,13 +55,16 @@
 		<Button textcolor="#FFFFFFFF" name="btn_mark_analyze" text="标记分析" tooltip="标记分析" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_3ddetection_cobb.png' dest='19,3,41,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="60" height="46" />
 		<Button textcolor="#FFFFFFFF" name="btn_followup_visit" text="随访" tooltip="随访" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_suifang_compare.png' dest='8,3,30,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="38" height="46" />
 		<Button textcolor="#FFFFFFFF" name="btn_report" text="报告" tooltip="报告" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_report.png' dest='8,3,30,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="38" height="46" />
-    </HorizontalLayout>
+		<Button textcolor="#FFFFFFFF" name="btn_tool_vtk_mpr" text="mpr test" tooltip="测试mpr" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_suifang_compare.png' dest='8,3,30,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="38" height="46" />
+	</HorizontalLayout>
 	<control height="1" bkcolor="#FF000000"/>
 	<HorizontalLayout  childpadding="0">		
 		<VerticalLayout name="vtk_report_panel" bkcolor="#FF535353" bordersize="1" bordercolor="#FFFFFFFF">
-			<TileLayoutExtended name="vtk_window_container" minheight="305" bordersize="2" bordercolor="#FFFFFFFF">
-			</TileLayoutExtended>			
+			<Button name="btn_vtk_mpr"  text="1" width="970" height="690" bkcolor="#FFD0D1D7" />
 		</VerticalLayout >	
+		<TabLayout width="55" name="right_panel_switch" >
+			<Label name="ai_list1" font="0" text="AI 1" textcolor="#FFABBCDC" align="center" valign="vcenter" height="18" padding="10,8,10,8" /> 
+		</TabLayout>
 	</HorizontalLayout>
   </VerticalLayout>
 </Window>

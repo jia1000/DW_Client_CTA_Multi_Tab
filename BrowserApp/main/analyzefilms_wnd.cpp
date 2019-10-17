@@ -3,7 +3,7 @@
 #include "analyzefilms_wnd.h"
 #include "vtk_dicom_demo/DicomView.h"
 #include "MultiSlicesImageDemoSameSource.h"
-
+#include "main/vtk_3d/widgets_mpr_vtk.h"
 
 #include <thread>
 
@@ -79,7 +79,14 @@ void    AnalyzeFilms_Wnd::Notify(TNotifyUI& msg)
 			if( pControl ) pControl->SetVisible(false);
 		} else if (_tcscmp(pszCtrlName, _T("btn_sysclose")) == 0) {
 			Close(IDOK);
-		} 
+		} else if (_tcscmp(pszCtrlName, _T("btn_tool_vtk_mpr")) == 0) {
+            CButtonUI* pVtkShowBtn2 = static_cast<CButtonUI*>(m_pm.FindControl(_T("btn_vtk_mpr")));
+            if (pVtkShowBtn2) {
+                pVtkShowBtn2->SetText(_T("Please wait..."));
+            }
+            m_widgetsMprVtk = new WidgetsMprVtk(this->m_hWnd, pVtkShowBtn2);
+            m_widgetsMprVtk->ShowWidgets_Test();
+        }
 	} else if (_tcsicmp(msg.sType, _T("selectchanged")) == 0) {
 		//
 	} else if (msg.sType == _T("itemclick")){       

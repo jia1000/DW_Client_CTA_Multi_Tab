@@ -8,6 +8,7 @@ using namespace DuiLib;
 
 class MultiSlicesImageDemoSameSource;
 class CDicomView;
+class WidgetsMprVtk;
 
 class AnalyzeFilms_Wnd : public WindowImplBase
 {
@@ -28,6 +29,7 @@ public:
 
 private:
 	MultiSlicesImageDemoSameSource* m_multiSliceImageDemo;
+    WidgetsMprVtk* m_widgetsMprVtk;
 
 };
 
