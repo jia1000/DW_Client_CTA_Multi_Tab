@@ -38,6 +38,16 @@ void CrossViewVtkActor::SetRendeerWindow(vtkSmartPointer< vtkRenderWindow> rende
     m_renderer_window = renderer_window;
 }
 
+void CrossViewVtkActor::SetSliceOrientationMy(int orientation)
+{
+    SliceOrientation = orientation;
+}
+
+void CrossViewVtkActor::SetActorName(std::string actor_name)
+{
+    m_actor_name = actor_name;
+}
+
 void CrossViewVtkActor::SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
     m_v16 = v16;
@@ -104,17 +114,15 @@ void CrossViewVtkActor::SetSlice(int delta_slice)
     // Figure out the correct clipping range
     //m_renderer->GetRenderWindow()->GetInteractor()->GetInteractorStyle()->GetAutoAdjustCameraClippingRange();
     m_renderer->ResetCameraClippingRange();
-
     //////////////////////////////////////////////////////////////////////////
+
+    printf("%s : slice %3d\n", m_actor_name.c_str(), m_cur_cross_normal);
+
     m_renderer_window->Render();
 
     return ;
 }
 
-void CrossViewVtkActor::SetSliceOrientationMy(int orientation)
-{
-    SliceOrientation = orientation;
-}
 
 void CrossViewVtkActor::UpdateDisplay()
 {

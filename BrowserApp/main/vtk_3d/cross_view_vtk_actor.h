@@ -35,11 +35,15 @@ public:
 	
     void SetMprWindowControl(WidgetsMprVtk* mpr);
 
-    virtual void SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> v16);
 
     void SetRendeerWindow(vtkSmartPointer< vtkRenderWindow> renderer_window);
 
     void SetSliceOrientationMy(int orientation);
+
+    void SetActorName(std::string actor_name);
+
+    // 这个函数，需要放在其他几个Set之后
+    virtual void SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> v16);
 
     void UpdateDisplay();
 
@@ -57,6 +61,8 @@ private:
     vtkSmartPointer<vtkDICOMImageReader> m_v16;
 
     WidgetsMprVtk* m_mpr;
+
+    std::string m_actor_name;
 
     int m_data_extent[6];
 
