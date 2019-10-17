@@ -46,11 +46,11 @@ protected:
     vtkSmartPointer<vtkLookupTable> m_bwLut;
     vtkSmartPointer<vtkLookupTable> m_hueLut;
     vtkSmartPointer<vtkLookupTable> m_satLut;
-
-    vtkSmartPointer<vtkImageActor> sagittal_normal;
-    vtkSmartPointer<vtkImageActor> axial_normal;
-    vtkSmartPointer<vtkImageActor> coronal_normal;
-
+public:
+    vtkSmartPointer<CrossViewVtkActor> sagittal_normal;
+    vtkSmartPointer<CrossViewVtkActor> axial_normal;
+    vtkSmartPointer<CrossViewVtkActor> coronal_normal;
+protected:
     vtkSmartPointer<vtkActor> skin;
     vtkSmartPointer<vtkActor> bone;
     vtkSmartPointer<vtkActor> outline;

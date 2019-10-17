@@ -33,6 +33,8 @@ public:
 	
     virtual void SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> v16);
 
+    void SetRendeerWindow(vtkSmartPointer< vtkRenderWindow> renderer_window);
+
     void SetSliceOrientationMy(int orientation);
 
     void UpdateDisplay();
@@ -46,6 +48,7 @@ protected:
 	vtkTypeMacro(CrossViewVtkActor, vtkImageActor);
 	
 private:
+    vtkSmartPointer< vtkRenderWindow> m_renderer_window;
     vtkSmartPointer<vtkDICOMImageReader> m_v16;
     int m_data_extent[6];
 

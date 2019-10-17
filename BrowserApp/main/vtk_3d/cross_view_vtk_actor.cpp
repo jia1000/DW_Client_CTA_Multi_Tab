@@ -26,6 +26,10 @@ CrossViewVtkActor::~CrossViewVtkActor()
 {	
 }
 
+void CrossViewVtkActor::SetRendeerWindow(vtkSmartPointer< vtkRenderWindow> renderer_window)
+{
+    m_renderer_window = renderer_window;
+}
 
 void CrossViewVtkActor::SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
@@ -46,16 +50,16 @@ void CrossViewVtkActor::SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> 
     switch (SliceOrientation)
     {
     case SLICE_ORIENTATION_AXIAL:
-        min_slice = m_data_extent[4];
-        max_slice = m_data_extent[5];
+        min_slice = m_data_extent[4] + 1;
+        max_slice = m_data_extent[5] + 1;
         break;
     case SLICE_ORIENTATION_CORONAL:
-        min_slice = m_data_extent[2];
-        max_slice = m_data_extent[3];
+        min_slice = m_data_extent[2] + 1;
+        max_slice = m_data_extent[3] + 1;
         break;
     case SLICE_ORIENTATION_SAGITTAL:
-        min_slice = m_data_extent[0];
-        max_slice = m_data_extent[1];
+        min_slice = m_data_extent[0] + 1;
+        max_slice = m_data_extent[1] + 1;
         break;
     default:
         ;
@@ -72,14 +76,18 @@ int CrossViewVtkActor::SetSlice(int slice)
 {
     if (slice  < min_slice)
     {
-        m_cur_cross_normal = min_slice;
+        slice = min_slice;
     }
     if (slice > max_slice)
     {
-        m_cur_cross_normal = max_slice;
+        slice = max_slice;
     }
     
+    m_cur_cross_normal  = slice;
+
     UpdateDisplay();
+
+    m_renderer_window->Render();
 
     return m_cur_cross_normal;
 }

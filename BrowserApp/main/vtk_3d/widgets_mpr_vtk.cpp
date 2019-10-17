@@ -2,6 +2,7 @@
 #include "widgets_mpr_vtk.h"
 
 #include "main/vtk_3d/cross_view_vtk_actor.h"
+#include "main/vtk_3d/cross_view_vtk_interactor_style.h"
 
 WidgetsMprVtk::WidgetsMprVtk(HWND parent, CButtonUI* pVtkShowBtn)
 	: m_parentWnd(parent)
@@ -44,8 +45,8 @@ void WidgetsMprVtk::CreateRendererAndRenderWindowAndInteractor()
     m_renderWindow->AddRenderer(m_renderer4);
     m_renderWindow->SetWindowName("AnnotationWidget");
 
-	m_interactor = vtkSmartPointer< vtkRenderWindowInteractor >::New();
-	m_interactor->SetRenderWindow(m_renderWindow);
+	//m_interactor = vtkSmartPointer< vtkRenderWindowInteractor >::New();
+	//m_interactor->SetRenderWindow(m_renderWindow);
 }
 
 
@@ -171,6 +172,15 @@ void WidgetsMprVtk::StartWidgetsRender()
     m_renderer4->DrawOn();
     m_renderer4->SetViewport(rightdownViewStation);
 
+
+    vtkSmartPointer<CrossViewVtkInteractorStyle> style = vtkSmartPointer<CrossViewVtkInteractorStyle>::New();
+    style->SetImageViewer(this);
+
+    m_interactor = vtkSmartPointer< vtkRenderWindowInteractor >::New();
+    m_interactor->SetInteractorStyle(style);
+
+    m_interactor->SetRenderWindow(m_renderWindow);
+
     m_renderWindow->Render();
 }
 
@@ -179,7 +189,10 @@ void WidgetsMprVtk::SetSagittalActorNormal(vtkSmartPointer<vtkDICOMImageReader> 
     vtkSmartPointer<vtkImageMapToColors> sagittalColors = vtkSmartPointer<vtkImageMapToColors>::New();
     sagittalColors->SetInputConnection(v16->GetOutputPort());
 
-    sagittal_normal = vtkSmartPointer<vtkImageActor>::New();
+    sagittal_normal = vtkSmartPointer<CrossViewVtkActor>::New();
+    sagittal_normal->SetSliceOrientationMy(SLICE_ORIENTATION_SAGITTAL);
+    sagittal_normal->SetInputConnection(v16);
+    sagittal_normal->SetRendeerWindow(m_renderWindow);
     sagittal_normal->GetMapper()->SetInputConnection(sagittalColors->GetOutputPort());
     int adv = m_data_extent[1] - m_data_extent[0] + 1;
     m_cur_sagitta_normal = adv / 2;
@@ -192,7 +205,10 @@ void WidgetsMprVtk::SetAxialActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16
     vtkSmartPointer<vtkImageMapToColors> axialColors = vtkSmartPointer<vtkImageMapToColors>::New();
     axialColors->SetInputConnection(v16->GetOutputPort());
 
-    axial_normal = vtkSmartPointer<vtkImageActor>::New();
+    axial_normal = vtkSmartPointer<CrossViewVtkActor>::New();
+    axial_normal->SetSliceOrientationMy(SLICE_ORIENTATION_AXIAL);
+    axial_normal->SetInputConnection(v16);
+    axial_normal->SetRendeerWindow(m_renderWindow);
     axial_normal->GetMapper()->SetInputConnection(axialColors->GetOutputPort());
     int adv = m_data_extent[5] - m_data_extent[4] + 1;
     m_cur_axial_normal = adv / 2;
@@ -205,7 +221,10 @@ void WidgetsMprVtk::SetCoronalActorNormal(vtkSmartPointer<vtkDICOMImageReader> v
     vtkSmartPointer<vtkImageMapToColors> coronalColors = vtkSmartPointer<vtkImageMapToColors>::New();
     coronalColors->SetInputConnection(v16->GetOutputPort());
 
-    coronal_normal = vtkSmartPointer<vtkImageActor>::New();
+    coronal_normal = vtkSmartPointer<CrossViewVtkActor>::New();
+    coronal_normal->SetSliceOrientationMy(SLICE_ORIENTATION_CORONAL);
+    coronal_normal->SetInputConnection(v16);
+    coronal_normal->SetRendeerWindow(m_renderWindow);
     coronal_normal->GetMapper()->SetInputConnection(coronalColors->GetOutputPort());
     int adv = m_data_extent[3] - m_data_extent[2] + 1;
     m_cur_cornal_normal = adv / 2;

@@ -204,7 +204,7 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
     <ClInclude Include="main\MultiSlicesImageDemo.h" />
     <ClInclude Include="main\MultiSlicesImageDemoSameSource.h" />
     <ClInclude Include="main\vtk_3d\cross_view_vtk_actor.h" />
-    <ClInclude Include="main\vtk_3d\cross_view_vtk_interactor.h" />
+    <ClInclude Include="main\vtk_3d\cross_view_vtk_interactor_style.h" />
     <ClInclude Include="main\vtk_3d\left_down_vtk_actor.h" />
     <ClInclude Include="main\vtk_3d\widgets_mpr_vtk.h" />
     <ClInclude Include="main\vtk_dicom_demo\DicomView.h" />
@@ -234,7 +234,7 @@ xcopy $(SolutionDir)bin\release\Skin   $(SolutionDir)bin\release_69_3497\Skin\  
     <ClCompile Include="main\MultiSlicesImageDemo.cpp" />
     <ClCompile Include="main\MultiSlicesImageDemoSameSource.cpp" />
     <ClCompile Include="main\vtk_3d\cross_view_vtk_actor.cpp" />
-    <ClCompile Include="main\vtk_3d\cross_view_vtk_interactor.cpp" />
+    <ClCompile Include="main\vtk_3d\cross_view_vtk_interactor_style.cpp" />
     <ClCompile Include="main\vtk_3d\left_down_vtk_actor.cpp" />
     <ClCompile Include="main\vtk_3d\widgets_mpr_vtk.cpp" />
     <ClCompile Include="main\vtk_dicom_demo\DicomView.cpp" />

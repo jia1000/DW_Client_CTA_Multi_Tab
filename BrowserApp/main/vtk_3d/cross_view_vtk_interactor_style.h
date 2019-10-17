@@ -19,21 +19,23 @@
 #include "global_include.h"
 
 class CrossViewVtkActor;
+class WidgetsMprVtk;
 
-class CrossViewVtkInteractor : public vtkInteractorStyleImage
+class CrossViewVtkInteractorStyle : public vtkInteractorStyleImage
 {
 public:
-    static CrossViewVtkInteractor* New();
-    vtkTypeMacro(CrossViewVtkInteractor, vtkInteractorStyleImage);
+    static CrossViewVtkInteractorStyle* New();
+    vtkTypeMacro(CrossViewVtkInteractorStyle, vtkInteractorStyleImage);
 
 protected:
     //vtkImageViewer2* _ImageViewer;
-    CrossViewVtkActor* _ImageActor;
+    //CrossViewVtkActor* _ImageActor;
+    WidgetsMprVtk* m_mpr;
     vtkDICOMImageReader* _DicomReader;
     int _Slice;
 
 public:
-    void SetImageViewer(CrossViewVtkActor* image_actor);
+    void SetImageViewer(WidgetsMprVtk* mpr);
 
     void SetDicomImageReader(vtkDICOMImageReader* dicomReader);
 
