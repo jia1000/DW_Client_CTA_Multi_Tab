@@ -49,6 +49,20 @@ void WidgetsMprVtk::CreateRendererAndRenderWindowAndInteractor()
 	//m_interactor->SetRenderWindow(m_renderWindow);
 }
 
+void WidgetsMprVtk::SetOneRendererSlice(int delta_slice, int eventStation[3])
+{
+    int* winSize = m_renderWindow->GetSize();
+
+    if (eventStation[0] < winSize[0] / 2 && eventStation[1] < winSize[1] / 2) {
+        sagittal_normal->SetSlice(delta_slice);
+    } else if (eventStation[0] > winSize[0] / 2 && eventStation[1] > winSize[1] / 2) {
+        coronal_normal->SetSlice(delta_slice);
+    } else if (eventStation[0] < winSize[0] / 2 && eventStation[1] > winSize[1] / 2) {
+        axial_normal->SetSlice(delta_slice);
+    } else {
+        axial_normal->SetSlice(delta_slice);
+    }    
+}
 
 void WidgetsMprVtk::ResizeAndPosition()
 {

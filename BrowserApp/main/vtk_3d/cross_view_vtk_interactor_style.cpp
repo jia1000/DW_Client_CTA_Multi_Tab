@@ -40,24 +40,10 @@ void CrossViewVtkInteractorStyle::SetSlice(int slice)
 {
     this->Modified();
 
-    int* winSize = this->GetInteractor()->GetRenderWindow()->GetSize();
-
     int eventStation[3] = { 0 };
     this->GetInteractor()->GetEventPosition(eventStation);
     
-    CrossViewVtkActorBase* actor = NULL;
-    if (eventStation[0] < winSize[0] / 2 && eventStation[1] < winSize[1] / 2) {
-        actor = m_mpr->sagittal_normal;
-    } else if(eventStation[0] > winSize[0] / 2 && eventStation[1] > winSize[1] / 2){
-        actor = m_mpr->coronal_normal;
-    }else if (eventStation[0] < winSize[0] / 2 && eventStation[1] > winSize[1] / 2) {
-        actor = m_mpr->axial_normal;
-    } else {
-        actor = m_mpr->axial_normal;
-    }
-    if (actor) {
-    	actor->SetSlice(slice);
-    }
+    m_mpr->SetOneRendererSlice(slice, eventStation);    
 }
 
 void CrossViewVtkInteractorStyle::MoveSliceForward()

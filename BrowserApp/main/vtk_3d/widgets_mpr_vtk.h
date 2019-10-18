@@ -33,6 +33,8 @@ public:
     void SetAxialActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut);
     void SetCoronalActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut);
 
+    void SetOneRendererSlice(int delta_slice, int eventStation[3]);
+
 public:
     vtkSmartPointer<vtkRenderWindow>            m_renderWindow;
 
