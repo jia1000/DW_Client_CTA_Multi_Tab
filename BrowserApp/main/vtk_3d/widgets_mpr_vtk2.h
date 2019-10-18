@@ -1,13 +1,12 @@
 #pragma once
 #include "global_include.h"
-#include "widgets_mpr_vtk.h"
 
 class CrossViewVtkActorBase;
-class WidgetsMprVtk;class CrossViewVtkActorSagittal;
+class CrossViewVtkActorSagittal;
 class CrossViewVtkActorAxial;
 class CrossViewVtkActorCoronal;
 
-class WidgetsMprVtk2 :public WidgetsMprVtk
+class WidgetsMprVtk2
 {
 public:
     WidgetsMprVtk2(HWND parent, std::vector<CButtonUI*> vVtkShowBtns);
@@ -33,8 +32,6 @@ public:
     void SetSagittalActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut);
     void SetAxialActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut);
     void SetCoronalActor(vtkSmartPointer<vtkDICOMImageReader> v16, vtkSmartPointer<vtkLookupTable> lut);
-
-    void SetOneRendererSlice(int delta_slice, int eventStation[3]);
 
 public:
     std::vector<vtkSmartPointer<vtkRenderWindow>>     m_renderWindows;

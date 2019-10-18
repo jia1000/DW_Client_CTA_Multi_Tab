@@ -15,7 +15,6 @@
 #include "stdafx.h"
 #include "cross_view_vtk_actor.h"
 
-#include "widgets_mpr_vtk.h"
 #include "widgets_mpr_vtk2.h"
 
 

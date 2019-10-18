@@ -3,7 +3,6 @@
 #include "analyzefilms_wnd.h"
 #include "vtk_dicom_demo/DicomView.h"
 #include "MultiSlicesImageDemoSameSource.h"
-#include "main/vtk_3d/widgets_mpr_vtk.h"
 #include "main/vtk_3d/widgets_mpr_vtk2.h"
 
 #include <thread>

@@ -11,7 +11,6 @@
 //double rightdownViewStation[4] = { 0.5, 0.0, 1.0, 0.5 };
 
 WidgetsMprVtk2::WidgetsMprVtk2(HWND parent, std::vector<CButtonUI*> vVtkShowBtns)
-    : WidgetsMprVtk(parent, vVtkShowBtns[0])
 {
     m_parentWnd = parent;
     m_vVtkShowBtns.clear();
@@ -42,24 +41,6 @@ void WidgetsMprVtk2::CreateRendererAndRenderWindowAndInteractor()
         annotation += s_index;
         renderWindow->SetWindowName(annotation.c_str());
         m_renderWindows.push_back(renderWindow);
-    }
-}
-
-void WidgetsMprVtk2::SetOneRendererSlice(int delta_slice, int eventStation[3])
-{
-    int* winSize = m_renderWindow->GetSize();
-
-    if (eventStation[0] < winSize[0] / 2 && eventStation[1] < winSize[1] / 2) {
-        sagittal_normal->SetSlice(delta_slice);
-    }
-    else if (eventStation[0] > winSize[0] / 2 && eventStation[1] > winSize[1] / 2) {
-        coronal_normal->SetSlice(delta_slice);
-    }
-    else if (eventStation[0] < winSize[0] / 2 && eventStation[1] > winSize[1] / 2) {
-        axial_normal->SetSlice(delta_slice);
-    }
-    else {
-        axial_normal->SetSlice(delta_slice);
     }
 }
 

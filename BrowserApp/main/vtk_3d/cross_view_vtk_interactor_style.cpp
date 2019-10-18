@@ -17,8 +17,6 @@
 #include "left_down_vtk_actor.h"
 #include "cross_view_vtk_actor.h"
 
-#include "main/vtk_3d/widgets_mpr_vtk.h"
-
 #pragma once
 #ifdef __DEPRECATED
 #undef __DEPRECATED
