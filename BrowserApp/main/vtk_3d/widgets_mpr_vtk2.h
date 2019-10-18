@@ -35,11 +35,7 @@ public:
 
 public:
     std::vector<vtkSmartPointer<vtkRenderWindow>>     m_renderWindows;
-    
-    vtkSmartPointer<vtkRenderer>                m_renderer;
-    vtkSmartPointer<vtkRenderer>                m_renderer2;
-    vtkSmartPointer<vtkRenderer>                m_renderer3;
-    vtkSmartPointer<vtkRenderer>                m_renderer4;
+        
 protected:
     vtkSmartPointer<vtkRenderWindowInteractor>  m_interactor1;
     vtkSmartPointer<vtkRenderWindowInteractor>  m_interactor2;

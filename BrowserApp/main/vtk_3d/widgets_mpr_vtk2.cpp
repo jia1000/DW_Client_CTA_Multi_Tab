@@ -104,8 +104,8 @@ void WidgetsMprVtk2::StartWidgetsRender()
 
 void WidgetsMprVtk2::SetAxialRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
-    m_renderer = vtkSmartPointer<vtkRenderer>::New();
-    m_renderer->SetBackground(0.1, 0.2, 0.4);
+    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+    renderer->SetBackground(0.1, 0.2, 0.4);
 
     vtkSmartPointer<vtkImageMapToColors> axialColors = vtkSmartPointer<vtkImageMapToColors>::New();
     axialColors->SetInputConnection(v16->GetOutputPort());
@@ -115,16 +115,16 @@ void WidgetsMprVtk2::SetAxialRendererNormal(vtkSmartPointer<vtkDICOMImageReader>
     axial_normal->SetInputConnection(v16);
     axial_normal->GetMapper()->SetInputConnection(axialColors->GetOutputPort());
     
-    m_renderer->AddActor(axial_normal);
-    vtkCamera* cam1 = m_renderer->GetActiveCamera();
+    renderer->AddActor(axial_normal);
+    vtkCamera* cam1 = renderer->GetActiveCamera();
     cam1->SetFocalPoint(0, 0, 0);
     cam1->SetPosition(0, 0, 1);
     cam1->SetViewUp(0, 1, 0);
-    m_renderer->ResetCamera();
-    m_renderer->DrawOn();
+    renderer->ResetCamera();
+    renderer->DrawOn();
     //m_renderer->SetViewport(leftViewStation);
 
-    m_renderWindows[0]->AddRenderer(m_renderer);
+    m_renderWindows[0]->AddRenderer(renderer);
 
     vtkSmartPointer<CrossViewVtkInteractorStyle> style = vtkSmartPointer<CrossViewVtkInteractorStyle>::New();
     style->SetImageActor(axial_normal);
@@ -137,8 +137,8 @@ void WidgetsMprVtk2::SetAxialRendererNormal(vtkSmartPointer<vtkDICOMImageReader>
 
 void WidgetsMprVtk2::SetCoronalRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
-    m_renderer2 = vtkSmartPointer<vtkRenderer>::New();
-    m_renderer2->SetBackground(0.4, 0.2, 0.1);
+    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+    renderer->SetBackground(0.4, 0.2, 0.1);
 
     vtkSmartPointer<vtkImageMapToColors> coronalColors = vtkSmartPointer<vtkImageMapToColors>::New();
     coronalColors->SetInputConnection(v16->GetOutputPort());
@@ -148,16 +148,16 @@ void WidgetsMprVtk2::SetCoronalRendererNormal(vtkSmartPointer<vtkDICOMImageReade
     coronal_normal->SetInputConnection(v16);
     coronal_normal->GetMapper()->SetInputConnection(coronalColors->GetOutputPort());
     
-    m_renderer2->AddActor(coronal_normal);
-    vtkCamera* cam2 = m_renderer2->GetActiveCamera();
+    renderer->AddActor(coronal_normal);
+    vtkCamera* cam2 = renderer->GetActiveCamera();
     cam2->SetFocalPoint(0, 0, 0);
     cam2->SetPosition(0, -1, 0);
     cam2->SetViewUp(0, 0, -1);
-    m_renderer2->ResetCamera();
-    m_renderer2->DrawOn();
+    renderer->ResetCamera();
+    renderer->DrawOn();
     //m_renderer2->SetViewport(rightViewStation);
 
-    m_renderWindows[1]->AddRenderer(m_renderer2);
+    m_renderWindows[1]->AddRenderer(renderer);
 
     vtkSmartPointer<CrossViewVtkInteractorStyle> style = vtkSmartPointer<CrossViewVtkInteractorStyle>::New();
     style->SetImageActor(coronal_normal);
@@ -169,8 +169,8 @@ void WidgetsMprVtk2::SetCoronalRendererNormal(vtkSmartPointer<vtkDICOMImageReade
 
 void WidgetsMprVtk2::SetSagittalRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
-    m_renderer3 = vtkSmartPointer<vtkRenderer>::New();
-    m_renderer3->SetBackground(0.4, 0.2, 0.1);
+    vtkSmartPointer<vtkRenderer>  renderer = vtkSmartPointer<vtkRenderer>::New();
+    renderer->SetBackground(0.4, 0.2, 0.1);
 
     vtkSmartPointer<vtkImageMapToColors> sagittalColors = vtkSmartPointer<vtkImageMapToColors>::New();
     sagittalColors->SetInputConnection(v16->GetOutputPort());
@@ -180,16 +180,16 @@ void WidgetsMprVtk2::SetSagittalRendererNormal(vtkSmartPointer<vtkDICOMImageRead
     sagittal_normal->SetInputConnection(v16);
     sagittal_normal->GetMapper()->SetInputConnection(sagittalColors->GetOutputPort());
 
-    m_renderer3->AddActor(sagittal_normal);
-    vtkCamera* cam3 = m_renderer3->GetActiveCamera();
+    renderer->AddActor(sagittal_normal);
+    vtkCamera* cam3 = renderer->GetActiveCamera();
     cam3->SetFocalPoint(0, 0, 0);
     cam3->SetPosition(-1, 0, 0);
     cam3->SetViewUp(0, 0, 1);
-    m_renderer3->ResetCamera();
-    m_renderer3->DrawOn();
+    renderer->ResetCamera();
+    renderer->DrawOn();
     //m_renderer3->SetViewport(leftdownViewStation);
 
-    m_renderWindows[2]->AddRenderer(m_renderer3);
+    m_renderWindows[2]->AddRenderer(renderer);
 
     vtkSmartPointer<CrossViewVtkInteractorStyle> style = vtkSmartPointer<CrossViewVtkInteractorStyle>::New();
     style->SetImageActor(sagittal_normal);
@@ -202,8 +202,8 @@ void WidgetsMprVtk2::SetSagittalRendererNormal(vtkSmartPointer<vtkDICOMImageRead
 
 void WidgetsMprVtk2::SetMprRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
-    m_renderer4 = vtkSmartPointer<vtkRenderer>::New();
-    m_renderer4->SetBackground(0.1, 0.2, 0.4);
+    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+    renderer->SetBackground(0.1, 0.2, 0.4);
 
     m_bwLut = vtkSmartPointer<vtkLookupTable>::New();
     m_bwLut->SetTableRange(0, 2000);
@@ -236,16 +236,16 @@ void WidgetsMprVtk2::SetMprRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v
     SetCoronalActor(m_v16, m_satLut);
 
     // ÈýÎ¬Í¼Ïñ
-    m_renderer4->AddActor(skin);
-    m_renderer4->AddActor(bone);
-    m_renderer4->AddActor(outline);
-    m_renderer4->AddActor(sagittal);
-    m_renderer4->AddActor(axial);
-    m_renderer4->AddActor(coronal);
-    m_renderer4->DrawOn();
+    renderer->AddActor(skin);
+    renderer->AddActor(bone);
+    renderer->AddActor(outline);
+    renderer->AddActor(sagittal);
+    renderer->AddActor(axial);
+    renderer->AddActor(coronal);
+    renderer->DrawOn();
     //m_renderer4->SetViewport(rightdownViewStation);
 
-    m_renderWindows[3]->AddRenderer(m_renderer4);
+    m_renderWindows[3]->AddRenderer(renderer);
 
     vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
     m_interactor4 = vtkSmartPointer< vtkRenderWindowInteractor >::New();
