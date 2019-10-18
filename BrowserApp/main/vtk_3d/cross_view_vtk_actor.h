@@ -19,6 +19,7 @@
 #include "global_include.h"
 
 class WidgetsMprVtk;
+class WidgetsMprVtk2;
 
 enum
 {
@@ -34,7 +35,8 @@ public:
     virtual void SetSlice(int delta_slice);
 	
     virtual void SetMprWindowControl(WidgetsMprVtk* mpr);
-
+    virtual void SetRedenerer(vtkSmartPointer<vtkRenderer> renderer);
+    virtual void SetRenerWindow(vtkRenderWindow* renwindow);
     // 这个函数，需要放在其他几个Set之后
     virtual void SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> v16);
 
@@ -48,6 +50,7 @@ protected:
 	
     vtkSmartPointer<vtkRenderer> m_renderer;
     vtkSmartPointer<vtkDICOMImageReader> m_v16;
+    vtkSmartPointer<vtkRenderWindow> m_renderWindow;
 
     WidgetsMprVtk* m_mpr;
 

@@ -47,7 +47,20 @@ void WidgetsMprVtk2::CreateRendererAndRenderWindowAndInteractor()
 
 void WidgetsMprVtk2::SetOneRendererSlice(int delta_slice, int eventStation[3])
 {
-      
+    int* winSize = m_renderWindow->GetSize();
+
+    if (eventStation[0] < winSize[0] / 2 && eventStation[1] < winSize[1] / 2) {
+        sagittal_normal->SetSlice(delta_slice);
+    }
+    else if (eventStation[0] > winSize[0] / 2 && eventStation[1] > winSize[1] / 2) {
+        coronal_normal->SetSlice(delta_slice);
+    }
+    else if (eventStation[0] < winSize[0] / 2 && eventStation[1] > winSize[1] / 2) {
+        axial_normal->SetSlice(delta_slice);
+    }
+    else {
+        axial_normal->SetSlice(delta_slice);
+    }
 }
 
 void WidgetsMprVtk2::ResizeAndPosition()
@@ -118,6 +131,8 @@ void WidgetsMprVtk2::SetAxialRendererNormal(vtkSmartPointer<vtkDICOMImageReader>
 
     axial_normal = vtkSmartPointer<CrossViewVtkActorAxial>::New();
     axial_normal->SetMprWindowControl(this);
+    axial_normal->SetRedenerer(m_renderer);
+    axial_normal->SetRenerWindow(m_renderWindows[0]);
     axial_normal->SetInputConnection(v16);
     axial_normal->GetMapper()->SetInputConnection(axialColors->GetOutputPort());
     
@@ -132,7 +147,9 @@ void WidgetsMprVtk2::SetAxialRendererNormal(vtkSmartPointer<vtkDICOMImageReader>
 
     m_renderWindows[0]->AddRenderer(m_renderer);
 
-    vtkSmartPointer<vtkInteractorStyleImage> style = vtkSmartPointer<vtkInteractorStyleImage>::New();
+    vtkSmartPointer<CrossViewVtkInteractorStyle> style = vtkSmartPointer<CrossViewVtkInteractorStyle>::New();
+    style->SetImageViewer(this);
+    style->SetImageActor(axial_normal);
     m_interactor1 = vtkSmartPointer< vtkRenderWindowInteractor >::New();
     m_interactor1->SetInteractorStyle(style);
 
@@ -150,6 +167,8 @@ void WidgetsMprVtk2::SetCoronalRendererNormal(vtkSmartPointer<vtkDICOMImageReade
 
     coronal_normal = vtkSmartPointer<CrossViewVtkActorCoronal>::New();
     coronal_normal->SetMprWindowControl(this);
+    coronal_normal->SetRedenerer(m_renderer2);
+    coronal_normal->SetRenerWindow(m_renderWindows[1]);
     coronal_normal->SetInputConnection(v16);
     coronal_normal->GetMapper()->SetInputConnection(coronalColors->GetOutputPort());
     
@@ -164,7 +183,9 @@ void WidgetsMprVtk2::SetCoronalRendererNormal(vtkSmartPointer<vtkDICOMImageReade
 
     m_renderWindows[1]->AddRenderer(m_renderer2);
 
-    vtkSmartPointer<vtkInteractorStyleImage> style = vtkSmartPointer<vtkInteractorStyleImage>::New();
+    vtkSmartPointer<CrossViewVtkInteractorStyle> style = vtkSmartPointer<CrossViewVtkInteractorStyle>::New();
+    style->SetImageViewer(this);
+    style->SetImageActor(coronal_normal);
     m_interactor2 = vtkSmartPointer< vtkRenderWindowInteractor >::New();
     m_interactor2->SetInteractorStyle(style);
                 
@@ -181,6 +202,8 @@ void WidgetsMprVtk2::SetSagittalRendererNormal(vtkSmartPointer<vtkDICOMImageRead
 
     sagittal_normal = vtkSmartPointer<CrossViewVtkActorSagittal>::New();    
     sagittal_normal->SetMprWindowControl(this);
+    sagittal_normal->SetRedenerer(m_renderer3);
+    sagittal_normal->SetRenerWindow(m_renderWindows[2]);
     sagittal_normal->SetInputConnection(v16);
     sagittal_normal->GetMapper()->SetInputConnection(sagittalColors->GetOutputPort());
 
@@ -195,7 +218,9 @@ void WidgetsMprVtk2::SetSagittalRendererNormal(vtkSmartPointer<vtkDICOMImageRead
 
     m_renderWindows[2]->AddRenderer(m_renderer3);
 
-    vtkSmartPointer<vtkInteractorStyleImage> style = vtkSmartPointer<vtkInteractorStyleImage>::New();
+    vtkSmartPointer<CrossViewVtkInteractorStyle> style = vtkSmartPointer<CrossViewVtkInteractorStyle>::New();
+    style->SetImageViewer(this);
+    style->SetImageActor(sagittal_normal);
     m_interactor3 = vtkSmartPointer< vtkRenderWindowInteractor >::New();
     m_interactor3->SetInteractorStyle(style);
     

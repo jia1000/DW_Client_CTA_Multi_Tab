@@ -16,6 +16,8 @@
 #include "cross_view_vtk_actor.h"
 
 #include "widgets_mpr_vtk.h"
+#include "widgets_mpr_vtk2.h"
+
 
 vtkStandardNewMacro(CrossViewVtkActorBase);
 
@@ -32,7 +34,14 @@ void CrossViewVtkActorBase::SetMprWindowControl(WidgetsMprVtk* mpr)
 {
     m_mpr = mpr;
 }
-
+void CrossViewVtkActorBase::SetRenerWindow(vtkRenderWindow* renwindow)
+{
+    m_renderWindow = renwindow;
+}
+void CrossViewVtkActorBase::SetRedenerer(vtkSmartPointer<vtkRenderer> renderer)
+{
+    m_renderer = renderer;
+}
 void CrossViewVtkActorBase::SetInputConnection(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
     m_v16 = v16;
@@ -54,20 +63,20 @@ void CrossViewVtkActorBase::SetInputConnection(vtkSmartPointer<vtkDICOMImageRead
     case SLICE_ORIENTATION_AXIAL:
         min_slice = m_data_extent[4];
         max_slice = m_data_extent[5];
-        m_renderer = m_mpr->m_renderer;
+        //m_renderer = m_mpr2->m_renderWindows[0]->;
         break;
     case SLICE_ORIENTATION_CORONAL:
         min_slice = m_data_extent[2];
         max_slice = m_data_extent[3];
-        m_renderer = m_mpr->m_renderer2;
+        //m_renderer = m_mpr->m_renderer2;
         break;
     case SLICE_ORIENTATION_SAGITTAL:
         min_slice = m_data_extent[0];
         max_slice = m_data_extent[1];
-        m_renderer = m_mpr->m_renderer3;
+        //m_renderer = m_mpr->m_renderer3;
         break;
     default:
-        m_renderer = m_mpr->m_renderer ;
+        //m_renderer = m_mpr->m_renderer;
         ;
     }
 
@@ -97,10 +106,10 @@ void CrossViewVtkActorBase::SetSlice(int delta_slice)
     // Figure out the correct clipping range
     m_renderer->ResetCameraClippingRange();
     //////////////////////////////////////////////////////////////////////////
-
+    
     printf("%s : slice %3d\n", m_actor_name.c_str(), m_cur_cross_normal);
 
-    m_mpr->m_renderWindow->Render();
+    m_renderWindow->Render();
 
     return ;
 }

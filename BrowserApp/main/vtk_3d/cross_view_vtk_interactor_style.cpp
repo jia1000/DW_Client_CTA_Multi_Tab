@@ -30,7 +30,10 @@ void CrossViewVtkInteractorStyle::SetImageViewer(WidgetsMprVtk* mpr) {
     //_ImageActor = image_actor;
     m_mpr = mpr;
 }
-
+void CrossViewVtkInteractorStyle::SetImageActor(CrossViewVtkActorBase* actor) {
+    //_ImageActor = image_actor;
+    m_actor = actor;
+}
 void CrossViewVtkInteractorStyle::SetDicomImageReader(vtkDICOMImageReader* dicomReader)
 {
     _DicomReader = dicomReader;
@@ -43,7 +46,8 @@ void CrossViewVtkInteractorStyle::SetSlice(int slice)
     int eventStation[3] = { 0 };
     this->GetInteractor()->GetEventPosition(eventStation);
     
-    m_mpr->SetOneRendererSlice(slice, eventStation);    
+    m_actor->SetSlice(slice);
+    //m_mpr->SetOneRendererSlice(slice, eventStation);    
 }
 
 void CrossViewVtkInteractorStyle::MoveSliceForward()

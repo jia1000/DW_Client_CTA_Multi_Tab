@@ -21,7 +21,7 @@
 class CrossViewVtkActorBase;
 class WidgetsMprVtk;
 
-class CrossViewVtkInteractorStyle : public vtkInteractorStyleTrackballCamera//vtkInteractorStyleImage
+class CrossViewVtkInteractorStyle : public vtkInteractorStyleImage//vtkInteractorStyleTrackballCamera//vtkInteractorStyleImage
 {
 public:
     static CrossViewVtkInteractorStyle* New();
@@ -32,9 +32,12 @@ protected:
     //CrossViewVtkActor* _ImageActor;
     WidgetsMprVtk* m_mpr;
     vtkDICOMImageReader* _DicomReader;
+    CrossViewVtkActorBase* m_actor;
 
 public:
     void SetImageViewer(WidgetsMprVtk* mpr);
+
+    void SetImageActor(CrossViewVtkActorBase* actor);
 
     void SetDicomImageReader(vtkDICOMImageReader* dicomReader);
 
