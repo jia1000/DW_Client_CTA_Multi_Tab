@@ -146,7 +146,6 @@ void WidgetsMprVtk2::SetAxialRendererNormal(vtkSmartPointer<vtkDICOMImageReader>
     m_renderWindows[0]->AddRenderer(m_renderer);
 
     vtkSmartPointer<CrossViewVtkInteractorStyle> style = vtkSmartPointer<CrossViewVtkInteractorStyle>::New();
-    style->SetImageViewer(this);
     style->SetImageActor(axial_normal);
     m_interactor1 = vtkSmartPointer< vtkRenderWindowInteractor >::New();
     m_interactor1->SetInteractorStyle(style);
@@ -180,7 +179,6 @@ void WidgetsMprVtk2::SetCoronalRendererNormal(vtkSmartPointer<vtkDICOMImageReade
     m_renderWindows[1]->AddRenderer(m_renderer2);
 
     vtkSmartPointer<CrossViewVtkInteractorStyle> style = vtkSmartPointer<CrossViewVtkInteractorStyle>::New();
-    style->SetImageViewer(this);
     style->SetImageActor(coronal_normal);
     m_interactor2 = vtkSmartPointer< vtkRenderWindowInteractor >::New();
     m_interactor2->SetInteractorStyle(style);
@@ -213,7 +211,6 @@ void WidgetsMprVtk2::SetSagittalRendererNormal(vtkSmartPointer<vtkDICOMImageRead
     m_renderWindows[2]->AddRenderer(m_renderer3);
 
     vtkSmartPointer<CrossViewVtkInteractorStyle> style = vtkSmartPointer<CrossViewVtkInteractorStyle>::New();
-    style->SetImageViewer(this);
     style->SetImageActor(sagittal_normal);
     m_interactor3 = vtkSmartPointer< vtkRenderWindowInteractor >::New();
     m_interactor3->SetInteractorStyle(style);

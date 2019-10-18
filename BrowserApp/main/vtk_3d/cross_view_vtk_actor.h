@@ -49,8 +49,6 @@ protected:
     vtkSmartPointer<vtkDICOMImageReader> m_v16;
     vtkSmartPointer<vtkRenderWindow> m_renderWindow;
 
-    WidgetsMprVtk* m_mpr;
-
     std::string m_actor_name;
 
     int m_data_extent[6];

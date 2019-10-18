@@ -28,9 +28,6 @@ public:
     vtkTypeMacro(CrossViewVtkInteractorStyle, vtkInteractorStyleImage);
 
 protected:
-    //vtkImageViewer2* _ImageViewer;
-    //CrossViewVtkActor* _ImageActor;
-    WidgetsMprVtk* m_mpr;
     vtkDICOMImageReader* _DicomReader;
     CrossViewVtkActorBase* m_actor;
 

@@ -124,8 +124,7 @@ void WidgetsMprVtk::StartWidgetsRender()
 
 
     vtkSmartPointer<CrossViewVtkInteractorStyle> style = vtkSmartPointer<CrossViewVtkInteractorStyle>::New();
-    style->SetImageViewer(this);
-
+    
     m_interactor = vtkSmartPointer< vtkRenderWindowInteractor >::New();
     m_interactor->SetInteractorStyle(style);
 
