@@ -124,12 +124,6 @@
     <ClInclude Include="main\vtk_3d\cross_view_vtk_interactor_style.h">
       <Filter>main\vtk_3d</Filter>
     </ClInclude>
-    <ClInclude Include="main\vtk_3d\cross_view_vtk_renderer_base.h">
-      <Filter>main\vtk_3d</Filter>
-    </ClInclude>
-    <ClInclude Include="main\vtk_3d\cross_view_vtk_renderer_axial.h">
-      <Filter>main\vtk_3d</Filter>
-    </ClInclude>
     <ClInclude Include="main\vtk_3d\widgets_mpr_vtk2.h">
       <Filter>main\vtk_3d</Filter>
     </ClInclude>
@@ -206,12 +200,6 @@
       <Filter>main\vtk_3d</Filter>
     </ClCompile>
     <ClCompile Include="main\vtk_3d\cross_view_vtk_interactor_style.cpp">
-      <Filter>main\vtk_3d</Filter>
-    </ClCompile>
-    <ClCompile Include="main\vtk_3d\cross_view_vtk_renderer_base.cpp">
-      <Filter>main\vtk_3d</Filter>
-    </ClCompile>
-    <ClCompile Include="main\vtk_3d\cross_view_vtk_renderer_axial.cpp">
       <Filter>main\vtk_3d</Filter>
     </ClCompile>
     <ClCompile Include="main\vtk_3d\widgets_mpr_vtk2.cpp">
