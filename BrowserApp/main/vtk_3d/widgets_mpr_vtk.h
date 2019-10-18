@@ -20,11 +20,10 @@ public:
 
 	void ResizeAndPosition();
 
-    void SetSagittalActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16);
-    void SetAxialActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16);
-    void SetCoronalActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16);
-
-
+    void SetAxialRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16);
+    void SetCoronalRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16);
+    void SetSagittalRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16);
+            
     void SetSkinActor(vtkSmartPointer<vtkDICOMImageReader> v16);
     void SetBoneActor(vtkSmartPointer<vtkDICOMImageReader> v16);
     void SetOutlineActor(vtkSmartPointer<vtkDICOMImageReader> v16);

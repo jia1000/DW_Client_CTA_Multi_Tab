@@ -4,6 +4,12 @@
 #include "main/vtk_3d/cross_view_vtk_actor.h"
 #include "main/vtk_3d/cross_view_vtk_interactor_style.h"
 
+double leftViewStation[4] = { 0.0, 0.5, 0.5, 1.0 };
+//double rightViewStation[4] = { 0.5, 0.0, 1.0, 1.0 };
+double rightViewStation[4] = { 0.5, 0.5, 1.0, 1.0 };
+double leftdownViewStation[4] = { 0.0, 0.0, 0.5, 0.5 };
+double rightdownViewStation[4] = { 0.5, 0.0, 1.0, 0.5 };
+
 WidgetsMprVtk::WidgetsMprVtk(HWND parent, CButtonUI* pVtkShowBtn)
 	: m_parentWnd(parent)
 	//, m_rc(rc)
@@ -86,11 +92,7 @@ void WidgetsMprVtk::ResizeAndPosition()
 
 void WidgetsMprVtk::StartWidgetsRender()
 {
-    double leftViewStation[4] = { 0.0, 0.5, 0.5, 1.0 };
-    //double rightViewStation[4] = { 0.5, 0.0, 1.0, 1.0 };
-    double rightViewStation[4] = { 0.5, 0.5, 1.0, 1.0 };
-    double leftdownViewStation[4] = { 0.0, 0.0, 0.5, 0.5 };
-    double rightdownViewStation[4] = { 0.5, 0.0, 1.0, 0.5 };
+    
 
 
     m_v16 = vtkSmartPointer<vtkDICOMImageReader>::New();
@@ -129,9 +131,9 @@ void WidgetsMprVtk::StartWidgetsRender()
     m_satLut->SetValueRange(0, 1);
     m_satLut->Build();
 
-    SetSagittalActorNormal(m_v16);
-    SetAxialActorNormal(m_v16);
-    SetCoronalActorNormal(m_v16);
+    //SetSagittalActorNormal(m_v16);
+    //SetAxialActorNormal(m_v16);
+    //SetCoronalActorNormal(m_v16);
 
     SetSkinActor(m_v16);
     SetBoneActor(m_v16);
@@ -144,37 +146,13 @@ void WidgetsMprVtk::StartWidgetsRender()
     ResizeAndPosition();
 
     // 横状面  -- CT的切层 
-    m_renderer->AddActor(axial_normal);
-    vtkCamera* cam1 = m_renderer->GetActiveCamera();
-    cam1->SetFocalPoint(0, 0, 0);
-    cam1->SetPosition(0, 0, 1);
-    cam1->SetViewUp(0, 1, 0);
-    m_renderer->ResetCamera();
-    m_renderer->DrawOn();
-    m_renderer->SetViewport(leftViewStation);
-
+    SetAxialRendererNormal(m_v16);
 
     // 冠状面  -- 人的正面
-    m_renderer2->AddActor(coronal_normal);
-    vtkCamera* cam2 = m_renderer2->GetActiveCamera();
-    cam2->SetFocalPoint(0, 0, 0);
-    cam2->SetPosition(0, -1, 0);
-    cam2->SetViewUp(0, 0, -1);
-    m_renderer2->ResetCamera();
-    m_renderer2->DrawOn();
-    m_renderer2->SetViewport(rightViewStation);
-
+    SetCoronalRendererNormal(m_v16);
 
     // 矢状面  -- 人的侧面
-    m_renderer3->AddActor(sagittal_normal);
-    vtkCamera* cam3 = m_renderer3->GetActiveCamera();
-    cam3->SetFocalPoint(0, 0, 0);
-    cam3->SetPosition(-1, 0, 0);
-    cam3->SetViewUp(0, 0, 1);
-    m_renderer3->ResetCamera();
-    m_renderer3->DrawOn();
-    m_renderer3->SetViewport(leftdownViewStation);
-
+    SetSagittalRendererNormal(m_v16);
 
     // 三维图像
     m_renderer4->AddActor(skin);
@@ -198,22 +176,7 @@ void WidgetsMprVtk::StartWidgetsRender()
     m_renderWindow->Render();
 }
 
-void WidgetsMprVtk::SetSagittalActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
-{
-    vtkSmartPointer<vtkImageMapToColors> sagittalColors = vtkSmartPointer<vtkImageMapToColors>::New();
-    sagittalColors->SetInputConnection(v16->GetOutputPort());
-
-    sagittal_normal = vtkSmartPointer<CrossViewVtkActorSagittal>::New();    
-    sagittal_normal->SetMprWindowControl(this);
-    sagittal_normal->SetInputConnection(v16);
-    sagittal_normal->GetMapper()->SetInputConnection(sagittalColors->GetOutputPort());
-    int adv = m_data_extent[1] - m_data_extent[0] + 1;
-    m_cur_sagitta_normal = adv / 2;
-    // 设置显示3D切层的位置
-    sagittal_normal->SetDisplayExtent(m_cur_sagitta_normal, m_cur_sagitta_normal, m_data_extent[2], m_data_extent[3], m_data_extent[4], m_data_extent[5]);
-}
-
-void WidgetsMprVtk::SetAxialActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
+void WidgetsMprVtk::SetAxialRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
     vtkSmartPointer<vtkImageMapToColors> axialColors = vtkSmartPointer<vtkImageMapToColors>::New();
     axialColors->SetInputConnection(v16->GetOutputPort());
@@ -222,13 +185,22 @@ void WidgetsMprVtk::SetAxialActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16
     axial_normal->SetMprWindowControl(this);
     axial_normal->SetInputConnection(v16);
     axial_normal->GetMapper()->SetInputConnection(axialColors->GetOutputPort());
-    int adv = m_data_extent[5] - m_data_extent[4] + 1;
-    m_cur_axial_normal = adv / 2;
-    // 设置显示3D切层的位置
-    axial_normal->SetDisplayExtent(m_data_extent[0], m_data_extent[1], m_data_extent[2], m_data_extent[3], m_cur_axial_normal, m_cur_axial_normal);
+    //int adv = m_data_extent[5] - m_data_extent[4] + 1;
+    //m_cur_axial_normal = adv / 2;
+    //// 设置显示3D切层的位置
+    //axial_normal->SetDisplayExtent(m_data_extent[0], m_data_extent[1], m_data_extent[2], m_data_extent[3], m_cur_axial_normal, m_cur_axial_normal);
 
+    m_renderer->AddActor(axial_normal);
+    vtkCamera* cam1 = m_renderer->GetActiveCamera();
+    cam1->SetFocalPoint(0, 0, 0);
+    cam1->SetPosition(0, 0, 1);
+    cam1->SetViewUp(0, 1, 0);
+    m_renderer->ResetCamera();
+    m_renderer->DrawOn();
+    m_renderer->SetViewport(leftViewStation);
 }
-void WidgetsMprVtk::SetCoronalActorNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
+
+void WidgetsMprVtk::SetCoronalRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
     vtkSmartPointer<vtkImageMapToColors> coronalColors = vtkSmartPointer<vtkImageMapToColors>::New();
     coronalColors->SetInputConnection(v16->GetOutputPort());
@@ -242,7 +214,36 @@ void WidgetsMprVtk::SetCoronalActorNormal(vtkSmartPointer<vtkDICOMImageReader> v
     // 设置显示3D切层的位置
     coronal_normal->SetDisplayExtent(m_data_extent[0], m_data_extent[1], m_cur_cornal_normal, m_cur_cornal_normal, m_data_extent[4], m_data_extent[5]);
 
+    m_renderer2->AddActor(coronal_normal);
+    vtkCamera* cam2 = m_renderer2->GetActiveCamera();
+    cam2->SetFocalPoint(0, 0, 0);
+    cam2->SetPosition(0, -1, 0);
+    cam2->SetViewUp(0, 0, -1);
+    m_renderer2->ResetCamera();
+    m_renderer2->DrawOn();
+    m_renderer2->SetViewport(rightViewStation);
 }
+
+void WidgetsMprVtk::SetSagittalRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
+{
+    vtkSmartPointer<vtkImageMapToColors> sagittalColors = vtkSmartPointer<vtkImageMapToColors>::New();
+    sagittalColors->SetInputConnection(v16->GetOutputPort());
+
+    sagittal_normal = vtkSmartPointer<CrossViewVtkActorSagittal>::New();    
+    sagittal_normal->SetMprWindowControl(this);
+    sagittal_normal->SetInputConnection(v16);
+    sagittal_normal->GetMapper()->SetInputConnection(sagittalColors->GetOutputPort());
+
+    m_renderer3->AddActor(sagittal_normal);
+    vtkCamera* cam3 = m_renderer3->GetActiveCamera();
+    cam3->SetFocalPoint(0, 0, 0);
+    cam3->SetPosition(-1, 0, 0);
+    cam3->SetViewUp(0, 0, 1);
+    m_renderer3->ResetCamera();
+    m_renderer3->DrawOn();
+    m_renderer3->SetViewport(leftdownViewStation);
+}
+
 void WidgetsMprVtk::SetSkinActor(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
     // Contour 轮廓、等高线
