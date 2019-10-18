@@ -65,7 +65,9 @@ void CrossViewVtkInteractorStyle::OnKeyDown()
         MoveSliceBackward();
     }
 
-    vtkInteractorStyleImage::OnKeyDown();
+    //vtkInteractorStyleImage::OnKeyDown();
+    vtkInteractorStyleTrackballCamera::OnKeyDown();
+
 }
 
 void CrossViewVtkInteractorStyle::OnMouseWheelForward()

@@ -21,7 +21,7 @@
 class CrossViewVtkActorBase;
 class WidgetsMprVtk;
 
-class CrossViewVtkInteractorStyle : public vtkInteractorStyleImage
+class CrossViewVtkInteractorStyle : public vtkInteractorStyleTrackballCamera//vtkInteractorStyleImage
 {
 public:
     static CrossViewVtkInteractorStyle* New();
