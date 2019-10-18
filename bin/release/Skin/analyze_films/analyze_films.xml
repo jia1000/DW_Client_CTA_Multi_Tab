@@ -60,7 +60,12 @@
 	<control height="1" bkcolor="#FF000000"/>
 	<HorizontalLayout  childpadding="0">		
 		<VerticalLayout name="vtk_report_panel" bkcolor="#FF535353" bordersize="1" bordercolor="#FFFFFFFF">
-			<Button name="btn_vtk_mpr"  text="1" width="970" height="690" bkcolor="#FFD0D1D7" />
+			<TileLayout bkcolor="#FF1C2136" columns="2" inset="8,8,8,8" childpadding="8" >			
+				<Button name="Button1"  text="1" 	height="335"  bkcolor="#FFD0D1D7" />
+				<Button name="Button2"  text="2" 	height="335"  bkcolor="#FFD0D1D7" />				
+				<Button name="Button3"  text="3" 	height="335"  bkcolor="#FFD0D1D7" />
+				<Button name="Button4"  text="4"  	height="335"  bkcolor="#FFD0D1D7" />				
+			</TileLayout>
 		</VerticalLayout >	
 		<TabLayout width="55" name="right_panel_switch" >
 			<Label name="ai_list1" font="0" text="AI 1" textcolor="#FFABBCDC" align="center" valign="vcenter" height="18" padding="10,8,10,8" /> 

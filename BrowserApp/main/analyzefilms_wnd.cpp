@@ -4,17 +4,23 @@
 #include "vtk_dicom_demo/DicomView.h"
 #include "MultiSlicesImageDemoSameSource.h"
 #include "main/vtk_3d/widgets_mpr_vtk.h"
+#include "main/vtk_3d/widgets_mpr_vtk2.h"
 
 #include <thread>
 
 AnalyzeFilms_Wnd::AnalyzeFilms_Wnd(void)
 {
-	
+    mpr_vtk2 = NULL;
+
 }
 
 AnalyzeFilms_Wnd::~AnalyzeFilms_Wnd(void)
 {
-	
+    if (mpr_vtk2) {
+        delete mpr_vtk2;
+        mpr_vtk2 = NULL;
+    }
+
 	//PostQuitMessage(0);	
 }
 
@@ -79,13 +85,22 @@ void    AnalyzeFilms_Wnd::Notify(TNotifyUI& msg)
 			if( pControl ) pControl->SetVisible(false);
 		} else if (_tcscmp(pszCtrlName, _T("btn_sysclose")) == 0) {
 			Close(IDOK);
-		} else if (_tcscmp(pszCtrlName, _T("btn_tool_vtk_mpr")) == 0) {
-            CButtonUI* pVtkShowBtn2 = static_cast<CButtonUI*>(m_pm.FindControl(_T("btn_vtk_mpr")));
-            if (pVtkShowBtn2) {
-                pVtkShowBtn2->SetText(_T("Please wait..."));
+        } else if (_tcscmp(pszCtrlName, _T("btn_tool_vtk_mpr")) == 0) {
+            std::vector<CButtonUI*> controls;
+            CButtonUI* pVtkShowBtn1 = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button1")));
+            CButtonUI* pVtkShowBtn2 = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button2")));
+            CButtonUI* pVtkShowBtn3 = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button3")));
+            CButtonUI* pVtkShowBtn4 = static_cast<CButtonUI*>(m_pm.FindControl(_T("Button4")));
+
+            controls.push_back(pVtkShowBtn1);
+            controls.push_back(pVtkShowBtn2);
+            controls.push_back(pVtkShowBtn3);
+            controls.push_back(pVtkShowBtn4);
+
+            if (!mpr_vtk2) {
+                mpr_vtk2 = new WidgetsMprVtk2(this->m_hWnd, controls);
+                mpr_vtk2->ShowWidgets_Test();
             }
-            m_widgetsMprVtk = new WidgetsMprVtk(this->m_hWnd, pVtkShowBtn2);
-            m_widgetsMprVtk->ShowWidgets_Test();
         }
 	} else if (_tcsicmp(msg.sType, _T("selectchanged")) == 0) {
 		//
