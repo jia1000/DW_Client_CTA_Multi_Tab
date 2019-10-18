@@ -32,23 +32,12 @@ void WidgetsMprVtk::ShowWidgets_Test()
 
 void WidgetsMprVtk::CreateRendererAndRenderWindowAndInteractor()
 {
-    m_renderer = vtkSmartPointer<vtkRenderer>::New();
-    m_renderer->SetBackground(0.1, 0.2, 0.4);
-
-    m_renderer2 = vtkSmartPointer<vtkRenderer>::New();
-    m_renderer2->SetBackground(0.4, 0.2, 0.1);
-
-    m_renderer3 = vtkSmartPointer<vtkRenderer>::New();
-    m_renderer3->SetBackground(0.4, 0.2, 0.1);
-
-    m_renderer4 = vtkSmartPointer<vtkRenderer>::New();
-    m_renderer4->SetBackground(0.1, 0.2, 0.4);
+    
 
     m_renderWindow = vtkSmartPointer< vtkRenderWindow >::New();
-    m_renderWindow->AddRenderer(m_renderer);
-    m_renderWindow->AddRenderer(m_renderer2);
-    m_renderWindow->AddRenderer(m_renderer3);
-    m_renderWindow->AddRenderer(m_renderer4);
+    
+    
+   
     m_renderWindow->SetWindowName("AnnotationWidget");
 
 	//m_interactor = vtkSmartPointer< vtkRenderWindowInteractor >::New();
@@ -106,42 +95,18 @@ void WidgetsMprVtk::StartWidgetsRender()
         m_data_extent[Index] = data_extent[Index];
     }
 
-    m_bwLut = vtkSmartPointer<vtkLookupTable>::New();
-    m_bwLut->SetTableRange(0, 2000);
-    m_bwLut->SetSaturationRange(0, 0);	// 设置色彩饱和度
-    m_bwLut->SetHueRange(0, 0);		// 设置色度/色调范围
-    m_bwLut->SetValueRange(0, 1);
-    m_bwLut->Build();
-
-    // 用这个验证函数的使用
-    m_hueLut = vtkSmartPointer<vtkLookupTable>::New();
-    m_hueLut->SetTableRange(0, 2000);
-    m_hueLut->SetHueRange(0, 01);		// 设置色度/色调范围
-    m_hueLut->SetSaturationRange(0, 0);// 设置色彩饱和度
-    m_hueLut->SetValueRange(0, 1);
-    m_hueLut->Build();
+    
 
     m_cur_hue_coronal_min = 0.6;
     m_cur_hue_coronal_max = 0.6;
 
-    m_satLut = vtkSmartPointer<vtkLookupTable>::New();
-    m_satLut->SetTableRange(0, 2000);
-    m_satLut->SetHueRange(0, 0);		// 设置色度/色调范围
-    m_satLut->SetSaturationRange(0, 0);// 设置色彩饱和度
-    m_satLut->SetValueRange(0, 1);
-    m_satLut->Build();
+    
 
     //SetSagittalActorNormal(m_v16);
     //SetAxialActorNormal(m_v16);
     //SetCoronalActorNormal(m_v16);
 
-    SetSkinActor(m_v16);
-    SetBoneActor(m_v16);
-    SetOutlineActor(m_v16);
-    // 这是3个轴面的slice显示
-    SetSagittalActor(m_v16, m_bwLut);
-    SetAxialActor(m_v16, m_hueLut);
-    SetCoronalActor(m_v16, m_satLut);
+   
 
     ResizeAndPosition();
 
@@ -154,15 +119,8 @@ void WidgetsMprVtk::StartWidgetsRender()
     // 矢状面  -- 人的侧面
     SetSagittalRendererNormal(m_v16);
 
-    // 三维图像
-    m_renderer4->AddActor(skin);
-    m_renderer4->AddActor(bone);
-    m_renderer4->AddActor(outline);
-    m_renderer4->AddActor(sagittal);
-    m_renderer4->AddActor(axial);
-    m_renderer4->AddActor(coronal);
-    m_renderer4->DrawOn();
-    m_renderer4->SetViewport(rightdownViewStation);
+    // mpr
+    SetMprRendererNormal(m_v16);
 
 
     vtkSmartPointer<CrossViewVtkInteractorStyle> style = vtkSmartPointer<CrossViewVtkInteractorStyle>::New();
@@ -178,6 +136,9 @@ void WidgetsMprVtk::StartWidgetsRender()
 
 void WidgetsMprVtk::SetAxialRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
+    m_renderer = vtkSmartPointer<vtkRenderer>::New();
+    m_renderer->SetBackground(0.1, 0.2, 0.4);
+
     vtkSmartPointer<vtkImageMapToColors> axialColors = vtkSmartPointer<vtkImageMapToColors>::New();
     axialColors->SetInputConnection(v16->GetOutputPort());
 
@@ -185,11 +146,7 @@ void WidgetsMprVtk::SetAxialRendererNormal(vtkSmartPointer<vtkDICOMImageReader> 
     axial_normal->SetMprWindowControl(this);
     axial_normal->SetInputConnection(v16);
     axial_normal->GetMapper()->SetInputConnection(axialColors->GetOutputPort());
-    //int adv = m_data_extent[5] - m_data_extent[4] + 1;
-    //m_cur_axial_normal = adv / 2;
-    //// 设置显示3D切层的位置
-    //axial_normal->SetDisplayExtent(m_data_extent[0], m_data_extent[1], m_data_extent[2], m_data_extent[3], m_cur_axial_normal, m_cur_axial_normal);
-
+    
     m_renderer->AddActor(axial_normal);
     vtkCamera* cam1 = m_renderer->GetActiveCamera();
     cam1->SetFocalPoint(0, 0, 0);
@@ -198,10 +155,15 @@ void WidgetsMprVtk::SetAxialRendererNormal(vtkSmartPointer<vtkDICOMImageReader> 
     m_renderer->ResetCamera();
     m_renderer->DrawOn();
     m_renderer->SetViewport(leftViewStation);
+
+    m_renderWindow->AddRenderer(m_renderer);
 }
 
 void WidgetsMprVtk::SetCoronalRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
+    m_renderer2 = vtkSmartPointer<vtkRenderer>::New();
+    m_renderer2->SetBackground(0.4, 0.2, 0.1);
+
     vtkSmartPointer<vtkImageMapToColors> coronalColors = vtkSmartPointer<vtkImageMapToColors>::New();
     coronalColors->SetInputConnection(v16->GetOutputPort());
 
@@ -209,11 +171,7 @@ void WidgetsMprVtk::SetCoronalRendererNormal(vtkSmartPointer<vtkDICOMImageReader
     coronal_normal->SetMprWindowControl(this);
     coronal_normal->SetInputConnection(v16);
     coronal_normal->GetMapper()->SetInputConnection(coronalColors->GetOutputPort());
-    int adv = m_data_extent[3] - m_data_extent[2] + 1;
-    m_cur_cornal_normal = adv / 2;
-    // 设置显示3D切层的位置
-    coronal_normal->SetDisplayExtent(m_data_extent[0], m_data_extent[1], m_cur_cornal_normal, m_cur_cornal_normal, m_data_extent[4], m_data_extent[5]);
-
+    
     m_renderer2->AddActor(coronal_normal);
     vtkCamera* cam2 = m_renderer2->GetActiveCamera();
     cam2->SetFocalPoint(0, 0, 0);
@@ -222,10 +180,15 @@ void WidgetsMprVtk::SetCoronalRendererNormal(vtkSmartPointer<vtkDICOMImageReader
     m_renderer2->ResetCamera();
     m_renderer2->DrawOn();
     m_renderer2->SetViewport(rightViewStation);
+
+    m_renderWindow->AddRenderer(m_renderer2);
 }
 
 void WidgetsMprVtk::SetSagittalRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
 {
+    m_renderer3 = vtkSmartPointer<vtkRenderer>::New();
+    m_renderer3->SetBackground(0.4, 0.2, 0.1);
+
     vtkSmartPointer<vtkImageMapToColors> sagittalColors = vtkSmartPointer<vtkImageMapToColors>::New();
     sagittalColors->SetInputConnection(v16->GetOutputPort());
 
@@ -242,6 +205,56 @@ void WidgetsMprVtk::SetSagittalRendererNormal(vtkSmartPointer<vtkDICOMImageReade
     m_renderer3->ResetCamera();
     m_renderer3->DrawOn();
     m_renderer3->SetViewport(leftdownViewStation);
+
+    m_renderWindow->AddRenderer(m_renderer3);
+}
+
+void WidgetsMprVtk::SetMprRendererNormal(vtkSmartPointer<vtkDICOMImageReader> v16)
+{
+    m_renderer4 = vtkSmartPointer<vtkRenderer>::New();
+    m_renderer4->SetBackground(0.1, 0.2, 0.4);
+
+    m_bwLut = vtkSmartPointer<vtkLookupTable>::New();
+    m_bwLut->SetTableRange(0, 2000);
+    m_bwLut->SetSaturationRange(0, 0);	// 设置色彩饱和度
+    m_bwLut->SetHueRange(0, 0);		// 设置色度/色调范围
+    m_bwLut->SetValueRange(0, 1);
+    m_bwLut->Build();
+
+    // 用这个验证函数的使用
+    m_hueLut = vtkSmartPointer<vtkLookupTable>::New();
+    m_hueLut->SetTableRange(0, 2000);
+    m_hueLut->SetHueRange(0, 01);		// 设置色度/色调范围
+    m_hueLut->SetSaturationRange(0, 0);// 设置色彩饱和度
+    m_hueLut->SetValueRange(0, 1);
+    m_hueLut->Build();
+
+    m_satLut = vtkSmartPointer<vtkLookupTable>::New();
+    m_satLut->SetTableRange(0, 2000);
+    m_satLut->SetHueRange(0, 0);		// 设置色度/色调范围
+    m_satLut->SetSaturationRange(0, 0);// 设置色彩饱和度
+    m_satLut->SetValueRange(0, 1);
+    m_satLut->Build();
+
+    SetSkinActor(m_v16);
+    SetBoneActor(m_v16);
+    SetOutlineActor(m_v16);
+    // 这是3个轴面的slice显示
+    SetSagittalActor(m_v16, m_bwLut);
+    SetAxialActor(m_v16, m_hueLut);
+    SetCoronalActor(m_v16, m_satLut);
+
+    // 三维图像
+    m_renderer4->AddActor(skin);
+    m_renderer4->AddActor(bone);
+    m_renderer4->AddActor(outline);
+    m_renderer4->AddActor(sagittal);
+    m_renderer4->AddActor(axial);
+    m_renderer4->AddActor(coronal);
+    m_renderer4->DrawOn();
+    m_renderer4->SetViewport(rightdownViewStation);
+
+    m_renderWindow->AddRenderer(m_renderer4);
 }
 
 void WidgetsMprVtk::SetSkinActor(vtkSmartPointer<vtkDICOMImageReader> v16)
