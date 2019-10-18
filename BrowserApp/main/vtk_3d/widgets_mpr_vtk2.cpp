@@ -130,7 +130,6 @@ void WidgetsMprVtk2::SetAxialRendererNormal(vtkSmartPointer<vtkDICOMImageReader>
     axialColors->SetInputConnection(v16->GetOutputPort());
 
     axial_normal = vtkSmartPointer<CrossViewVtkActorAxial>::New();
-    axial_normal->SetRedenerer(m_renderer);
     axial_normal->SetRenerWindow(m_renderWindows[0]);
     axial_normal->SetInputConnection(v16);
     axial_normal->GetMapper()->SetInputConnection(axialColors->GetOutputPort());
@@ -165,7 +164,6 @@ void WidgetsMprVtk2::SetCoronalRendererNormal(vtkSmartPointer<vtkDICOMImageReade
     coronalColors->SetInputConnection(v16->GetOutputPort());
 
     coronal_normal = vtkSmartPointer<CrossViewVtkActorCoronal>::New();
-    coronal_normal->SetRedenerer(m_renderer2);
     coronal_normal->SetRenerWindow(m_renderWindows[1]);
     coronal_normal->SetInputConnection(v16);
     coronal_normal->GetMapper()->SetInputConnection(coronalColors->GetOutputPort());
@@ -199,7 +197,6 @@ void WidgetsMprVtk2::SetSagittalRendererNormal(vtkSmartPointer<vtkDICOMImageRead
     sagittalColors->SetInputConnection(v16->GetOutputPort());
 
     sagittal_normal = vtkSmartPointer<CrossViewVtkActorSagittal>::New();    
-    sagittal_normal->SetRedenerer(m_renderer3);
     sagittal_normal->SetRenerWindow(m_renderWindows[2]);
     sagittal_normal->SetInputConnection(v16);
     sagittal_normal->GetMapper()->SetInputConnection(sagittalColors->GetOutputPort());
