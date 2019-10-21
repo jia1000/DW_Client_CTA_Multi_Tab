@@ -45,6 +45,10 @@ public:
 		{ 
 			for (int i = 0; i < 3; i++) 
 			{ 
+				vtkResliceCursorWidget *index_widget = view[i]->m_ResliceCursorWidget;
+				if (index_widget == rcw) {
+					continue;
+				}
 				vtkPlaneSource *ps = static_cast< vtkPlaneSource * >( 
 					view[i]->GetImagePlaneWidget()->GetPolyDataAlgorithm()); 
 

@@ -51,6 +51,7 @@ void CvtkView::PreSubclassWindow()
 	m_RenderWindow->SetParentId(this->m_parentWnd);
 	m_RenderWindow->SetSize(rect.right - rect.left, rect.bottom - rect.top);
 	m_RenderWindow->SetPosition(rect.left, rect.top);
+	
 	m_RenderWindow->AddRenderer(m_Renderer);
 
 	if(m_RenderWindow->GetInteractor() == NULL)
@@ -110,6 +111,30 @@ void CvtkView::SetupReslice()
 		GetCursorAlgorithm()->SetReslicePlaneNormal(m_Direction);
 
 	m_ResliceCursorWidget->SetEnabled(1); 
+
+	//////////////////////////////////////////////////////////////////////////
+	if (2 == m_Direction) {			//axial
+		vtkCamera* cam1 = m_Renderer->GetActiveCamera();
+		cam1->SetFocalPoint(0, 0, 0);
+		cam1->SetPosition(0, 0, 1);
+		cam1->SetViewUp(0, 1, 0);
+		m_Renderer->ResetCamera();
+	} else if(1 == m_Direction){    // coronal
+		vtkCamera* cam2 = m_Renderer->GetActiveCamera();
+		cam2->SetFocalPoint(0, 0, 0);
+		cam2->SetPosition(0, -1, 0);
+		cam2->SetViewUp(0, 0, -1);
+		m_Renderer->ResetCamera();
+	} else if(0 == m_Direction)    // sagittal
+	{	
+		vtkCamera* cam3 = m_Renderer->GetActiveCamera();
+		cam3->SetFocalPoint(0, 0, 0);
+		cam3->SetPosition(-1, 0, 0);
+		cam3->SetViewUp(0, 0, -1);
+		m_Renderer->ResetCamera();
+	}
+	//////////////////////////////////////////////////////////////////////////
+
 	m_Renderer->ResetCamera(); 
 
 	//////////////////////////////////////////////////////////////////////////
