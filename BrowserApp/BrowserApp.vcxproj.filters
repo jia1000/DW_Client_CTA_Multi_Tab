@@ -37,6 +37,9 @@
     <Filter Include="main\vtk_3d">
       <UniqueIdentifier>{b26ecc29-bc34-4770-aecf-2b8f59548ddb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="main\vtk_3d\subject_notify">
+      <UniqueIdentifier>{961109b5-a4cf-4ee5-8cb7-c20129429077}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\WndSimpleFrame.h">
@@ -124,6 +127,12 @@
     <ClInclude Include="main\vtk_3d\widgets_mpr_vtk2.h">
       <Filter>main\vtk_3d</Filter>
     </ClInclude>
+    <ClInclude Include="main\vtk_3d\subject_notify\slice_change_notify.h">
+      <Filter>main\vtk_3d\subject_notify</Filter>
+    </ClInclude>
+    <ClInclude Include="main\vtk_3d\subject_notify\slice_change_observer.h">
+      <Filter>main\vtk_3d\subject_notify</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\WndSimpleFrame.cpp">
@@ -198,6 +207,12 @@
     </ClCompile>
     <ClCompile Include="main\vtk_3d\widgets_mpr_vtk2.cpp">
       <Filter>main\vtk_3d</Filter>
+    </ClCompile>
+    <ClCompile Include="main\vtk_3d\subject_notify\slice_change_notify.cpp">
+      <Filter>main\vtk_3d\subject_notify</Filter>
+    </ClCompile>
+    <ClCompile Include="main\vtk_3d\subject_notify\slice_change_observer.cpp">
+      <Filter>main\vtk_3d\subject_notify</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
