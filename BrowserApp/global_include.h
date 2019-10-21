@@ -116,5 +116,11 @@
 #include <vtkPolyLine.h>
 
 #include <vtkRendererCollection.h>
-
+#include <vtkResliceCursorWidget.h>
+#include <vtkResliceCursor.h>
+#include <vtkResliceCursorThickLineRepresentation.h>
+#include <vtkResliceCursorActor.h>
+#include <vtkResliceCursorPolyDataAlgorithm.h>
+#include <vtkPlaneSource.h>
+#include <vtkImageReader2Factory.h>
 // TODO: 在此处引用程序需要的其他头文件

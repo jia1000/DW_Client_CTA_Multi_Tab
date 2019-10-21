@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Window size="1024,768" sizebox="4,4,6,6" roundcorner="0,0" caption="0,0,0,20" bktrans="false" mininfo="600,480" >
+
+  <Font id="0" name="微软雅黑" size="13" />
+  <Font id="1" name="微软雅黑" size="12" bold="false" default="true"/>
+  <Font id="2" name="微软雅黑" size="16" bold="false"/>
+  <Font id="3" name="微软雅黑" size="18" bold="false"/>
+  <Font id="4" name="微软雅黑" size="11" bold="false"/>
+  <Style name="radio_style" value="autocalcwidth=&quot;true&quot; align=&quot;left&quot;  textcolor=&quot;#FF000000&quot; hottextcolor=&quot;#FF000000&quot; valign=&quot;vcenter&quot; height=&quot;17&quot; textpadding=&quot;20,0,6,0&quot; stateimage=&quot;res='sysbtn/radio_normal.png' dest='0,0,17,17'&quot; statecount=&quot;2&quot; selectedstateimage=&quot;res='sysbtn/radio_selected.png' dest='0,0,17,17'&quot; selectedstatecount=&quot;2&quot;" />
+  <Style name="colortab_style" value="textcolor=&quot;#FFAFADAD&quot; hottextcolor=&quot;#FFFFFFFF&quot; selectedtextcolor=&quot;#FFFFFFFF&quot; textpadding=&quot;6,0,6,0&quot; bkcolor=&quot;#FF535353&quot; hotbkcolor=&quot;#FF4b4b4b&quot; pushedbkcolor=&quot;#FF424242&quot; selectedbkcolor=&quot;#FF535353&quot;"  />
+  <Style name="Tool_btn_style" value="width=&quot;70&quot; height=&quot;54&quot; minwidth=&quot;30&quot; textcolor=&quot;#FFF2F2F2&quot; hottextcolor=&quot;#FFF2F2F2&quot; textpadding=&quot;0,0,0,5&quot; align=&quot;center&quot; valign=&quot;bottom&quot;"/>
+  <Style name="cb_style" value="autocalcwidth=&quot;true&quot; align=&quot;left&quot; valign=&quot;vcenter&quot; height=&quot;16&quot; textcolor=&quot;#FFF2F2F2&quot; hottextcolor=&quot;#FFF2F2F2&quot; textpadding=&quot;20,0,6,0&quot; normalimage=&quot;res='sysbtn/cb_normal.png' dest='0,0,16.16'&quot; hotimage=&quot;res='sysbtn/cb_hot.png' dest='0,0,16.16'&quot; pushedimage=&quot;res='sysbtn/cb_pushed.png' dest='0,0,16.16'&quot; selectedimage=&quot;res='sysbtn/cb_selected.png' dest='0,0,16,16'&quot;" />
+  <Style name="list_style" value="headerbkimage=&quot;res='main/list_header_bg.png'&quot; itemalign=&quot;center&quot; itemlinecolor=&quot;#FF888888&quot; itemshowrowline=&quot;false&quot; itemshowcolumnline=&quot;false&quot;" />
+  <Style name="listheader_style" value="textpadding=&quot;6,6,0,0&quot; align=&quot;left&quot; hotimage=&quot;res='main/list_header_hot.png'&quot; pushedimage=&quot;res='main/list_header_pushed.png'&quot; sepimage=&quot;res='main/list_header_sep.png'&quot; sepwidth=&quot;1&quot;" />
+  
+  <Default name="VScrollBar" value="button1normalimage=&quot;file='sysbtn/scrollbar.png' source='0,0,16,16'&quot; button1hotimage=&quot;file='sysbtn/scrollbar.png' source='16,0,32,16'&quot; button1pushedimage=&quot;file='sysbtn/scrollbar.png' source='32,0,48,16'&quot; button2normalimage=&quot;file='sysbtn/scrollbar.png' source='64,0,80,16'&quot; button2hotimage=&quot;file='sysbtn/scrollbar.png' source='64,0,80,16'&quot; button2pushedimage=&quot;file='sysbtn/scrollbar.png' source='96,0,112,16'&quot; thumbnormalimage=&quot;file='sysbtn/scrollbar.png' source='192,0,208,16' corner='1,1,1,1'&quot; thumbhotimage=&quot;file='sysbtn/scrollbar.png' source='192,0,208,16' corner='1,1,1,1'&quot; thumbpushedimage=&quot;file='sysbtn/scrollbar.png' source='192,0,208,16' corner='1,1,1,1'&quot; bknormalimage=&quot;file='sysbtn/scrollbar.png' source='224,0,240,16'&quot;" />
+  <Default name="HScrollBar" value="button1normalimage=&quot;file='sysbtn/scrollbar.png' source='0,16,16,32'&quot; button1hotimage=&quot;file='sysbtn/scrollbar.png' source='16,16,32,32'&quot; button1pushedimage=&quot;file='sysbtn/scrollbar.png' source='32,16,48,32'&quot; button2normalimage=&quot;file='sysbtn/scrollbar.png' source='64,16,80,32'&quot; button2hotimage=&quot;file='sysbtn/scrollbar.png' source='64,16,80,32'&quot; button2pushedimage=&quot;file='sysbtn/scrollbar.png' source='96,16,112,32'&quot; thumbnormalimage=&quot;file='sysbtn/scrollbar.png' source='192,16,208,32' corner='1,1,1,1'&quot; thumbhotimage=&quot;file='sysbtn/scrollbar.png' source='192,16,208,32' corner='1,1,1,1'&quot; thumbpushedimage=&quot;file='sysbtn/scrollbar.png' source='192,16,208,32' corner='1,1,1,1'&quot; bknormalimage=&quot;file='sysbtn/scrollbar.png' source='224,0,240,16'&quot;"/>
+  
+  <VerticalLayout bkcolor="#FF535353" name="root" >
+	<!-- 标题栏区 -->
+	<HorizontalLayout height="32" bkcolor="#FF1C2237" bordersize="0,0,0,1" bordercolor="#59000000">		        
+		<Label name="title_label" font="0" text="" textcolor="#FFABBCDC" align="center" valign="vcenter" height="18" padding="10,8,10,8" />	  
+		<Button name="btn_sysmin"   virtualwnd="mainpage" tooltip="最小化" width="48" height="32" hotbkcolor="#FF2C356A" pushedbkcolor="#FF2C356A" normalimage="file='window/minimize_nor.png' dest='16,8,32,24'" hotimage="file='window/minimize_hov.png' dest='16,8,32,24'" pushedimage="file='window/minimize_push.png' dest='16,8,32,24'" />
+		<Button name="btn_restore"  virtualwnd="mainpage" tooltip="还原" visible="false" width="48" height="32" hotbkcolor="#FF2C356A" pushedbkcolor="#FF2C356A" normalimage="file='window/reduction_nor.png' dest='16,8,32,24'" hotimage="file='window/reduction_hov.png' dest='16,8,32,24'" pushedimage="file='window/reduction_push.png' dest='16,8,32,24'" />
+		<Button name="btn_sysmax"   virtualwnd="mainpage" tooltip="最大化" width="48" height="32" hotbkcolor="#FF2C356A" pushedbkcolor="#FF2C356A" normalimage="file='window/fullscreen_nor.png' dest='16,8,32,24'" hotimage="file='window/fullscreen_hov.png' dest='16,8,32,24'" pushedimage="file='window/fullscreen_push.png' dest='16,8,32,24'" />
+		<Button name="btn_sysclose" virtualwnd="mainpage" tooltip="关闭" width="48" height="32" hotbkcolor="#FF2C356A" pushedbkcolor="#FF2C356A" normalimage="file='window/close_nor.png' dest='16,8,32,24'" hotimage="file='window/close_hov.png' dest='16,8,32,24'" pushedimage="file='window/close_push.png' dest='16,8,32,24'" />
+	</HorizontalLayout>
+	
+	<!-- 主窗口 -->
+	<HorizontalLayout height="47" name="tool_bar" childpadding="2">
+        <Button textcolor="#FFFFFFFF" name="btn_window" text="窗口" tooltip="窗口" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_window_cobb.png' dest='8,3,30,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="38" height="46"/>
+        <Control height="47" width="1" bkcolor="#FF000000"/>
+		<SelectButton textcolor="#FFFFFFFF" name="btn_selected" text="选择" tooltip="选择" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_flecha.png' dest='8,3,30,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="38" height="46" />
+        <Button textcolor="#FFFFFFFF" name="btn_annotation" text="注释" tooltip="注释" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_annotation_cobb.png' dest='8,3,30,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242"  width="38" height="46" />
+        <Button textcolor="#FFFFFFFF" name="btn_reset" text="重置" tooltip="重置" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_reset_pan_and_zoom.png' dest='8,3,30,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="38" height="46" />
+        <Button textcolor="#FFFFFFFF" name="btn_flip_horizontal" text="水平翻转" tooltip="水平翻转" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_about_reverse_cobb.png' dest='19,3,41,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242"  width="60" height="46" />
+		<Button textcolor="#FFFFFFFF" name="btn_flip_vertical" text="垂直翻转" tooltip="垂直翻转" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_upside_down_cobb.png' dest='19,3,41,25'"  hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242"  width="60" height="46" />
+        <Button textcolor="#FFFFFFFF" name="btn_rotate" text="旋转" tooltip="旋转" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_rotating_cobb.png' dest='8,3,30,25'"  hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242"  width="38" height="46" />
+		<WindowLevelButton textcolor="#FFFFFFFF" name="btn_window_level" text="窗宽窗位" tooltip="窗宽窗位" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_wl.png' dest='19,3,41,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242"  width="60" height="46" />
+		<Button textcolor="#FFFFFFFF" name="btn_move" text="移动" tooltip="移动" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_pan.png' dest='8,3,30,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="38" height="46" />
+		<Button textcolor="#FFFFFFFF" name="btn_scales" text="缩放" tooltip="缩放" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_zoom.png' dest='8,3,30,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="38" height="46" />
+		<ClipButton textcolor="#FFFFFFFF" name="btn_affiliation_whole_off" text="联动 ▽" tooltip="联动关闭" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/toolbar/ico_linkage_normal.png' dest='2,0,36,30'"  hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242"  width="48" height="46" />
+		<ClipButton textcolor="#FFFFFFFF" name="btn_affiliation_whole_on" text="取消 ▽" tooltip="联动启动" visible="false" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/toolbar/ico_linkage_selected_normal.png' dest='2,0,36,30'"  hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242"  width="48" height="46" />
+		<Control height="47" width="1" bkcolor="#FF000000"/>
+		<Button textcolor="#FFFFFFFF" name="btn_mpr" text="MPR" tooltip="MPR" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_point_change.png' dest='9,3,31,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="40" height="46" />
+		<MIPButton textcolor="#FFFFFFFF" name="btn_mip" text="MIP" tooltip="MIP" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_mip.png' dest='9,3,31,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="40" height="46" />
+		<Button textcolor="#FFFFFFFF" name="btn_plane_resturcturing" text="平面重组" tooltip="平面重组" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/menu/rbutton_image.png' dest='15,0,45,30'"  hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242"  width="60" height="46" />
+		<Control height="47" width="1" bkcolor="#FF000000"/>
+		<MeasureButton textcolor="#FFFFFFFF" name="btn_measure" text="测量" tooltip="测量" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_measuring_tool.png' dest='8,3,30,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="38" height="46" />
+		<PositionMarkButton  textcolor="#FFFFFFFF" name="btn_position_mark" text="位置标记" tooltip="位置标记" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_position_mask.png' dest='19,3,41,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="60" height="46" />
+		<ContourMarkButton textcolor="#FFFFFFFF" name="btn_contour_mark" text="轮廓标记" tooltip="轮廓标记" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_free_form.png' dest='16,0,44,28'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="60" height="46" />
+		<Button textcolor="#FFFFFFFF" name="btn_assist_mark" text="辅助标记" tooltip="辅助标记" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_start_ai_cobb.png' dest='19,3,41,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="60" height="46" />
+		<Control height="47" width="1" bkcolor="#FF000000"/>
+		<Button textcolor="#FFFFFFFF" name="btn_mark_analyze" text="标记分析" tooltip="标记分析" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_3ddetection_cobb.png' dest='19,3,41,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="60" height="46" />
+		<Button textcolor="#FFFFFFFF" name="btn_followup_visit" text="随访" tooltip="随访" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_suifang_compare.png' dest='8,3,30,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="38" height="46" />
+		<Button textcolor="#FFFFFFFF" name="btn_report" text="报告" tooltip="报告" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_report.png' dest='8,3,30,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="38" height="46" />
+		<Button textcolor="#FFFFFFFF" name="btn_tool_vtk_mpr" text="mpr test" tooltip="测试mpr" valign="bottom" textpadding="0,0,0,3" bkimage="file='analyze_films/ico_suifang_compare.png' dest='8,3,30,25'" hotimage="file='analyze_films/ico_hotimage.png' corner='2,2,2,2'" pushedbkcolor="0xFF424242" width="38" height="46" />
+	</HorizontalLayout>
+	<control height="1" bkcolor="#FF000000"/>
+	<HorizontalLayout  childpadding="0">		
+		<VerticalLayout name="vtk_report_panel" bkcolor="#FF535353" bordersize="1" bordercolor="#FFFFFFFF">
+			<TileLayout bkcolor="#FF1C2136" columns="2" inset="8,8,8,8" childpadding="8" >			
+				<Button name="Button1"  text="1" 	height="335"  bkcolor="#FFD0D1D7" />
+				<Button name="Button2"  text="2" 	height="335"  bkcolor="#FFD0D1D7" />				
+				<Button name="Button3"  text="3" 	height="335"  bkcolor="#FFD0D1D7" />
+				<Button name="Button4"  text="4"  	height="335"  bkcolor="#FFD0D1D7" />				
+			</TileLayout>
+		</VerticalLayout >	
+		<TabLayout width="55" name="right_panel_switch" >
+			<Label name="ai_list1" font="0" text="AI 1" textcolor="#FFABBCDC" align="center" valign="vcenter" height="18" padding="10,8,10,8" /> 
+		</TabLayout>
+	</HorizontalLayout>
+  </VerticalLayout>
+</Window>

@@ -5,6 +5,7 @@
 #include "EntryFrameWnd2.h"
 #include "analyzefilms_wnd.h"
 #include "BrowserWndManager.h"
+#include "main/vtk_3d/vtk_sample/vtkDialog.h"
 
 //DUI_BEGIN_MESSAGE_MAP(CWndSimpleFrame, WindowImplBase)
 //	DUI_ON_MSGTYPE(DUI_MSGTYPE_CLICK,OnClick)
@@ -97,7 +98,12 @@ void CWndSimpleFrame::OnSelChanged(CControlUI* pSender)
         m_EntryFrameWnd3->Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, 0L);
         m_EntryFrameWnd3->CenterWindow();
         m_EntryFrameWnd3->ShowWindow(true);
-    }
+	} else if (strSelName == _T("option_restruct4")) {
+		m_EntryFrameWnd4 = new VtkDialog();
+		m_EntryFrameWnd4->Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, 0L);
+		m_EntryFrameWnd4->CenterWindow();
+		m_EntryFrameWnd4->ShowWindow(true);
+	}
 }
 
 void CWndSimpleFrame::SetShowCefBrowser(CCefBrowserUI* browser, bool is_show)

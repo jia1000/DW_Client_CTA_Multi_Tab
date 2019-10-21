@@ -13,7 +13,7 @@
 class CEntryFrameWnd;
 class CEntryFrameWnd2;
 class AnalyzeFilms_Wnd;
-
+class VtkDialog;
 
 class CWndSimpleFrame
 	: public CWndFrameBase
@@ -38,6 +38,7 @@ private:
 	CEntryFrameWnd* m_EntryFrameWnd;
 	CEntryFrameWnd2* m_EntryFrameWnd2;
     AnalyzeFilms_Wnd* m_EntryFrameWnd3;
+	VtkDialog*		m_EntryFrameWnd4;
     
 };
 
