@@ -16,12 +16,18 @@
 CWndSimpleFrame::CWndSimpleFrame(const wstring& url) 
 	:CWndFrameBase() 
 {
-	m_pBrowserUI = new CCefBrowserUI(this, L"http://127.0.0.1:8080/cta_only.html"); 
+	//m_pBrowserUI = new CCefBrowserUI(this, L"http://127.0.0.1:8080/cta_only.html"); 
+	//m_pBrowserUI = new CCefBrowserUI(this, L"http://www.baidu.com"); 
+	m_pBrowserUI = new CCefBrowserUI(this, L"http://localhost:8080/home"); // lcoal pc
+
+
 	//m_pBrowserUI2 = new CCefBrowserUI(this, L"http://127.0.0.1:8080/cta_multi.html"); 
 	// 和web端联调时，测试网址  
 	//m_pBrowserUI2 = new CCefBrowserUI(this, L"http://172.16.11.134:8080/home"); // huyong pc
-	m_pBrowserUI2 = new CCefBrowserUI(this, L"http://172.16.100.29:8080/home"); 
+	//m_pBrowserUI2 = new CCefBrowserUI(this, L"http://172.16.100.29:8080/home"); 
 	//m_pBrowserUI2 = new CCefBrowserUI(this, L"http://172.16.30.167:8080/home"); // duandongyi pc
+	m_pBrowserUI2 = new CCefBrowserUI(this, L"http://localhost:8080/home"); // lcoal pc
+
 
 }
 
