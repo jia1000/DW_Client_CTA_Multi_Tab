@@ -153,7 +153,7 @@ bool DataTransferController::ParseWriteFileOperationData(
 #if _DEBUG
 	std::string file_key_value = path + "file_key_log.csv";
 	{
-		FILE* fp = fopen(file_key_value.c_str(), "wa");
+		FILE* fp = fopen(file_key_value.c_str(), "w+");
 		if (fp) {
 			fprintf(fp, "%s,%s\n", file_name_md5.c_str(), file_name.c_str());
 			fclose(fp);
