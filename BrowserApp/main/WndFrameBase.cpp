@@ -90,7 +90,9 @@ void CWndFrameBase::Notify(TNotifyUI& msg)
 			CefBrowserSettings settings;
 			windowInfo.width = 900;
 			windowInfo.height = 700;
-			m_pBrowserUI2->m_pBrowser->GetHost()->ShowDevTools(windowInfo, m_pBrowserUI2->m_pClientHandler, settings, CefPoint());
+			//m_pBrowserUI2->m_pBrowser->GetHost()->ShowDevTools(windowInfo, m_pBrowserUI2->m_pClientHandler, settings, CefPoint());
+			m_pBrowserUI->m_pBrowser->GetHost()->ShowDevTools(windowInfo, m_pBrowserUI->m_pClientHandler, settings, CefPoint());
+
 		}
 		else if (_tcscmp(pszCtrlName, _T("btn_stop")) == 0)
 		{			
