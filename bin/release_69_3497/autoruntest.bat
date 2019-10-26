@@ -1,0 +1,1 @@
+BrowserApp.exe -ocrurl=http://www.baidu.com
